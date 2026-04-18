@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI Social Manager — Gestão profissional de Instagram para agências</title>
+<meta name="description" content="Plataforma completa para gestão de Instagram: agendamento, analytics, aprovação de posts, IA para legendas. Pensado para agências e profissionais de marketing.">
+<meta property="og:title" content="PMI Social Manager">
+<meta property="og:description" content="A plataforma de gestão de Instagram que agências sérias usam.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0814;
+  --bg2:#11091f;
+  --bg3:#1a0f2e;
+  --line:rgba(167,139,250,.13);
+  --line2:rgba(167,139,250,.25);
+  --tx:#f5f0ff;
+  --tx2:#b8a8e0;
+  --tx3:#7d6fa3;
+  --ac:#a78bfa;
+  --ac2:#c4b5fd;
+  --hot:#ec4899;
+  --serif:'Instrument Serif', 'Times New Roman', serif;
+  --sans:'Manrope', system-ui, sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--tx);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--ac);color:var(--bg)}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(167,139,250,.10), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 60%, rgba(236,72,153,.06), transparent 60%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(167,139,250,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167,139,250,.025) 1px, transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;z-index:0;
+  mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+main, nav, footer{position:relative;z-index:1}
+
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 48px;
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  backdrop-filter:blur(18px);
+  background:rgba(10,8,20,.6);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s, background .3s;
+}
+nav.scrolled{border-bottom-color:var(--line);background:rgba(10,8,20,.85)}
+.logo{
+  font-family:var(--serif);font-size:26px;letter-spacing:-.5px;
+  color:var(--tx);text-decoration:none;display:flex;align-items:baseline;gap:2px;
+}
+.logo .dot{color:var(--hot);font-size:32px;line-height:0;margin-left:1px}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{color:var(--tx2);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--tx)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;border-radius:999px;
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.2px;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:transform .2s, background .2s, color .2s, box-shadow .2s;
+}
+.btn-ghost{color:var(--tx);background:transparent;border:1px solid var(--line2)}
+.btn-ghost:hover{background:rgba(167,139,250,.08);border-color:var(--ac)}
+.btn-primary{background:var(--tx);color:var(--bg)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 18px 40px -12px rgba(245,240,255,.35)}
+.btn-hot{background:linear-gradient(135deg, var(--hot), #f472b6);color:#fff}
+.btn-hot:hover{transform:translateY(-1px);box-shadow:0 18px 40px -12px rgba(236,72,153,.5)}
+
+.hero{min-height:100vh;display:flex;align-items:center;padding:140px 48px 80px;position:relative}
+.hero-grid{
+  max-width:1320px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:minmax(0, 1.4fr) minmax(0, 1fr);
+  gap:80px;align-items:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:999px;
+  background:rgba(167,139,250,.08);border:1px solid var(--line2);
+  font-size:12px;color:var(--ac2);
+  letter-spacing:.5px;text-transform:uppercase;font-weight:600;
+  margin-bottom:32px;
+}
+.hero-eyebrow .dot{
+  width:6px;height:6px;border-radius:50%;background:#34d399;
+  box-shadow:0 0 8px #34d399;animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+h1.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(48px, 7.5vw, 110px);
+  font-weight:400;line-height:.95;letter-spacing:-.03em;margin-bottom:32px;
+}
+.hero-title em{font-style:italic;color:var(--ac);font-weight:400}
+.hero-title .strike{
+  text-decoration:line-through;text-decoration-color:var(--hot);
+  text-decoration-thickness:3px;color:var(--tx3);
+}
+.hero-sub{font-size:19px;color:var(--tx2);max-width:560px;margin-bottom:44px;line-height:1.55}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:48px}
+.hero-trust{display:flex;align-items:center;gap:18px;font-size:13px;color:var(--tx3)}
+.hero-trust strong{color:var(--tx);font-weight:600}
+.trust-stars{color:#fbbf24;letter-spacing:1px}
+
+.hero-visual{position:relative;perspective:1200px}
+.dash-mock{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:18px;padding:24px;
+  box-shadow:0 0 0 1px rgba(167,139,250,.05),0 60px 100px -30px rgba(0,0,0,.6),0 30px 60px -20px rgba(167,139,250,.15);
+  transform:rotate(2deg) rotateY(-8deg) rotateX(4deg);transform-style:preserve-3d;
+}
+.dash-mock-hd{display:flex;align-items:center;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.dot-row{display:flex;gap:6px}
+.dot-row span{width:11px;height:11px;border-radius:50%;}
+.dot-row .r{background:#ff5f56}.dot-row .y{background:#ffbd2e}.dot-row .g{background:#27c93f}
+.dash-mock-title{font-size:11px;color:var(--tx3);margin-left:auto;font-family:'SF Mono', monospace}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.dash-stat{background:rgba(167,139,250,.06);border:1px solid var(--line);border-radius:12px;padding:14px}
+.dash-stat-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
+.dash-stat-val{font-family:var(--serif);font-size:32px;color:var(--tx);margin-top:4px;line-height:1}
+.dash-stat-chg{font-size:11px;color:#34d399;margin-top:4px;font-weight:600}
+.dash-chart{height:80px;background:linear-gradient(180deg, transparent 0%, rgba(167,139,250,.15) 100%);border-radius:8px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.dash-chart svg{width:100%;height:100%}
+.dash-row{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12px;color:var(--tx2)}
+.dash-row .live-dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:pulse 1.6s infinite}
+
+.float-tag{
+  position:absolute;background:var(--bg3);border:1px solid var(--line2);
+  border-radius:12px;padding:10px 14px;font-size:12px;color:var(--tx);
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,.5);font-weight:500;
+}
+.float-tag i{color:var(--hot)}
+.float-tag.t1{top:-12px;left:-30px;animation:float1 6s ease-in-out infinite}
+.float-tag.t2{bottom:30px;right:-40px;animation:float2 7s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+.marquee{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:28px 0;overflow:hidden;background:rgba(10,8,20,.5);
+}
+.marquee-track{display:flex;gap:80px;animation:scroll 28s linear infinite;white-space:nowrap}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:var(--serif);font-size:24px;color:var(--tx3);
+  display:flex;align-items:center;gap:16px;flex-shrink:0;
+}
+.marquee-item i{color:var(--ac);font-size:18px}
+
+section{padding:140px 48px;position:relative}
+.container{max-width:1240px;margin:0 auto}
+.section-eyebrow{
+  display:inline-block;font-size:12px;color:var(--ac);
+  text-transform:uppercase;letter-spacing:2px;font-weight:600;
+  margin-bottom:24px;padding-left:24px;position:relative;
+}
+.section-eyebrow::before{content:'';position:absolute;left:0;top:50%;width:14px;height:1px;background:var(--ac)}
+h2.section-title{
+  font-family:var(--serif);
+  font-size:clamp(40px, 5.5vw, 76px);
+  font-weight:400;line-height:1;letter-spacing:-.02em;margin-bottom:24px;
+}
+h2.section-title em{font-style:italic;color:var(--ac)}
+.section-sub{font-size:18px;color:var(--tx2);max-width:640px;margin-bottom:80px}
+
+.features-grid{display:grid;grid-template-columns:repeat(12, 1fr);gap:24px}
+.feature{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:24px;padding:36px;position:relative;overflow:hidden;
+  transition:border-color .3s, transform .3s;
+}
+.feature:hover{border-color:var(--line2);transform:translateY(-4px)}
+.feature.f-big{grid-column:span 8}
+.feature.f-small{grid-column:span 4}
+.feature.f-mid{grid-column:span 6}
+.feature-num{font-family:var(--serif);font-size:14px;color:var(--tx3);letter-spacing:1px;margin-bottom:24px}
+.feature-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:54px;height:54px;border-radius:16px;
+  background:rgba(167,139,250,.1);border:1px solid var(--line2);
+  margin-bottom:20px;font-size:22px;color:var(--ac);
+}
+.feature h3{font-family:var(--serif);font-size:32px;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin-bottom:12px}
+.feature h3 em{font-style:italic;color:var(--ac)}
+.feature p{color:var(--tx2);font-size:15px;line-height:1.6;max-width:480px}
+.feature-list{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.feature-list li{list-style:none;font-size:13px;color:var(--tx2);display:flex;align-items:center;gap:10px}
+.feature-list li i{color:#34d399;font-size:11px}
+.feature-visual{
+  margin-top:24px;border-radius:12px;background:var(--bg3);
+  border:1px solid var(--line);padding:20px;
+  font-family:'SF Mono', monospace;font-size:11px;color:var(--tx2);
+  line-height:1.7;overflow:hidden;position:relative;
+}
+.feature-visual::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:40px;
+  background:linear-gradient(transparent, var(--bg2));pointer-events:none;
+}
+.feature-visual .k{color:var(--hot)}
+.feature-visual .s{color:#34d399}
+.feature-visual .c{color:var(--tx3)}
+
+.steps-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:30px;position:relative}
+.step{position:relative;padding-top:36px}
+.step-num{font-family:var(--serif);font-size:120px;font-weight:400;line-height:.8;color:var(--ac);opacity:.18;margin-bottom:-50px}
+.step h3{font-family:var(--serif);font-size:28px;font-weight:400;margin-bottom:12px;position:relative}
+.step p{color:var(--tx2);font-size:15px;line-height:1.6}
+
+.pricing-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;align-items:stretch}
+.plan{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:24px;padding:40px 32px;
+  display:flex;flex-direction:column;position:relative;
+  transition:border-color .3s, transform .3s;
+}
+.plan:hover{border-color:var(--line2);transform:translateY(-4px)}
+.plan.featured{border-color:var(--ac);background:linear-gradient(180deg, rgba(167,139,250,.08), var(--bg2))}
+.plan-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--hot);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  padding:6px 14px;border-radius:999px;text-transform:uppercase;
+}
+.plan-name{font-family:var(--serif);font-size:30px;font-weight:400;letter-spacing:-.01em;margin-bottom:6px}
+.plan-tag{font-size:13px;color:var(--tx3);margin-bottom:28px}
+.plan-price{font-family:var(--serif);font-size:64px;font-weight:400;line-height:1;margin-bottom:6px;letter-spacing:-.02em}
+.plan-price .currency{font-size:24px;color:var(--tx3);vertical-align:super;margin-right:4px}
+.plan-period{font-size:13px;color:var(--tx3);margin-bottom:32px}
+.plan ul{list-style:none;margin-bottom:32px;flex:1}
+.plan ul li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--tx2);display:flex;align-items:center;gap:10px}
+.plan ul li:last-child{border-bottom:none}
+.plan ul li i{color:var(--ac);font-size:11px;flex-shrink:0}
+.plan .btn{justify-content:center;width:100%}
+
+.faq{max-width:780px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--line);padding:24px 0;cursor:pointer}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:var(--serif);font-size:22px;font-weight:400;color:var(--tx)}
+.faq-q i{color:var(--ac);transition:transform .3s;font-size:14px}
+.faq-item.open .faq-q i{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s;font-size:15px;color:var(--tx2);line-height:1.7}
+.faq-item.open .faq-a{max-height:500px;padding-top:14px}
+
+.final-cta{
+  text-align:center;padding:160px 48px;
+  background:radial-gradient(ellipse at center, rgba(167,139,250,.12), transparent 60%), var(--bg);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.final-cta h2{
+  font-family:var(--serif);font-size:clamp(48px, 7vw, 96px);
+  font-weight:400;line-height:1;letter-spacing:-.02em;
+  margin-bottom:32px;max-width:880px;margin-inline:auto;
+}
+.final-cta p{color:var(--tx2);font-size:18px;max-width:540px;margin:0 auto 40px}
+
+footer{padding:80px 48px 40px;border-top:1px solid var(--line)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1240px;margin:0 auto 60px}
+.footer-col h4{font-family:var(--sans);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx3);margin-bottom:18px;font-weight:600}
+.footer-col a{display:block;color:var(--tx2);text-decoration:none;font-size:14px;padding:6px 0;transition:color .2s}
+.footer-col a:hover{color:var(--ac)}
+.footer-tag{color:var(--tx2);font-size:14px;margin-top:12px;max-width:380px;line-height:1.6}
+.footer-bottom{
+  max-width:1240px;margin:0 auto;padding-top:30px;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--tx3);flex-wrap:wrap;gap:16px;
+}
+
+@media (max-width:1100px){
+  .hero-grid{grid-template-columns:1fr;gap:60px}
+  .hero-visual{max-width:480px;margin:0 auto}
+  .feature.f-big, .feature.f-small, .feature.f-mid{grid-column:span 12}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+}
+@media (max-width:768px){
+  nav{padding:18px 24px}
+  .nav-links{display:none}
+  .hero{padding:120px 24px 60px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn{justify-content:center}
+  section{padding:80px 24px}
+  .steps-grid, .pricing-grid{grid-template-columns:1fr;gap:14px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+  .float-tag{display:none}
+  .marquee-item{font-size:18px;gap:14px}
+  .marquee-track{gap:50px}
+}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease, transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="logo">PMI<span class="dot">.</span></a>
+  <div class="nav-links">
+    <a href="#features">Recursos</a>
+    <a href="#how">Como funciona</a>
+    <a href="#pricing">Planos</a>
+    <a href="#faq">Dúvidas</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/login" class="btn btn-ghost">Entrar</a>
+    <a href="/signup" class="btn btn-primary">Começar grátis <i class="fas fa-arrow-right" style="font-size:11px"></i></a>
+  </div>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow"><span class="dot"></span> Plataforma multi-cliente · Tokens Meta criptografados</div>
+        <h1 class="hero-title">
+          Pare de fazer<br>
+          <span class="strike">planilha</span> <em>gestão</em><br>
+          de Instagram.
+        </h1>
+        <p class="hero-sub">
+          A plataforma completa que agências e profissionais de marketing usam para
+          agendar posts, aprovar com clientes, analisar performance e responder mensagens —
+          tudo em um lugar, com IA integrada e dados reais da Meta.
+        </p>
+        <div class="hero-actions">
+          <a href="/signup" class="btn btn-hot">Começar agora — 14 dias grátis <i class="fas fa-arrow-right" style="font-size:12px"></i></a>
+          <a href="#features" class="btn btn-ghost">Ver recursos</a>
+        </div>
+        <div class="hero-trust">
+          <span class="trust-stars">★ ★ ★ ★ ★</span>
+          <span><strong>4.9/5</strong> · usado por agências em todo o Brasil</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="float-tag t1"><i class="fas fa-bolt"></i> +127% engajamento</div>
+        <div class="float-tag t2"><i class="fab fa-instagram"></i> 12.4K seguidores · @cliente</div>
+        <div class="dash-mock">
+          <div class="dash-mock-hd">
+            <div class="dot-row"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="dash-mock-title">pmi.app/dashboard</div>
+          </div>
+          <div class="dash-stats">
+            <div class="dash-stat">
+              <div class="dash-stat-lbl">Alcance · 30d</div>
+              <div class="dash-stat-val">142K</div>
+              <div class="dash-stat-chg"><i class="fas fa-arrow-up"></i> 38%</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-lbl">Engajamento</div>
+              <div class="dash-stat-val">4.2%</div>
+              <div class="dash-stat-chg"><i class="fas fa-arrow-up"></i> meta &gt;3%</div>
+            </div>
+          </div>
+          <div class="dash-chart">
+            <svg viewBox="0 0 400 80" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa" stop-opacity=".5"/>
+                  <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,60 L40,55 L80,40 L120,45 L160,30 L200,25 L240,32 L280,18 L320,22 L360,10 L400,15 L400,80 L0,80 Z" fill="url(#g1)"/>
+              <path d="M0,60 L40,55 L80,40 L120,45 L160,30 L200,25 L240,32 L280,18 L320,22 L360,10 L400,15" fill="none" stroke="#a78bfa" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="dash-row">
+            <span class="live-dot"></span>
+            <span>Sincronizado com Meta Graph API · há 12s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <div class="marquee-item"><i class="fab fa-instagram"></i> Posts agendados</div>
+      <div class="marquee-item"><i class="fas fa-chart-line"></i> Analytics reais</div>
+      <div class="marquee-item"><i class="fas fa-shield-alt"></i> Aprovação de cliente</div>
+      <div class="marquee-item"><i class="fas fa-robot"></i> IA para legendas</div>
+      <div class="marquee-item"><i class="fas fa-comments"></i> DMs centralizados</div>
+      <div class="marquee-item"><i class="fas fa-images"></i> Biblioteca de mídia</div>
+      <div class="marquee-item"><i class="fas fa-users"></i> Multi-cliente</div>
+      <div class="marquee-item"><i class="fab fa-instagram"></i> Posts agendados</div>
+      <div class="marquee-item"><i class="fas fa-chart-line"></i> Analytics reais</div>
+      <div class="marquee-item"><i class="fas fa-shield-alt"></i> Aprovação de cliente</div>
+      <div class="marquee-item"><i class="fas fa-robot"></i> IA para legendas</div>
+      <div class="marquee-item"><i class="fas fa-comments"></i> DMs centralizados</div>
+      <div class="marquee-item"><i class="fas fa-images"></i> Biblioteca de mídia</div>
+      <div class="marquee-item"><i class="fas fa-users"></i> Multi-cliente</div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">O que você ganha</span>
+        <h2 class="section-title">Todo o stack de uma agência<br>em <em>uma única ferramenta</em>.</h2>
+        <p class="section-sub">Pare de pular entre Buffer, Later, Hootsuite, Notion e planilhas. Tudo aqui — integrado direto à Meta Graph API.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature f-big reveal">
+          <div class="feature-num">01 / Calendário</div>
+          <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+          <h3><em>Agende</em> meses inteiros em minutos.</h3>
+          <p>Visualização mensal, semanal e em lista. Arraste posts entre datas, edite na hora e publique automaticamente no horário marcado — sem precisar abrir o app do Instagram.</p>
+          <div class="feature-visual">
+            <div><span class="c">// scheduler.js — roda a cada 60s</span></div>
+            <div><span class="k">if</span> (post.scheduled_for &lt;= now) {</div>
+            <div>&nbsp;&nbsp;<span class="k">await</span> meta.publish(post)</div>
+            <div>&nbsp;&nbsp;<span class="s">// ✓ Publicado · 18:30</span></div>
+            <div>}</div>
+          </div>
+        </div>
+
+        <div class="feature f-small reveal">
+          <div class="feature-num">02 / IA</div>
+          <div class="feature-icon"><i class="fas fa-robot"></i></div>
+          <h3>Legendas com <em>Claude</em>.</h3>
+          <p>Descreva a ideia. A IA escreve a legenda completa, sugere hashtags e recomenda o melhor horário para postar.</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check"></i> Tom de voz personalizado</li>
+            <li><i class="fas fa-check"></i> Hashtags por nicho</li>
+            <li><i class="fas fa-check"></i> Análise de melhores horários</li>
+          </ul>
+        </div>
+
+        <div class="feature f-small reveal">
+          <div class="feature-num">03 / Aprovação</div>
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3>Cliente aprova <em>antes</em> de publicar.</h3>
+          <p>Fluxo de aprovação por cliente. Posts pendentes ficam em quarentena até receber o "ok" — chega de retrabalho.</p>
+        </div>
+
+        <div class="feature f-big reveal">
+          <div class="feature-num">04 / Analytics</div>
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Dados <em>reais</em> da Meta. Não estimativas.</h3>
+          <p>Alcance, impressões, engajamento por post, demografia da audiência (idade, gênero, geografia), melhores horários, comparativo entre tipos de mídia. Tudo direto da fonte oficial.</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check"></i> Cache inteligente — economiza chamadas à API</li>
+            <li><i class="fas fa-check"></i> Relatórios PDF para enviar ao cliente</li>
+            <li><i class="fas fa-check"></i> Comparativo entre períodos</li>
+            <li><i class="fas fa-check"></i> Top posts automatizado</li>
+          </ul>
+        </div>
+
+        <div class="feature f-mid reveal">
+          <div class="feature-num">05 / Inbox</div>
+          <div class="feature-icon"><i class="fas fa-comments"></i></div>
+          <h3>Tudo em <em>uma caixa</em>.</h3>
+          <p>DMs, comentários e menções centralizados. Responda direto pela plataforma — sua resposta vai para o Instagram em tempo real.</p>
+        </div>
+
+        <div class="feature f-mid reveal">
+          <div class="feature-num">06 / Multi-cliente</div>
+          <div class="feature-icon"><i class="fas fa-users-gear"></i></div>
+          <h3>Várias contas, <em>zero confusão</em>.</h3>
+          <p>Cada cliente tem seu workspace isolado. Permissões granulares (admin, gerente, cliente). Tokens criptografados em AES-256-GCM no banco — segurança que agência séria precisa ter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="background:linear-gradient(180deg, transparent, rgba(167,139,250,.04))">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">Como começa</span>
+        <h2 class="section-title">3 passos. <em>10 minutos.</em><br>Pronto pra trabalhar.</h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Crie sua conta</h3>
+          <p>Sem cartão de crédito. Sem call de vendas. Cadastra o email, escolhe a senha e tá dentro.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>Conecte o Instagram</h3>
+          <p>Cole o token Meta da sua Página do Facebook. A plataforma descobre a conta IG vinculada automaticamente e criptografa o token no banco.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Comece a publicar</h3>
+          <p>Importe seus posts existentes, agende novos com a IA, aprove com o cliente e analise resultados. Tudo num só lugar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <span class="section-eyebrow">Planos</span>
+        <h2 class="section-title">Preço justo.<br>Sem <em>letras miúdas.</em></h2>
+        <p class="section-sub" style="margin-inline:auto">Comece grátis. Faça upgrade quando precisar de mais contas ou usuários.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="plan reveal">
+          <div class="plan-name">Starter</div>
+          <div class="plan-tag">Para freelancers e quem está começando</div>
+          <div class="plan-price"><span class="currency">R$</span>49</div>
+          <div class="plan-period">por mês · 14 dias grátis</div>
+          <ul>
+            <li><i class="fas fa-check"></i> 1 conta Instagram</li>
+            <li><i class="fas fa-check"></i> 1 usuário</li>
+            <li><i class="fas fa-check"></i> Agendamento ilimitado</li>
+            <li><i class="fas fa-check"></i> Analytics básico</li>
+            <li><i class="fas fa-check"></i> Inbox unificado</li>
+            <li><i class="fas fa-check"></i> 10 GB de mídia</li>
+          </ul>
+          <a href="/signup?plan=starter" class="btn btn-ghost">Começar grátis</a>
+        </div>
+
+        <div class="plan featured reveal">
+          <div class="plan-badge">Mais popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-tag">Para profissionais de marketing</div>
+          <div class="plan-price"><span class="currency">R$</span>149</div>
+          <div class="plan-period">por mês · 14 dias grátis</div>
+          <ul>
+            <li><i class="fas fa-check"></i> Até 3 contas Instagram</li>
+            <li><i class="fas fa-check"></i> Até 3 usuários</li>
+            <li><i class="fas fa-check"></i> IA para legendas e hashtags</li>
+            <li><i class="fas fa-check"></i> Fluxo de aprovação</li>
+            <li><i class="fas fa-check"></i> Analytics avançado + relatórios PDF</li>
+            <li><i class="fas fa-check"></i> 50 GB de mídia</li>
+            <li><i class="fas fa-check"></i> Suporte prioritário</li>
+          </ul>
+          <a href="/signup?plan=pro" class="btn btn-hot">Começar grátis</a>
+        </div>
+
+        <div class="plan reveal">
+          <div class="plan-name">Agency</div>
+          <div class="plan-tag">Para agências com múltiplos clientes</div>
+          <div class="plan-price"><span class="currency">R$</span>399</div>
+          <div class="plan-period">por mês · 14 dias grátis</div>
+          <ul>
+            <li><i class="fas fa-check"></i> Contas Instagram ilimitadas</li>
+            <li><i class="fas fa-check"></i> Usuários ilimitados</li>
+            <li><i class="fas fa-check"></i> Tudo do Pro</li>
+            <li><i class="fas fa-check"></i> White-label (em breve)</li>
+            <li><i class="fas fa-check"></i> 500 GB de mídia</li>
+            <li><i class="fas fa-check"></i> API dedicada</li>
+            <li><i class="fas fa-check"></i> Onboarding 1:1</li>
+          </ul>
+          <a href="/signup?plan=agency" class="btn btn-ghost">Começar grátis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <span class="section-eyebrow">FAQ</span>
+        <h2 class="section-title">Perguntas <em>frequentes</em>.</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Preciso de uma conta Business no Instagram? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">Sim. A Meta API só permite integração com contas Business ou Creator. Se você ainda tem uma conta pessoal, é só converter nas configurações do Instagram — leva 1 minuto e é grátis.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Como funciona o token Meta? É seguro? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">O token é gerado no Graph API Explorer da Meta (developers.facebook.com) e dá permissão para nossa plataforma agir em nome da sua Página. Quando você cola o token, ele é imediatamente criptografado com AES-256-GCM antes de ir pro banco — nem nossa equipe consegue ler em texto plano. O frontend nunca vê o token novamente.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Posso cancelar quando quiser? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">Sim. Sem fidelidade, sem multa. Cancele em 1 clique e seus dados ficam disponíveis para download por 30 dias.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Vocês postam Stories e Reels também? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">Sim. Imagem, carrossel, Reels e Stories — tudo via Meta Graph API oficial. Para Reels e Stories, você precisa fornecer URL pública da mídia (suba no seu CDN, ImgBB, S3 ou similar).</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Posso responder DMs pela plataforma? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">Sim, desde que seu token tenha as permissões <code>instagram_manage_messages</code> e <code>pages_messaging</code>. A plataforma busca conversas a cada 30 segundos e suas respostas são enviadas em tempo real para o Instagram.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <div class="faq-q">Vocês usam meus dados para treinar IA? <i class="fas fa-plus"></i></div>
+          <div class="faq-a">Não. Seus posts, métricas e mensagens são exclusivamente seus. Quando você usa a IA para gerar legendas, enviamos apenas o prompt — nenhum dado de outras seções trafega.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <h2>Sua agência merece <em>uma ferramenta</em><br>que acompanha seu ritmo.</h2>
+    <p>Comece grátis hoje. Sem cartão. Sem demonstração obrigatória. Em 10 minutos você está agendando seu primeiro post.</p>
+    <a href="/signup" class="btn btn-hot" style="font-size:16px;padding:16px 32px;">
+      Criar minha conta agora <i class="fas fa-arrow-right" style="font-size:13px"></i>
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="/" class="logo">PMI<span class="dot">.</span></a>
+      <p class="footer-tag">A plataforma de gestão de Instagram que agências sérias usam para escalar resultados sem escalar caos.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Produto</h4>
+      <a href="#features">Recursos</a>
+      <a href="#pricing">Planos</a>
+      <a href="#faq">FAQ</a>
+      <a href="/login">Entrar</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Sobre</a>
+      <a href="#">Blog</a>
+      <a href="#">Contato</a>
+      <a href="#">Carreiras</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Termos de uso</a>
+      <a href="#">Privacidade</a>
+      <a href="#">LGPD</a>
+      <a href="#">Status</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 PMI Marketing Integrado · Todos os direitos reservados</span>
+    <span>Não afiliado à Meta Platforms, Inc.</span>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+});
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: .15, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
