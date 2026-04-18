@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar — PMI Social Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0814;--bg2:#11091f;--bg3:#1a0f2e;
+  --line:rgba(167,139,250,.13);--line2:rgba(167,139,250,.25);
+  --tx:#f5f0ff;--tx2:#b8a8e0;--tx3:#7d6fa3;
+  --ac:#a78bfa;--hot:#ec4899;
+  --serif:'Instrument Serif', serif;--sans:'Manrope', system-ui, sans-serif;
+}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--tx);
+  min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--ac);color:var(--bg)}
+
+/* ── LEFT SIDE (brand) ── */
+.brand-side{
+  flex:1;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(167,139,250,.18), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(236,72,153,.12), transparent 50%),
+    var(--bg2);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:48px;position:relative;overflow:hidden;
+}
+.brand-side::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(167,139,250,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167,139,250,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+.brand-side > *{position:relative;z-index:1}
+.logo{
+  font-family:var(--serif);font-size:32px;letter-spacing:-.5px;
+  color:var(--tx);text-decoration:none;display:inline-flex;align-items:baseline;gap:2px;
+}
+.logo .dot{color:var(--hot);font-size:38px;line-height:0;margin-left:2px}
+
+.brand-quote{
+  max-width:520px;
+}
+.quote-eyebrow{
+  font-size:11px;color:var(--ac);text-transform:uppercase;
+  letter-spacing:2px;font-weight:600;margin-bottom:24px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.quote-eyebrow::before{content:'';width:30px;height:1px;background:var(--ac)}
+.brand-quote h1{
+  font-family:var(--serif);
+  font-size:clamp(40px, 5vw, 60px);
+  font-weight:400;line-height:1.05;letter-spacing:-.02em;
+  color:var(--tx);
+}
+.brand-quote h1 em{font-style:italic;color:var(--ac)}
+.brand-quote p{
+  margin-top:24px;font-size:16px;color:var(--tx2);line-height:1.7;
+}
+
+.brand-stats{
+  display:flex;gap:40px;
+}
+.stat-item{
+  border-left:1px solid var(--line2);padding-left:16px;
+}
+.stat-val{font-family:var(--serif);font-size:32px;color:var(--tx);line-height:1}
+.stat-lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* ── RIGHT SIDE (form) ── */
+.form-side{
+  flex:1;max-width:520px;
+  display:flex;align-items:center;justify-content:center;
+  padding:48px;
+}
+.form-card{width:100%;max-width:380px}
+.form-card h2{
+  font-family:var(--serif);
+  font-size:42px;font-weight:400;line-height:1;letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.form-card .sub{
+  font-size:14px;color:var(--tx2);margin-bottom:36px;
+}
+.form-card .sub a{color:var(--ac);text-decoration:none;font-weight:500}
+.form-card .sub a:hover{text-decoration:underline}
+
+.field{margin-bottom:20px}
+.field label{
+  display:block;font-size:11px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:1.2px;font-weight:600;
+  margin-bottom:8px;
+}
+.field input{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px;
+  color:var(--tx);font-family:var(--sans);font-size:14px;
+  outline:none;transition:border-color .2s, background .2s;
+}
+.field input:focus{border-color:var(--ac);background:var(--bg3)}
+.field input::placeholder{color:var(--tx3)}
+.field-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:24px;font-size:13px}
+.field-row a{color:var(--ac);text-decoration:none}
+.field-row a:hover{text-decoration:underline}
+.checkbox{display:flex;align-items:center;gap:8px;color:var(--tx2);cursor:pointer}
+.checkbox input{accent-color:var(--ac)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px;border-radius:10px;
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.2px;
+  border:none;cursor:pointer;transition:transform .2s, box-shadow .2s;
+}
+.btn-primary{background:var(--tx);color:var(--bg)}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 18px 40px -12px rgba(245,240,255,.35)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+
+.alert{
+  padding:12px 14px;border-radius:8px;font-size:13px;
+  margin-bottom:20px;display:none;align-items:center;gap:10px;
+}
+.alert.show{display:flex}
+.alert.error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
+.alert.success{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#6ee7b7}
+
+.divider{
+  margin:28px 0;text-align:center;position:relative;
+  font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1.5px;
+}
+.divider::before, .divider::after{
+  content:'';position:absolute;top:50%;width:35%;height:1px;background:var(--line);
+}
+.divider::before{left:0}
+.divider::after{right:0}
+
+.bottom-link{
+  text-align:center;margin-top:32px;font-size:14px;color:var(--tx2);
+}
+.bottom-link a{color:var(--ac);text-decoration:none;font-weight:600}
+.bottom-link a:hover{text-decoration:underline}
+
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:spin .6s linear infinite;
+}
+.btn-primary .spinner{border-color:rgba(10,8,20,.3);border-top-color:var(--bg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media (max-width:900px){
+  body{flex-direction:column}
+  .brand-side{flex:none;padding:32px 24px;border-right:none;border-bottom:1px solid var(--line);min-height:auto}
+  .brand-quote{margin:24px 0}
+  .brand-quote h1{font-size:32px}
+  .brand-stats{gap:24px;flex-wrap:wrap}
+  .stat-val{font-size:24px}
+  .form-side{flex:1;padding:32px 24px;max-width:100%;width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="brand-side">
+  <a href="/" class="logo">PMI<span class="dot">.</span></a>
+
+  <div class="brand-quote">
+    <div class="quote-eyebrow">Bem-vindo de volta</div>
+    <h1>Sua agência <em>roda</em>.<br>A gente cuida do <em>resto</em>.</h1>
+    <p>Mais de 10 mil posts agendados. Centenas de agências. Zero stress de planilha. Entre e veja seus números do dia.</p>
+  </div>
+
+  <div class="brand-stats">
+    <div class="stat-item">
+      <div class="stat-val">10K+</div>
+      <div class="stat-lbl">Posts publicados</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">4.9★</div>
+      <div class="stat-lbl">Avaliação dos usuários</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">99.9%</div>
+      <div class="stat-lbl">Uptime garantido</div>
+    </div>
+  </div>
+</div>
+
+<div class="form-side">
+  <div class="form-card">
+    <h2>Entrar</h2>
+    <div class="sub">Novo por aqui? <a href="/signup">Criar conta grátis</a></div>
+
+    <div id="alert" class="alert"></div>
+
+    <form id="form" autocomplete="on">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="voce@email.com" required autofocus autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <div class="field-row">
+        <label class="checkbox">
+          <input type="checkbox" id="remember" checked> Manter conectado
+        </label>
+        <a href="#" onclick="alert('Entre em contato com seu admin para resetar a senha.');return false;">Esqueci minha senha</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submit">Entrar</button>
+    </form>
+
+    <div class="divider">Plataforma segura</div>
+
+    <div style="font-size:12px;color:var(--tx3);text-align:center;line-height:1.6">
+      Conexão criptografada · Tokens armazenados com AES-256<br>
+      Não afiliado à Meta Platforms, Inc.
+    </div>
+
+    <div class="bottom-link">
+      <a href="/">← Voltar para a página inicial</a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/api.js"></script>
+<script>
+const form = document.getElementById('form');
+const alertBox = document.getElementById('alert');
+const submitBtn = document.getElementById('submit');
+
+function showAlert(msg, type='error') {
+  alertBox.className = `alert show ${type}`;
+  alertBox.innerHTML = `<i class="fas fa-${type==='error'?'exclamation-circle':'check-circle'}"></i> ${msg}`;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  alertBox.className = 'alert';
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Entrando...';
+
+  try {
+    const res = await api.auth.login({
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value,
+    });
+    showAlert('Bem-vindo, ' + res.user.name + '!', 'success');
+    setTimeout(() => {
+      // Se nunca conectou IG, vai pro onboarding
+      api.auth.me().then(({user}) => {
+        window.location.href = user.ig_accounts_count > 0 ? '/app' : '/onboarding';
+      }).catch(() => window.location.href = '/app');
+    }, 600);
+  } catch (err) {
+    showAlert(err.message || 'Erro ao entrar');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Entrar';
+  }
+});
+
+// Se já está logado, redireciona
+api.auth.me()
+  .then(({user}) => {
+    window.location.href = user.ig_accounts_count > 0 ? '/app' : '/onboarding';
+  })
+  .catch(() => { /* não logado, fica aqui */ });
+</script>
+
+</body>
+</html>

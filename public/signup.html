@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar conta — PMI Social Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0814;--bg2:#11091f;--bg3:#1a0f2e;
+  --line:rgba(167,139,250,.13);--line2:rgba(167,139,250,.25);
+  --tx:#f5f0ff;--tx2:#b8a8e0;--tx3:#7d6fa3;
+  --ac:#a78bfa;--hot:#ec4899;
+  --serif:'Instrument Serif', serif;--sans:'Manrope', system-ui, sans-serif;
+}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--tx);
+  min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--ac);color:var(--bg)}
+
+.brand-side{
+  flex:1;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(236,72,153,.16), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(167,139,250,.18), transparent 50%),
+    var(--bg2);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:48px;position:relative;overflow:hidden;
+}
+.brand-side::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(167,139,250,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167,139,250,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+.brand-side > *{position:relative;z-index:1}
+.logo{
+  font-family:var(--serif);font-size:32px;letter-spacing:-.5px;
+  color:var(--tx);text-decoration:none;display:inline-flex;align-items:baseline;gap:2px;
+}
+.logo .dot{color:var(--hot);font-size:38px;line-height:0;margin-left:2px}
+
+.brand-quote{max-width:520px}
+.quote-eyebrow{
+  font-size:11px;color:var(--ac);text-transform:uppercase;
+  letter-spacing:2px;font-weight:600;margin-bottom:24px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.quote-eyebrow::before{content:'';width:30px;height:1px;background:var(--ac)}
+.brand-quote h1{
+  font-family:var(--serif);
+  font-size:clamp(40px, 5vw, 60px);
+  font-weight:400;line-height:1.05;letter-spacing:-.02em;
+}
+.brand-quote h1 em{font-style:italic;color:var(--ac)}
+.brand-quote p{margin-top:24px;font-size:16px;color:var(--tx2);line-height:1.7}
+
+.benefits{margin-top:36px}
+.benefit{
+  display:flex;align-items:flex-start;gap:14px;
+  margin-bottom:18px;
+}
+.benefit-ico{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(167,139,250,.1);border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ac);font-size:14px;flex-shrink:0;
+}
+.benefit strong{display:block;color:var(--tx);font-size:14px;font-weight:600;margin-bottom:2px}
+.benefit span{display:block;color:var(--tx2);font-size:13px;line-height:1.5}
+
+.form-side{
+  flex:1;max-width:580px;
+  display:flex;align-items:center;justify-content:center;
+  padding:48px;
+}
+.form-card{width:100%;max-width:440px}
+.form-card h2{
+  font-family:var(--serif);
+  font-size:42px;font-weight:400;line-height:1;letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.form-card .sub{font-size:14px;color:var(--tx2);margin-bottom:32px}
+.form-card .sub a{color:var(--ac);text-decoration:none;font-weight:500}
+.form-card .sub a:hover{text-decoration:underline}
+
+.field{margin-bottom:18px}
+.field label{
+  display:block;font-size:11px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:1.2px;font-weight:600;
+  margin-bottom:8px;
+}
+.field input, .field select{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--line);border-radius:10px;
+  padding:13px 16px;
+  color:var(--tx);font-family:var(--sans);font-size:14px;
+  outline:none;transition:border-color .2s, background .2s;
+}
+.field input:focus, .field select:focus{border-color:var(--ac);background:var(--bg3)}
+.field input::placeholder{color:var(--tx3)}
+.field select option{background:var(--bg2);color:var(--tx)}
+.field-hint{font-size:11px;color:var(--tx3);margin-top:6px}
+.field-hint.ok{color:#34d399}
+.field-hint.err{color:#fca5a5}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px;border-radius:10px;
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.2px;
+  border:none;cursor:pointer;transition:transform .2s, box-shadow .2s;
+}
+.btn-hot{background:linear-gradient(135deg, var(--hot), #f472b6);color:#fff}
+.btn-hot:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 18px 40px -12px rgba(236,72,153,.5)}
+.btn-hot:disabled{opacity:.5;cursor:not-allowed}
+
+.alert{
+  padding:12px 14px;border-radius:8px;font-size:13px;
+  margin-bottom:20px;display:none;align-items:center;gap:10px;
+}
+.alert.show{display:flex}
+.alert.error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
+.alert.success{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#6ee7b7}
+
+.terms{font-size:12px;color:var(--tx3);margin-top:18px;text-align:center;line-height:1.6}
+.terms a{color:var(--ac);text-decoration:none}
+.terms a:hover{text-decoration:underline}
+
+.bottom-link{text-align:center;margin-top:24px;font-size:14px;color:var(--tx2)}
+.bottom-link a{color:var(--ac);text-decoration:none;font-weight:600}
+
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+  border-radius:50%;animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.plan-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(167,139,250,.1);border:1px solid var(--line2);
+  border-radius:999px;padding:5px 12px;font-size:11px;color:var(--ac2);
+  font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;
+}
+
+@media (max-width:900px){
+  body{flex-direction:column}
+  .brand-side{flex:none;padding:32px 24px;border-right:none;border-bottom:1px solid var(--line)}
+  .brand-quote h1{font-size:32px}
+  .benefits{display:none}
+  .form-side{flex:1;padding:32px 24px;max-width:100%;width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="brand-side">
+  <a href="/" class="logo">PMI<span class="dot">.</span></a>
+
+  <div class="brand-quote">
+    <div class="quote-eyebrow">14 dias grátis</div>
+    <h1><em>Crie</em> sua conta.<br>Sem cartão. Sem demo.</h1>
+    <p>Você está a 60 segundos de começar. Só precisa de email, senha e do seu Instagram Business — o resto a gente cuida.</p>
+
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-ico"><i class="fas fa-bolt"></i></div>
+        <div>
+          <strong>Setup em minutos</strong>
+          <span>Cole o token Meta, conecta o Instagram automaticamente.</span>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <strong>Seus dados, criptografados</strong>
+          <span>Tokens em AES-256-GCM. Banco isolado por cliente.</span>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico"><i class="fas fa-times-circle"></i></div>
+        <div>
+          <strong>Cancele quando quiser</strong>
+          <span>Sem fidelidade. Sem multa. Seus dados disponíveis para download.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;color:var(--tx3);">
+    "Saímos do Buffer e do Hootsuite. Mais barato e funciona melhor." — Carla M., Agência Vibe Digital
+  </div>
+</div>
+
+<div class="form-side">
+  <div class="form-card">
+    <div class="plan-tag" id="plan-tag">Plano Pro · R$ 149/mês</div>
+    <h2>Criar conta</h2>
+    <div class="sub">Já tem cadastro? <a href="/login">Entrar</a></div>
+
+    <div id="alert" class="alert"></div>
+
+    <form id="form" autocomplete="on">
+      <div class="field">
+        <label for="name">Seu nome completo</label>
+        <input type="text" id="name" name="name" placeholder="João Silva" required autofocus>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="email">Email profissional</label>
+          <input type="email" id="email" name="email" placeholder="voce@empresa.com" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="company">Empresa <span style="color:var(--tx3);font-weight:400;text-transform:none;">(opcional)</span></label>
+          <input type="text" id="company" name="company" placeholder="Nome da agência">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Crie uma senha</label>
+        <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password">
+        <div class="field-hint" id="pwd-hint">Use ao menos 8 caracteres com letras e números.</div>
+      </div>
+
+      <input type="hidden" id="plan" name="plan" value="starter">
+
+      <button type="submit" class="btn btn-hot" id="submit">
+        Criar minha conta <i class="fas fa-arrow-right" style="font-size:11px"></i>
+      </button>
+
+      <div class="terms">
+        Ao criar a conta você concorda com os <a href="#">Termos de uso</a> e <a href="#">Política de privacidade</a>.
+      </div>
+    </form>
+
+    <div class="bottom-link">
+      <a href="/">← Voltar para a página inicial</a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/api.js"></script>
+<script>
+// Pegar plano da URL ?plan=pro
+const params = new URLSearchParams(location.search);
+const plan = params.get('plan') || 'starter';
+document.getElementById('plan').value = plan;
+const planNames = {starter:'Starter · R$ 49/mês', pro:'Pro · R$ 149/mês', agency:'Agency · R$ 399/mês'};
+document.getElementById('plan-tag').textContent = `Plano ${planNames[plan] || planNames.starter}`;
+
+const form = document.getElementById('form');
+const alertBox = document.getElementById('alert');
+const submitBtn = document.getElementById('submit');
+const pwdInput = document.getElementById('password');
+const pwdHint = document.getElementById('pwd-hint');
+
+function showAlert(msg, type='error') {
+  alertBox.className = `alert show ${type}`;
+  alertBox.innerHTML = `<i class="fas fa-${type==='error'?'exclamation-circle':'check-circle'}"></i> ${msg}`;
+}
+
+pwdInput.addEventListener('input', () => {
+  const p = pwdInput.value;
+  if (!p) { pwdHint.textContent = 'Use ao menos 8 caracteres com letras e números.'; pwdHint.className = 'field-hint'; return; }
+  if (p.length < 8) { pwdHint.textContent = 'Faltam ' + (8 - p.length) + ' caracteres'; pwdHint.className = 'field-hint err'; return; }
+  const hasLetter = /[a-zA-Z]/.test(p);
+  const hasNumber = /\d/.test(p);
+  if (!hasLetter || !hasNumber) { pwdHint.textContent = 'Adicione letras e números'; pwdHint.className = 'field-hint err'; return; }
+  pwdHint.textContent = 'Senha forte ✓'; pwdHint.className = 'field-hint ok';
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  alertBox.className = 'alert';
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Criando conta...';
+
+  try {
+    const res = await api.auth.signup({
+      email: document.getElementById('email').value.trim(),
+      password: pwdInput.value,
+      name: document.getElementById('name').value.trim(),
+      company: document.getElementById('company').value.trim(),
+      plan: document.getElementById('plan').value,
+    });
+    showAlert('Conta criada! Vamos conectar seu Instagram...', 'success');
+    setTimeout(() => window.location.href = '/onboarding', 800);
+  } catch (err) {
+    showAlert(err.message || 'Erro ao criar conta');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Criar minha conta <i class="fas fa-arrow-right" style="font-size:11px"></i>';
+  }
+});
+
+// Já logado? Vai direto pro app
+api.auth.me()
+  .then(({user}) => { window.location.href = user.ig_accounts_count > 0 ? '/app' : '/onboarding'; })
+  .catch(() => { /* não logado */ });
+</script>
+
+</body>
+</html>

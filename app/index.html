@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI Social Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fafafe;
+  --surface:#ffffff;
+  --surface2:#f5f3fb;
+  --line:#ebe5f5;
+  --line2:#d4cae8;
+  --tx:#1a1525;
+  --tx2:#5d5673;
+  --tx3:#9590a8;
+  --pri:#7c3aed;
+  --pri2:#a78bfa;
+  --pri-soft:#f3eeff;
+  --hot:#ec4899;
+  --ok:#10b981;
+  --warn:#f59e0b;
+  --err:#ef4444;
+  --serif:'Instrument Serif', serif;
+  --sans:'Inter', system-ui, sans-serif;
+}
+html, body{height:100%}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--tx);
+  -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;
+}
+::selection{background:var(--pri);color:#fff}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:var(--surface);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+}
+.sb-brand{
+  padding:22px 20px;border-bottom:1px solid var(--line);
+  display:flex;align-items:baseline;gap:2px;
+}
+.sb-brand .logo{
+  font-family:var(--serif);font-size:24px;color:var(--tx);
+  text-decoration:none;letter-spacing:-.5px;
+}
+.sb-brand .dot{color:var(--hot);font-size:30px;line-height:0;margin-left:1px}
+.sb-nav{flex:1;padding:18px 12px;overflow-y:auto}
+.sb-section{
+  font-size:10px;color:var(--tx3);text-transform:uppercase;
+  letter-spacing:1.2px;font-weight:600;padding:14px 10px 8px;
+}
+.sb-link{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:8px;
+  color:var(--tx2);text-decoration:none;font-weight:500;font-size:13.5px;
+  cursor:pointer;transition:background .15s, color .15s;
+  margin-bottom:2px;border:none;background:none;width:100%;
+  font-family:var(--sans);text-align:left;
+}
+.sb-link:hover{background:var(--surface2);color:var(--tx)}
+.sb-link.active{background:var(--pri-soft);color:var(--pri);font-weight:600}
+.sb-link i{width:16px;font-size:14px;text-align:center}
+.sb-link .badge{
+  margin-left:auto;background:var(--hot);color:#fff;
+  font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700;
+}
+
+.sb-foot{
+  padding:12px;border-top:1px solid var(--line);
+}
+.sb-user{
+  display:flex;align-items:center;gap:10px;
+  padding:10px;border-radius:10px;cursor:pointer;
+  transition:background .15s;
+}
+.sb-user:hover{background:var(--surface2)}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg, var(--pri), var(--hot));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;flex-shrink:0;
+}
+.sb-user-info{flex:1;min-width:0}
+.sb-user-info strong{display:block;font-size:13px;color:var(--tx);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-user-info span{display:block;font-size:11px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{
+  height:64px;background:var(--surface);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;padding:0 28px;gap:18px;
+  position:sticky;top:0;z-index:20;
+}
+.page-title{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  color:var(--tx);letter-spacing:-.01em;
+}
+.topbar-spacer{flex:1}
+.tb-search{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);border:1px solid var(--line);
+  border-radius:8px;padding:8px 14px;width:280px;
+}
+.tb-search input{
+  border:none;background:none;outline:none;flex:1;
+  font-family:var(--sans);font-size:13px;color:var(--tx);
+}
+.tb-search i{color:var(--tx3);font-size:13px}
+.tb-period{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--line);
+  border-radius:8px;padding:7px 12px;font-size:12px;color:var(--tx2);cursor:pointer;
+}
+.tb-period:hover{border-color:var(--line2)}
+.tb-period select{border:none;background:none;outline:none;font-family:var(--sans);font-size:12px;color:var(--tx);cursor:pointer;font-weight:500}
+
+.content{flex:1;padding:28px;overflow-y:auto}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:9px 16px;border-radius:8px;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  border:none;cursor:pointer;text-decoration:none;color:inherit;
+  transition:all .15s;
+}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:hover:not(:disabled){background:#6d28d9;transform:translateY(-1px);box-shadow:0 6px 16px -4px rgba(124,58,237,.4)}
+.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:var(--surface);border:1px solid var(--line);color:var(--tx)}
+.btn-ghost:hover{background:var(--surface2);border-color:var(--line2)}
+.btn-soft{background:var(--pri-soft);color:var(--pri)}
+.btn-soft:hover{background:#e6dbff}
+.btn-danger{background:#fee;color:var(--err);border:1px solid #fcc}
+.btn-danger:hover{background:#fdd}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn i{font-size:11px}
+
+/* ── CARDS ── */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:24px;
+}
+.card-title{
+  font-family:var(--serif);font-size:18px;font-weight:400;
+  margin-bottom:4px;letter-spacing:-.01em;
+}
+.card-sub{font-size:12px;color:var(--tx3);margin-bottom:18px}
+
+/* ── DASHBOARD ── */
+.hero-card{
+  background:linear-gradient(135deg, #6d28d9 0%, #a855f7 60%, #ec4899 100%);
+  border-radius:18px;padding:32px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;position:relative;overflow:hidden;
+}
+.hero-card::after{
+  content:'';position:absolute;right:-80px;top:-80px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.15), transparent 70%);
+}
+.hero-card h1{
+  font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.1;
+  letter-spacing:-.015em;margin-bottom:6px;
+}
+.hero-card p{opacity:.9;font-size:14px}
+.hero-card .actions{position:relative;z-index:1;display:flex;gap:10px}
+.hero-card .btn-ghost{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff;backdrop-filter:blur(10px)}
+.hero-card .btn-ghost:hover{background:rgba(255,255,255,.25)}
+
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:24px;
+}
+.stat-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:20px;
+}
+.stat-lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600}
+.stat-val{
+  font-family:var(--serif);font-size:36px;font-weight:400;line-height:1;
+  letter-spacing:-.02em;margin-bottom:6px;
+}
+.stat-chg{font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
+.stat-chg.up{color:var(--ok)}
+.stat-chg.down{color:var(--err)}
+.stat-icon{
+  float:right;width:36px;height:36px;border-radius:10px;
+  background:var(--pri-soft);color:var(--pri);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+@media (max-width:1100px){.dash-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2, 1fr)}}
+
+.chart-wrap{height:280px;position:relative}
+
+.top-posts{display:flex;flex-direction:column;gap:12px}
+.top-post{
+  display:flex;gap:12px;padding:10px;border-radius:10px;
+  border:1px solid var(--line);transition:border-color .15s;cursor:pointer;
+}
+.top-post:hover{border-color:var(--pri2)}
+.top-post img{width:54px;height:54px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--surface2)}
+.top-post-info{flex:1;min-width:0}
+.top-post-info .cap{
+  font-size:12px;color:var(--tx2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.top-post-info .meta{display:flex;gap:14px;margin-top:6px;font-size:11px;color:var(--tx3)}
+
+/* ── CALENDAR ── */
+.calendar-hd{
+  display:flex;align-items:center;gap:14px;margin-bottom:18px;
+}
+.cal-title{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;text-transform:capitalize}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;color:var(--tx);
+}
+.cal-nav button:hover{background:var(--surface2)}
+
+.calendar{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+}
+.cal-week{
+  display:grid;grid-template-columns:repeat(7, 1fr);
+  background:var(--surface2);
+}
+.cal-week div{padding:10px;text-align:center;font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7, 1fr);grid-auto-rows:minmax(110px, 1fr)}
+.cal-day{
+  border-right:1px solid var(--line);border-top:1px solid var(--line);
+  padding:8px;font-size:12px;cursor:pointer;
+  transition:background .15s;
+  display:flex;flex-direction:column;gap:4px;overflow:hidden;
+}
+.cal-day:hover{background:var(--surface2)}
+.cal-day.other{color:var(--tx3);background:#faf9fc}
+.cal-day.today .day-num{background:var(--pri);color:#fff;font-weight:700}
+.day-num{
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--tx);
+}
+.cal-post{
+  background:var(--pri-soft);color:var(--pri);
+  padding:3px 7px;border-radius:5px;font-size:10px;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cal-post.scheduled{background:#fef3c7;color:#92400e}
+.cal-post.published{background:#d1fae5;color:#065f46}
+.cal-post.failed{background:#fee2e2;color:#991b1b}
+
+/* ── POSTS GRID ── */
+.posts-grid{
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:14px;
+}
+.post-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  transition:border-color .15s, transform .15s;
+}
+.post-card:hover{border-color:var(--pri2);transform:translateY(-2px)}
+.post-img{
+  aspect-ratio:1;background:var(--surface2);
+  background-size:cover;background-position:center;
+  position:relative;
+}
+.post-status{
+  position:absolute;top:8px;left:8px;
+  padding:3px 8px;border-radius:5px;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.post-status.draft{background:rgba(0,0,0,.7);color:#fff}
+.post-status.scheduled{background:var(--warn);color:#fff}
+.post-status.published{background:var(--ok);color:#fff}
+.post-status.pending{background:var(--pri);color:#fff}
+.post-status.failed{background:var(--err);color:#fff}
+.post-status.rejected{background:#6b7280;color:#fff}
+.post-body{padding:12px}
+.post-cap{
+  font-size:12px;color:var(--tx2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:8px;line-height:1.4;
+}
+.post-meta{display:flex;gap:12px;font-size:11px;color:var(--tx3)}
+.post-meta i{margin-right:3px}
+
+/* ── INBOX ── */
+.inbox-grid{display:grid;grid-template-columns:380px 1fr;gap:16px;height:calc(100vh - 160px)}
+.inbox-list{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;overflow-y:auto;
+}
+.inbox-tab-row{
+  display:flex;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--surface);z-index:1;
+}
+.inbox-tab{
+  flex:1;padding:14px;text-align:center;font-size:12px;font-weight:600;
+  color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .15s;
+}
+.inbox-tab.active{color:var(--pri);border-bottom-color:var(--pri)}
+.inbox-item{
+  padding:14px 16px;border-bottom:1px solid var(--line);
+  cursor:pointer;display:flex;gap:12px;
+  transition:background .15s;
+}
+.inbox-item:hover{background:var(--surface2)}
+.inbox-item.active{background:var(--pri-soft)}
+.inbox-item-content{flex:1;min-width:0}
+.inbox-from{font-weight:600;font-size:13px;color:var(--tx);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.inbox-type-tag{
+  font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;
+}
+.inbox-type-tag.dm{background:#dbeafe;color:#1e40af}
+.inbox-type-tag.comment{background:var(--pri-soft);color:var(--pri)}
+.inbox-type-tag.mention{background:#fef3c7;color:#92400e}
+.inbox-preview{
+  font-size:12px;color:var(--tx2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.inbox-time{font-size:10px;color:var(--tx3);margin-top:4px}
+
+.inbox-detail{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:24px;display:flex;flex-direction:column;
+}
+.inbox-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;color:var(--tx3);text-align:center;
+}
+.inbox-empty i{font-size:48px;margin-bottom:14px;opacity:.5}
+
+/* ── REPORTS ── */
+.report-tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:0}
+.report-tab{
+  padding:10px 16px;font-size:13px;color:var(--tx2);font-weight:600;
+  cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all .15s;
+}
+.report-tab.active{color:var(--pri);border-bottom-color:var(--pri)}
+
+.audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── SETTINGS ── */
+.settings-grid{display:grid;grid-template-columns:240px 1fr;gap:24px}
+.settings-nav{display:flex;flex-direction:column;gap:4px}
+.settings-nav button{
+  padding:10px 14px;border-radius:8px;border:none;background:none;
+  text-align:left;font-family:var(--sans);font-size:13px;color:var(--tx2);font-weight:500;
+  cursor:pointer;
+}
+.settings-nav button:hover{background:var(--surface2);color:var(--tx)}
+.settings-nav button.active{background:var(--pri-soft);color:var(--pri);font-weight:600}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px}
+.field input, .field textarea, .field select{
+  width:100%;background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;font-family:var(--sans);font-size:13px;color:var(--tx);
+  outline:none;transition:border-color .15s;
+}
+.field input:focus, .field textarea:focus, .field select:focus{border-color:var(--pri)}
+.field textarea{resize:vertical;min-height:90px;font-family:var(--sans)}
+
+.ig-account-card{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;border:1px solid var(--line);border-radius:12px;
+  margin-bottom:10px;
+}
+.ig-account-card .pfp{
+  width:48px;height:48px;border-radius:50%;
+  background:conic-gradient(from 90deg, #f09433, #dc2743, #bc1888);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:18px;
+}
+.ig-account-card .pfp img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.ig-account-info{flex:1}
+.ig-account-info strong{font-size:14px;color:var(--tx);display:block}
+.ig-account-info span{font-size:12px;color:var(--tx3)}
+.primary-tag{
+  font-size:10px;background:var(--ok);color:#fff;
+  padding:2px 7px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  margin-left:6px;
+}
+
+/* ── ADMIN TABLE ── */
+.table{width:100%;border-collapse:collapse}
+.table th{
+  text-align:left;font-size:10px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:.8px;font-weight:600;
+  padding:12px 14px;border-bottom:1px solid var(--line);
+}
+.table td{padding:14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--tx)}
+.table tr:hover{background:var(--surface2)}
+.role-badge{
+  font-size:10px;padding:3px 8px;border-radius:5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.role-admin{background:#fef3c7;color:#92400e}
+.role-manager{background:var(--pri-soft);color:var(--pri)}
+.role-client{background:#dbeafe;color:#1e40af}
+
+/* ── MODAL ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(20,15,40,.6);
+  backdrop-filter:blur(4px);z-index:100;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-bg.show{display:flex}
+.modal{
+  background:var(--surface);border-radius:16px;
+  width:100%;max-width:580px;max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.3);
+}
+.modal-hd{
+  padding:22px 24px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-hd h3{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em}
+.modal-close{
+  background:none;border:none;color:var(--tx3);
+  width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;
+}
+.modal-close:hover{background:var(--surface2);color:var(--tx)}
+.modal-body{padding:24px}
+.modal-foot{
+  padding:18px 24px;border-top:1px solid var(--line);
+  display:flex;gap:10px;justify-content:flex-end;
+}
+
+/* ── COMPOSE ── */
+.compose-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.compose-preview{
+  background:#000;border-radius:12px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1;color:#666;font-size:13px;
+}
+.compose-preview img{width:100%;height:100%;object-fit:cover}
+.compose-side .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ai-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--pri);
+  background:var(--pri-soft);padding:3px 8px;border-radius:5px;
+  cursor:pointer;font-weight:600;
+  transition:background .15s;
+}
+.ai-tag:hover{background:#e6dbff}
+.ai-tag i{font-size:10px}
+
+/* ── LOADING ── */
+.spinner{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+  border-radius:50%;animation:spin .6s linear infinite;
+}
+.btn-ghost .spinner, .btn-soft .spinner{border-color:rgba(124,58,237,.3);border-top-color:var(--pri)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-page{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:80px 20px;color:var(--tx3);
+}
+.loading-page .spinner{width:32px;height:32px;border-width:3px;border-color:var(--line);border-top-color:var(--pri);margin-bottom:14px}
+
+/* ── EMPTY ── */
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--tx3);
+}
+.empty-state .empty-icon{
+  width:64px;height:64px;border-radius:50%;background:var(--surface2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:24px;color:var(--tx3);margin-bottom:14px;
+}
+.empty-state h4{font-family:var(--serif);font-size:20px;color:var(--tx);font-weight:400;margin-bottom:6px}
+.empty-state p{margin-bottom:18px;max-width:380px;margin-inline:auto;font-size:13px}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:30px;right:30px;
+  background:var(--tx);color:#fff;
+  padding:14px 20px;border-radius:10px;
+  font-size:13px;font-weight:500;z-index:200;
+  box-shadow:0 12px 30px -6px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:10px;
+  transform:translateY(100px);opacity:0;
+  transition:transform .3s, opacity .3s;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:var(--err)}
+.toast.success{background:var(--ok)}
+.toast i{font-size:14px}
+
+/* ── PANEL VISIBILITY ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px){
+  .sidebar{position:fixed;left:-240px;transition:left .3s;z-index:50}
+  .sidebar.open{left:0;box-shadow:0 0 40px rgba(0,0,0,.2)}
+  .topbar .menu-toggle{display:flex}
+  .stats-grid{grid-template-columns:repeat(2, 1fr)}
+  .audience-grid, .compose-grid, .settings-grid, .inbox-grid{grid-template-columns:1fr}
+  .inbox-grid{height:auto}
+  .tb-search{display:none}
+}
+.menu-toggle{
+  display:none;width:36px;height:36px;border-radius:8px;
+  border:1px solid var(--line);background:var(--surface);
+  align-items:center;justify-content:center;cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <a href="/" class="logo">PMI<span class="dot">.</span></a>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Trabalho</div>
+      <button class="sb-link active" data-panel="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
+      <button class="sb-link" data-panel="calendar"><i class="far fa-calendar-alt"></i> Calendário</button>
+      <button class="sb-link" data-panel="posts"><i class="fas fa-th"></i> Posts</button>
+      <button class="sb-link" data-panel="inbox"><i class="far fa-envelope"></i> Inbox <span class="badge" id="inbox-badge" style="display:none">0</span></button>
+      <button class="sb-link" data-panel="reports"><i class="fas fa-chart-line"></i> Relatórios</button>
+
+      <div class="sb-section">Conta</div>
+      <button class="sb-link" data-panel="settings"><i class="fas fa-cog"></i> Configurações</button>
+      <button class="sb-link admin-only" data-panel="admin" style="display:none"><i class="fas fa-users"></i> Usuários</button>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user" onclick="showPanel('settings')">
+        <div class="avatar" id="user-avatar-sb">?</div>
+        <div class="sb-user-info">
+          <strong id="user-name-sb">—</strong>
+          <span id="user-email-sb">—</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+      <div class="topbar-spacer"></div>
+      <div class="tb-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar posts, mensagens..." />
+      </div>
+      <div class="tb-period">
+        <i class="far fa-calendar"></i>
+        <select id="period-select">
+          <option value="7">Últimos 7 dias</option>
+          <option value="30" selected>Últimos 30 dias</option>
+          <option value="90">Últimos 90 dias</option>
+        </select>
+      </div>
+      <button class="btn btn-pri" onclick="openCompose()">
+        <i class="fas fa-plus"></i> Novo post
+      </button>
+    </header>
+
+    <div class="content">
+
+      <!-- ─── DASHBOARD ─── -->
+      <section class="panel active" id="panel-dashboard">
+        <div class="hero-card">
+          <div>
+            <h1>Olá, <span id="hello-name">você</span> 👋</h1>
+            <p>Aqui está o resumo da sua conta — atualizado em tempo real.</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="loadDashboard(true)"><i class="fas fa-sync"></i> Atualizar</button>
+            <button class="btn btn-ghost" onclick="openCompose()"><i class="fas fa-plus"></i> Criar post</button>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-lbl">Seguidores</div><div class="stat-val">—</div><div class="stat-chg up">—</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-lbl">Alcance</div><div class="stat-val">—</div><div class="stat-chg up">—</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-bullseye"></i></div><div class="stat-lbl">Impressões</div><div class="stat-val">—</div><div class="stat-chg up">—</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-th"></i></div><div class="stat-lbl">Posts publicados</div><div class="stat-val">—</div><div class="stat-chg up">—</div></div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-title">Alcance ao longo do tempo</div>
+            <div class="card-sub">Dados oficiais da Meta Graph API</div>
+            <div class="chart-wrap"><canvas id="reach-chart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Top posts</div>
+            <div class="card-sub">Mais engajados no período</div>
+            <div class="top-posts" id="top-posts-list">
+              <div style="color:var(--tx3);font-size:12px;text-align:center;padding:20px">Carregando...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── CALENDÁRIO ─── -->
+      <section class="panel" id="panel-calendar">
+        <div class="calendar-hd">
+          <div class="cal-title" id="cal-title">—</div>
+          <div class="cal-nav">
+            <button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+            <button onclick="goToday()" style="width:auto;padding:0 12px;font-size:12px">Hoje</button>
+            <button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="calendar">
+          <div class="cal-week">
+            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </section>
+
+      <!-- ─── POSTS ─── -->
+      <section class="panel" id="panel-posts">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+          <select id="posts-filter" class="field" style="width:200px;padding:8px 12px;font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:8px">
+            <option value="">Todos os posts</option>
+            <option value="draft">Rascunhos</option>
+            <option value="pending">Pendentes</option>
+            <option value="scheduled">Agendados</option>
+            <option value="published">Publicados</option>
+            <option value="failed">Falharam</option>
+            <option value="rejected">Rejeitados</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadPosts()"><i class="fas fa-sync"></i> Atualizar</button>
+          <div style="flex:1"></div>
+          <button class="btn btn-pri" onclick="openCompose()"><i class="fas fa-plus"></i> Novo post</button>
+        </div>
+        <div class="posts-grid" id="posts-grid"></div>
+      </section>
+
+      <!-- ─── INBOX ─── -->
+      <section class="panel" id="panel-inbox">
+        <div class="inbox-grid">
+          <div class="inbox-list">
+            <div class="inbox-tab-row">
+              <div class="inbox-tab active" data-tab="all">Tudo</div>
+              <div class="inbox-tab" data-tab="dm">DMs</div>
+              <div class="inbox-tab" data-tab="comment">Comentários</div>
+              <div class="inbox-tab" data-tab="mention">Menções</div>
+            </div>
+            <div id="inbox-items"></div>
+          </div>
+          <div class="inbox-detail" id="inbox-detail">
+            <div class="inbox-empty">
+              <i class="far fa-comments"></i>
+              <div>Selecione uma mensagem<br>para ver os detalhes</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── RELATÓRIOS ─── -->
+      <section class="panel" id="panel-reports">
+        <div class="report-tabs">
+          <div class="report-tab active" data-rtab="overview">Visão geral</div>
+          <div class="report-tab" data-rtab="audience">Audiência</div>
+          <div class="report-tab" data-rtab="content">Conteúdo</div>
+        </div>
+
+        <div id="rtab-overview" class="rtab-panel">
+          <div class="card">
+            <div class="card-title">Métricas do período</div>
+            <div class="card-sub">Alcance, impressões, engajamento — direto da Meta</div>
+            <div class="chart-wrap"><canvas id="reports-chart"></canvas></div>
+          </div>
+        </div>
+
+        <div id="rtab-audience" class="rtab-panel" style="display:none">
+          <div class="audience-grid">
+            <div class="card">
+              <div class="card-title">Idade & gênero</div>
+              <div class="card-sub">Distribuição da sua audiência</div>
+              <div class="chart-wrap"><canvas id="age-chart"></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Top países</div>
+              <div class="card-sub">Onde sua audiência está</div>
+              <div id="country-list" style="max-height:300px;overflow-y:auto"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="rtab-content" class="rtab-panel" style="display:none">
+          <div class="card">
+            <div class="card-title">Performance por tipo</div>
+            <div class="card-sub">Qual formato funciona melhor</div>
+            <div class="chart-wrap"><canvas id="type-chart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SETTINGS ─── -->
+      <section class="panel" id="panel-settings">
+        <div class="settings-grid">
+          <nav class="settings-nav">
+            <button class="active" data-stab="profile">Perfil</button>
+            <button data-stab="security">Segurança</button>
+            <button data-stab="instagram">Contas Instagram</button>
+            <button data-stab="ai">Assistente IA</button>
+          </nav>
+
+          <div>
+            <div id="stab-profile" class="stab-panel">
+              <div class="card">
+                <div class="card-title">Seu perfil</div>
+                <div class="card-sub">Como aparece na plataforma</div>
+                <div class="field"><label>Nome</label><input type="text" id="set-name"></div>
+                <div class="field"><label>Email</label><input type="email" id="set-email" disabled></div>
+                <div class="field"><label>Empresa</label><input type="text" id="set-company"></div>
+                <div class="field"><label>Telefone</label><input type="text" id="set-phone"></div>
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px">
+                  <button class="btn btn-ghost" onclick="api.auth.logout().then(()=>location.href='/login')"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="stab-security" class="stab-panel" style="display:none">
+              <div class="card">
+                <div class="card-title">Trocar senha</div>
+                <div class="card-sub">Mantenha sua conta segura</div>
+                <div class="field"><label>Senha atual</label><input type="password" id="cur-pwd"></div>
+                <div class="field"><label>Nova senha</label><input type="password" id="new-pwd"></div>
+                <div style="display:flex;justify-content:flex-end;margin-top:18px">
+                  <button class="btn btn-pri" onclick="changePassword()">Alterar senha</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="stab-instagram" class="stab-panel" style="display:none">
+              <div class="card">
+                <div class="card-title">Contas conectadas</div>
+                <div class="card-sub">Gerencie seus perfis do Instagram</div>
+                <div id="ig-accounts-list" style="margin-top:18px"></div>
+                <button class="btn btn-soft" onclick="openConnectIg()" style="margin-top:14px">
+                  <i class="fas fa-plus"></i> Conectar nova conta
+                </button>
+              </div>
+            </div>
+
+            <div id="stab-ai" class="stab-panel" style="display:none">
+              <div class="card">
+                <div class="card-title">Assistente de IA</div>
+                <div class="card-sub">Personalize como a IA escreve para você</div>
+                <div class="field">
+                  <label>Tom de voz padrão</label>
+                  <select id="ai-tone">
+                    <option value="profissional">Profissional</option>
+                    <option value="descontraído">Descontraído</option>
+                    <option value="inspirador">Inspirador</option>
+                    <option value="educativo">Educativo</option>
+                    <option value="vendas">Vendas direto</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Nicho / segmento</label>
+                  <input type="text" id="ai-niche" placeholder="Ex: marketing digital, moda, gastronomia">
+                </div>
+                <div style="font-size:12px;color:var(--tx3);margin-top:10px">
+                  <i class="fas fa-info-circle"></i> Essas preferências são usadas pela IA ao gerar legendas e hashtags.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ADMIN ─── -->
+      <section class="panel" id="panel-admin">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+          <h3 style="font-family:var(--serif);font-size:24px;font-weight:400">Usuários do sistema</h3>
+          <div style="flex:1"></div>
+          <button class="btn btn-pri" onclick="openCreateUser()"><i class="fas fa-plus"></i> Novo usuário</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="table">
+            <thead>
+              <tr><th>Usuário</th><th>Email</th><th>Papel</th><th>Plano</th><th>Contas IG</th><th>Cadastro</th><th></th></tr>
+            </thead>
+            <tbody id="admin-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ─── MODAL: COMPOSE ─── -->
+<div class="modal-bg" id="modal-compose">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-hd">
+      <h3>Criar post</h3>
+      <button class="modal-close" onclick="closeModal('modal-compose')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="compose-grid">
+        <div>
+          <div class="compose-preview" id="compose-preview">
+            <span><i class="fas fa-image" style="font-size:28px;display:block;margin-bottom:10px"></i> Adicione URL da mídia</span>
+          </div>
+        </div>
+        <div class="compose-side">
+          <div class="field">
+            <label>URL pública da mídia</label>
+            <input type="url" id="c-media-url" placeholder="https://..." onchange="updateComposePreview()">
+          </div>
+          <div class="field">
+            <label>Tipo de mídia</label>
+            <select id="c-media-type">
+              <option value="IMAGE">Imagem</option>
+              <option value="REEL">Reel</option>
+              <option value="STORY">Story</option>
+            </select>
+          </div>
+          <div class="field">
+            <label style="display:flex;align-items:center;justify-content:space-between">
+              Legenda
+              <span class="ai-tag" onclick="aiCaption()"><i class="fas fa-sparkles"></i> Gerar com IA</span>
+            </label>
+            <textarea id="c-caption" placeholder="Escreva sua legenda ou gere com IA..." style="min-height:120px"></textarea>
+          </div>
+          <div class="field">
+            <label style="display:flex;align-items:center;justify-content:space-between">
+              Hashtags
+              <span class="ai-tag" onclick="aiHashtags()"><i class="fas fa-hashtag"></i> Sugerir</span>
+            </label>
+            <textarea id="c-hashtags" placeholder="#hashtag1 #hashtag2 #hashtag3" style="min-height:60px"></textarea>
+          </div>
+          <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field">
+              <label>Status</label>
+              <select id="c-status">
+                <option value="draft">Rascunho</option>
+                <option value="pending">Aguardando aprovação</option>
+                <option value="scheduled">Agendar</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Data e hora</label>
+              <input type="datetime-local" id="c-scheduled" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-compose')">Cancelar</button>
+      <button class="btn btn-soft" id="c-save-btn" onclick="savePost()">Salvar</button>
+      <button class="btn btn-pri" onclick="publishNow()"><i class="fas fa-paper-plane"></i> Publicar agora</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: CONNECT IG ─── -->
+<div class="modal-bg" id="modal-ig">
+  <div class="modal">
+    <div class="modal-hd"><h3>Conectar conta Instagram</h3><button class="modal-close" onclick="closeModal('modal-ig')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Cole abaixo o token gerado no Graph API Explorer da Meta. <a href="/onboarding" style="color:var(--pri)">Ver tutorial completo →</a></p>
+      <div class="field">
+        <label>Token de acesso</label>
+        <textarea id="ig-token" placeholder="EAA..." style="min-height:100px;font-family:'SF Mono',monospace;font-size:12px"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-ig')">Cancelar</button>
+      <button class="btn btn-pri" onclick="connectIg()"><i class="fab fa-instagram"></i> Conectar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: CREATE USER ─── -->
+<div class="modal-bg" id="modal-user">
+  <div class="modal">
+    <div class="modal-hd"><h3 id="user-modal-title">Novo usuário</h3><button class="modal-close" onclick="closeModal('modal-user')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <input type="hidden" id="u-id">
+      <div class="field"><label>Nome</label><input type="text" id="u-name"></div>
+      <div class="field"><label>Email</label><input type="email" id="u-email"></div>
+      <div class="field"><label>Senha</label><input type="password" id="u-password" placeholder="(deixe em branco para manter)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Papel</label><select id="u-role"><option value="client">Cliente</option><option value="manager">Gerente</option><option value="admin">Admin</option></select></div>
+        <div class="field"><label>Plano</label><select id="u-plan"><option value="starter">Starter</option><option value="pro">Pro</option><option value="agency">Agency</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-user')">Cancelar</button>
+      <button class="btn btn-pri" onclick="saveUser()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/assets/js/api.js"></script>
+<script>
+// ============================================================
+// PMI SOCIAL MANAGER · APP
+// ============================================================
+
+const state = {
+  user: null,
+  account: null, // primary IG account
+  posts: [],
+  inbox: [],
+  inboxFilter: 'all',
+  selectedInboxId: null,
+  calMonth: new Date(),
+  charts: {},
+  period: 30,
+  editingPostId: null,
+};
+
+// ── BOOT ──────────────────────────────────────────────────
+async function boot() {
+  try {
+    const {user} = await api.auth.me();
+    state.user = user;
+
+    document.getElementById('user-name-sb').textContent = user.name;
+    document.getElementById('user-email-sb').textContent = user.email;
+    document.getElementById('user-avatar-sb').textContent = user.name[0].toUpperCase();
+    document.getElementById('hello-name').textContent = user.name.split(' ')[0];
+    if (user.role === 'admin' || user.role === 'manager') {
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+    }
+
+    // Sem IG conectado? Vai pro onboarding
+    if (!user.ig_accounts_count) {
+      window.location.href = '/onboarding';
+      return;
+    }
+
+    // Carregar conta primária
+    const {accounts} = await api.instagram.list();
+    state.account = accounts.find(a => a.is_primary) || accounts[0];
+
+    // Bootstrap a navegação
+    setupNav();
+    setupSettingsNav();
+    setupReportsNav();
+    setupInboxTabs();
+
+    // Period selector
+    document.getElementById('period-select').addEventListener('change', (e) => {
+      state.period = parseInt(e.target.value);
+      loadDashboard();
+    });
+
+    // Compose status -> habilitar datetime
+    document.getElementById('c-status').addEventListener('change', (e) => {
+      document.getElementById('c-scheduled').disabled = e.target.value !== 'scheduled';
+    });
+
+    // Posts filter
+    document.getElementById('posts-filter').addEventListener('change', loadPosts);
+
+    showPanel('dashboard');
+  } catch (err) {
+    console.error('Boot error:', err);
+    if (err.status === 401) window.location.href = '/login';
+    else toast('Erro ao carregar: ' + err.message, 'error');
+  }
+}
+
+// ── UI ────────────────────────────────────────────────────
+function setupNav() {
+  document.querySelectorAll('.sb-link[data-panel]').forEach(btn => {
+    btn.addEventListener('click', () => showPanel(btn.dataset.panel));
+  });
+}
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelector(`.sb-link[data-panel="${name}"]`)?.classList.add('active');
+  const titles = {dashboard:'Dashboard', calendar:'Calendário', posts:'Posts', inbox:'Inbox', reports:'Relatórios', settings:'Configurações', admin:'Usuários'};
+  document.getElementById('page-title').textContent = titles[name] || name;
+  document.getElementById('sidebar').classList.remove('open');
+
+  // Carregar dados sob demanda
+  if (name === 'dashboard') loadDashboard();
+  if (name === 'calendar') loadCalendar();
+  if (name === 'posts') loadPosts();
+  if (name === 'inbox') loadInbox();
+  if (name === 'reports') loadReports();
+  if (name === 'settings') loadSettings();
+  if (name === 'admin') loadAdmin();
+}
+
+function setupSettingsNav() {
+  document.querySelectorAll('.settings-nav button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.settings-nav button').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.stab-panel').forEach(p => p.style.display = 'none');
+      b.classList.add('active');
+      document.getElementById('stab-' + b.dataset.stab).style.display = 'block';
+      if (b.dataset.stab === 'instagram') loadIgAccountsList();
+    });
+  });
+}
+
+function setupReportsNav() {
+  document.querySelectorAll('.report-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.report-tab').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.rtab-panel').forEach(p => p.style.display = 'none');
+      t.classList.add('active');
+      document.getElementById('rtab-' + t.dataset.rtab).style.display = 'block';
+      if (t.dataset.rtab === 'audience') loadAudience();
+      if (t.dataset.rtab === 'content') loadContentPerf();
+    });
+  });
+}
+
+function setupInboxTabs() {
+  document.querySelectorAll('.inbox-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.inbox-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      state.inboxFilter = t.dataset.tab;
+      renderInbox();
+    });
+  });
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.className = `toast show ${type}`;
+  t.innerHTML = `<i class="fas fa-${type==='error'?'exclamation-circle':'check-circle'}"></i> ${msg}`;
+  setTimeout(() => t.className = 'toast', 3500);
+}
+
+// ── MODAL ─────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal-bg')) e.target.classList.remove('show');
+});
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function loadDashboard(force=false) {
+  if (!state.account) return;
+  const to = new Date().toISOString().slice(0,10);
+  const from = new Date(Date.now() - state.period * 86400000).toISOString().slice(0,10);
+
+  try {
+    const ov = await api.insights.overview({from, to, accountId: state.account.id});
+    renderStats(ov);
+    renderReachChart(ov);
+  } catch (e) {
+    console.warn('Insights erro:', e);
+    renderStats({reach:0, impressions:0, accounts_engaged:0});
+    renderReachChart({daily_reach:[]});
+  }
+
+  loadTopPosts(from, to);
+}
+
+function renderStats(ov) {
+  const followers = state.account?.followers_count || 0;
+  const grid = document.getElementById('stats-grid');
+  const cards = grid.children;
+  cards[0].querySelector('.stat-val').textContent = followers.toLocaleString('pt-BR');
+  cards[0].querySelector('.stat-chg').textContent = ov.follower_count_delta ? `+${ov.follower_count_delta} no período` : '—';
+  cards[1].querySelector('.stat-val').textContent = (ov.reach || 0).toLocaleString('pt-BR');
+  cards[2].querySelector('.stat-val').textContent = (ov.impressions || 0).toLocaleString('pt-BR');
+  cards[3].querySelector('.stat-val').textContent = state.account?.media_count || 0;
+}
+
+function renderReachChart(ov) {
+  const canvas = document.getElementById('reach-chart');
+  if (state.charts.reach) state.charts.reach.destroy();
+  const data = ov.daily_reach || [];
+  const labels = data.map(d => new Date(d.end_time || d.timestamp).toLocaleDateString('pt-BR', {day:'2-digit', month:'short'}));
+  const values = data.map(d => Number(d.value) || 0);
+
+  state.charts.reach = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Alcance',
+        data: values,
+        borderColor: '#7c3aed',
+        backgroundColor: 'rgba(124,58,237,.1)',
+        fill: true,
+        tension: .35,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {legend: {display:false}},
+      scales: {
+        x: {grid: {display:false}, ticks:{color:'#9590a8',font:{size:10}}},
+        y: {grid:{color:'#ebe5f5'}, ticks:{color:'#9590a8',font:{size:10}}, beginAtZero:true},
+      }
+    }
+  });
+}
+
+async function loadTopPosts(from, to) {
+  const list = document.getElementById('top-posts-list');
+  try {
+    const {posts} = await api.posts.list({from, to, source:'remote', limit:50, accountId: state.account.id});
+    const top = posts.filter(p => p.status === 'published')
+      .sort((a,b) => (b.like_count + b.comments_count*3) - (a.like_count + a.comments_count*3))
+      .slice(0, 5);
+
+    if (!top.length) {
+      list.innerHTML = '<div style="color:var(--tx3);font-size:12px;text-align:center;padding:20px">Sem posts no período</div>';
+      return;
+    }
+
+    list.innerHTML = top.map(p => `
+      <div class="top-post" onclick="${p.permalink ? `window.open('${p.permalink}','_blank')` : ''}">
+        <img src="${p.media_url || ''}" referrerpolicy="no-referrer" onerror="this.style.background='var(--surface2)';this.removeAttribute('src')">
+        <div class="top-post-info">
+          <div class="cap">${escapeHtml((p.caption || '(sem legenda)').slice(0,80))}</div>
+          <div class="meta">
+            <span><i class="fas fa-heart"></i> ${(p.like_count||0).toLocaleString('pt-BR')}</span>
+            <span><i class="fas fa-comment"></i> ${(p.comments_count||0).toLocaleString('pt-BR')}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = '<div style="color:var(--tx3);font-size:12px;text-align:center;padding:20px">Erro ao carregar</div>';
+  }
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+async function loadCalendar() {
+  renderCalendar();
+  if (!state.account) return;
+  const start = new Date(state.calMonth.getFullYear(), state.calMonth.getMonth(), 1).toISOString().slice(0,10);
+  const end = new Date(state.calMonth.getFullYear(), state.calMonth.getMonth()+1, 0).toISOString().slice(0,10);
+  try {
+    const {posts} = await api.posts.list({from: start, to: end, accountId: state.account.id});
+    state.posts = posts;
+    renderCalendar();
+  } catch (e) { console.warn(e); }
+}
+
+function changeMonth(delta) {
+  state.calMonth = new Date(state.calMonth.getFullYear(), state.calMonth.getMonth() + delta, 1);
+  loadCalendar();
+}
+function goToday() { state.calMonth = new Date(); loadCalendar(); }
+
+function renderCalendar() {
+  const m = state.calMonth;
+  const year = m.getFullYear(), mo = m.getMonth();
+  const monthName = m.toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
+  document.getElementById('cal-title').textContent = monthName;
+
+  const firstDay = new Date(year, mo, 1).getDay();
+  const lastDate = new Date(year, mo+1, 0).getDate();
+  const today = new Date().toISOString().slice(0,10);
+
+  // Group posts by day
+  const byDay = {};
+  for (const p of (state.posts || [])) {
+    const ds = (p.scheduled_for || p.published_at || p.created_at || '').slice(0,10);
+    if (!ds) continue;
+    if (!byDay[ds]) byDay[ds] = [];
+    byDay[ds].push(p);
+  }
+
+  let html = '';
+  // Dias do mês anterior (preencher início)
+  const prevLast = new Date(year, mo, 0).getDate();
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const d = prevLast - i;
+    html += `<div class="cal-day other"><div class="day-num">${d}</div></div>`;
+  }
+  // Dias deste mês
+  for (let d = 1; d <= lastDate; d++) {
+    const dateStr = `${year}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === today;
+    const dayPosts = byDay[dateStr] || [];
+    html += `<div class="cal-day ${isToday?'today':''}">
+      <div class="day-num">${d}</div>
+      ${dayPosts.slice(0,3).map(p => `
+        <div class="cal-post ${p.status}" onclick="event.stopPropagation();editPost(${typeof p.id === 'number' ? p.id : 'null'})">
+          ${escapeHtml((p.caption || 'Post').slice(0, 24))}
+        </div>
+      `).join('')}
+      ${dayPosts.length > 3 ? `<div style="font-size:10px;color:var(--tx3)">+ ${dayPosts.length - 3}</div>` : ''}
+    </div>`;
+  }
+  // Próximo mês (preencher fim)
+  const cells = firstDay + lastDate;
+  const trailing = (7 - cells % 7) % 7;
+  for (let i = 1; i <= trailing; i++) {
+    html += `<div class="cal-day other"><div class="day-num">${i}</div></div>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+// ============================================================
+// POSTS
+// ============================================================
+async function loadPosts() {
+  if (!state.account) return;
+  const grid = document.getElementById('posts-grid');
+  grid.innerHTML = '<div class="loading-page" style="grid-column:1/-1"><span class="spinner"></span><div>Carregando posts...</div></div>';
+  const filter = document.getElementById('posts-filter').value;
+  try {
+    const {posts} = await api.posts.list({
+      accountId: state.account.id,
+      ...(filter ? {status: filter, source:'local'} : {}),
+      limit: 100,
+    });
+    state.posts = posts;
+    if (!posts.length) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="empty-icon"><i class="fas fa-th"></i></div>
+          <h4>Nenhum post${filter?' com este status':''}</h4>
+          <p>Comece criando seu primeiro post — você pode salvar como rascunho, agendar ou publicar imediatamente.</p>
+          <button class="btn btn-pri" onclick="openCompose()"><i class="fas fa-plus"></i> Criar post</button>
+        </div>`;
+      return;
+    }
+    grid.innerHTML = posts.map(p => `
+      <div class="post-card" onclick="${typeof p.id === 'number' ? `editPost(${p.id})` : `window.open('${p.permalink || '#'}','_blank')`}">
+        <div class="post-img" style="background-image:url('${p.media_url || ''}')">
+          <div class="post-status ${p.status}">${statusLabel(p.status)}</div>
+        </div>
+        <div class="post-body">
+          <div class="post-cap">${escapeHtml((p.caption || '(sem legenda)').slice(0,100))}</div>
+          <div class="post-meta">
+            ${p.published_at ? `<span><i class="far fa-calendar"></i> ${new Date(p.published_at).toLocaleDateString('pt-BR')}</span>` : ''}
+            ${p.scheduled_for ? `<span><i class="far fa-clock"></i> ${new Date(p.scheduled_for).toLocaleDateString('pt-BR')}</span>` : ''}
+            ${p.like_count ? `<span><i class="far fa-heart"></i> ${p.like_count.toLocaleString('pt-BR')}</span>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><p>Erro: ${e.message}</p></div>`;
+  }
+}
+
+function statusLabel(s) {
+  return {draft:'Rascunho',pending:'Pendente',scheduled:'Agendado',published:'Publicado',failed:'Falhou',rejected:'Rejeitado',publishing:'Publicando',approved:'Aprovado'}[s] || s;
+}
+
+// ============================================================
+// COMPOSE
+// ============================================================
+function openCompose(post = null) {
+  state.editingPostId = post?.id || null;
+  document.getElementById('c-media-url').value = post?.media_url || '';
+  document.getElementById('c-media-type').value = post?.media_type || 'IMAGE';
+  document.getElementById('c-caption').value = post?.caption || '';
+  document.getElementById('c-hashtags').value = post?.hashtags || '';
+  document.getElementById('c-status').value = post?.status || 'draft';
+  document.getElementById('c-scheduled').value = post?.scheduled_for ? post.scheduled_for.slice(0, 16) : '';
+  document.getElementById('c-scheduled').disabled = (post?.status || 'draft') !== 'scheduled';
+  updateComposePreview();
+  openModal('modal-compose');
+}
+
+function editPost(id) {
+  if (!id) return;
+  const post = state.posts.find(p => p.id === id);
+  if (!post) return;
+  if (post.status === 'published') {
+    if (post.permalink) window.open(post.permalink, '_blank');
+    return;
+  }
+  openCompose(post);
+}
+
+function updateComposePreview() {
+  const url = document.getElementById('c-media-url').value;
+  const prev = document.getElementById('compose-preview');
+  if (url) prev.innerHTML = `<img src="${url}" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='<span style=color:#999>URL inválida</span>'">`;
+  else prev.innerHTML = '<span><i class="fas fa-image" style="font-size:28px;display:block;margin-bottom:10px"></i> Adicione URL da mídia</span>';
+}
+
+async function aiCaption() {
+  const desc = prompt('Descreva sobre o que é o post:');
+  if (!desc) return;
+  const ta = document.getElementById('c-caption');
+  const original = ta.value;
+  ta.disabled = true;
+  ta.value = '✨ Gerando legenda...';
+  try {
+    const {caption} = await api.ai.caption({
+      description: desc,
+      tone: localStorage.getItem('ai-tone') || 'profissional',
+      niche: localStorage.getItem('ai-niche') || 'marketing digital',
+      username: state.account?.username || '',
+    });
+    ta.value = caption;
+  } catch (e) {
+    ta.value = original;
+    toast(e.message || 'Erro ao gerar', 'error');
+  } finally {
+    ta.disabled = false;
+  }
+}
+
+async function aiHashtags() {
+  const cap = document.getElementById('c-caption').value;
+  if (!cap) { toast('Escreva a legenda primeiro', 'error'); return; }
+  const ta = document.getElementById('c-hashtags');
+  const original = ta.value;
+  ta.disabled = true;
+  ta.value = '✨ Gerando hashtags...';
+  try {
+    const {hashtags} = await api.ai.hashtags({topic: cap});
+    ta.value = hashtags;
+  } catch (e) {
+    ta.value = original;
+    toast(e.message || 'Erro ao gerar', 'error');
+  } finally {
+    ta.disabled = false;
+  }
+}
+
+async function savePost() {
+  const data = {
+    accountId: state.account.id,
+    mediaUrl: document.getElementById('c-media-url').value.trim(),
+    mediaType: document.getElementById('c-media-type').value,
+    caption: document.getElementById('c-caption').value,
+    hashtags: document.getElementById('c-hashtags').value,
+    status: document.getElementById('c-status').value,
+    scheduledFor: document.getElementById('c-scheduled').value ? new Date(document.getElementById('c-scheduled').value).toISOString() : null,
+  };
+  try {
+    if (state.editingPostId) {
+      await api.posts.update(state.editingPostId, data);
+      toast('Post atualizado', 'success');
+    } else {
+      await api.posts.create(data);
+      toast('Post salvo', 'success');
+    }
+    closeModal('modal-compose');
+    loadPosts();
+  } catch (e) {
+    toast(e.message || 'Erro', 'error');
+  }
+}
+
+async function publishNow() {
+  if (!confirm('Publicar este post agora no Instagram?')) return;
+  const data = {
+    accountId: state.account.id,
+    mediaUrl: document.getElementById('c-media-url').value.trim(),
+    mediaType: document.getElementById('c-media-type').value,
+    caption: (document.getElementById('c-caption').value + '\n\n' + document.getElementById('c-hashtags').value).trim(),
+  };
+  if (!data.mediaUrl) { toast('URL da mídia obrigatória', 'error'); return; }
+
+  try {
+    toast('Publicando...');
+    const r = await api.posts.publish(data);
+    toast('Publicado! ID: ' + r.mediaId, 'success');
+    closeModal('modal-compose');
+    loadPosts();
+  } catch (e) {
+    toast(e.message || 'Erro ao publicar', 'error');
+  }
+}
+
+// ============================================================
+// INBOX
+// ============================================================
+async function loadInbox() {
+  if (!state.account) return;
+  document.getElementById('inbox-items').innerHTML = '<div class="loading-page"><span class="spinner"></span></div>';
+  try {
+    const {messages} = await api.inbox.list();
+    state.inbox = messages || [];
+    renderInbox();
+    const unread = state.inbox.filter(m => m.type === 'dm' || m.type === 'mention' || (m.type === 'comment' && !m.has_reply)).length;
+    if (unread) {
+      const b = document.getElementById('inbox-badge');
+      b.textContent = unread;
+      b.style.display = '';
+    }
+  } catch (e) {
+    document.getElementById('inbox-items').innerHTML = '<div class="empty-state"><p>Erro: ' + e.message + '</p></div>';
+  }
+}
+
+function renderInbox() {
+  const items = document.getElementById('inbox-items');
+  let filtered = state.inbox;
+  if (state.inboxFilter !== 'all') filtered = state.inbox.filter(m => m.type === state.inboxFilter);
+  if (!filtered.length) {
+    items.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="far fa-inbox"></i></div><p>Sem mensagens</p></div>';
+    return;
+  }
+  items.innerHTML = filtered.map(m => `
+    <div class="inbox-item ${state.selectedInboxId === m.id ? 'active' : ''}" onclick="selectInbox('${escapeAttr(m.id)}')">
+      <div class="avatar" style="width:40px;height:40px;font-size:14px">${(m.from || '?')[0].toUpperCase()}</div>
+      <div class="inbox-item-content">
+        <div class="inbox-from">${escapeHtml(m.from || 'Anônimo')} <span class="inbox-type-tag ${m.type}">${m.type}</span></div>
+        <div class="inbox-preview">${escapeHtml(m.preview || '')}</div>
+        <div class="inbox-time">${m.timestamp ? new Date(m.timestamp).toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}) : ''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectInbox(id) {
+  state.selectedInboxId = id;
+  const m = state.inbox.find(x => String(x.id) === id);
+  if (!m) return;
+  renderInbox();
+  const detail = document.getElementById('inbox-detail');
+  detail.innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <div class="avatar" style="width:48px;height:48px;font-size:16px">${(m.from || '?')[0].toUpperCase()}</div>
+      <div>
+        <div style="font-family:var(--serif);font-size:20px">${escapeHtml(m.from)}</div>
+        <div style="font-size:12px;color:var(--tx3)"><span class="inbox-type-tag ${m.type}">${m.type}</span> · ${new Date(m.timestamp).toLocaleString('pt-BR')}</div>
+      </div>
+    </div>
+    ${m.media_url ? `<div style="margin-bottom:14px"><img src="${m.media_url}" referrerpolicy="no-referrer" style="max-width:100%;max-height:240px;border-radius:8px"></div>` : ''}
+    <div style="background:var(--surface2);padding:16px;border-radius:10px;font-size:14px;line-height:1.6;flex:1;overflow-y:auto">${escapeHtml(m.preview || '').replace(/\n/g, '<br>')}</div>
+    ${m.permalink ? `<div style="margin-top:14px"><a href="${m.permalink}" target="_blank" class="btn btn-ghost btn-sm"><i class="fas fa-external-link-alt"></i> Ver no Instagram</a></div>` : ''}
+    ${m.type === 'comment' ? `
+      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:16px">
+        <div class="field">
+          <label>Responder comentário</label>
+          <textarea id="reply-text" placeholder="Sua resposta..." style="min-height:70px"></textarea>
+        </div>
+        <button class="btn btn-pri btn-sm" onclick="replyComment('${m.id}')"><i class="fas fa-paper-plane"></i> Enviar resposta</button>
+      </div>` : ''}
+  `;
+}
+
+async function replyComment(commentId) {
+  const txt = document.getElementById('reply-text').value.trim();
+  if (!txt) return;
+  try {
+    await api.posts.reply(commentId, txt);
+    toast('Resposta enviada', 'success');
+    document.getElementById('reply-text').value = '';
+  } catch (e) {
+    toast(e.message, 'error');
+  }
+}
+
+// ============================================================
+// REPORTS
+// ============================================================
+async function loadReports() {
+  if (!state.account) return;
+  const to = new Date().toISOString().slice(0,10);
+  const from = new Date(Date.now() - state.period * 86400000).toISOString().slice(0,10);
+  try {
+    const ov = await api.insights.overview({from, to, accountId: state.account.id});
+    if (state.charts.reports) state.charts.reports.destroy();
+    const data = ov.daily_reach || [];
+    state.charts.reports = new Chart(document.getElementById('reports-chart'), {
+      type: 'bar',
+      data: {
+        labels: data.map(d => new Date(d.end_time || d.timestamp).toLocaleDateString('pt-BR', {day:'2-digit', month:'short'})),
+        datasets: [{
+          label: 'Alcance', data: data.map(d => Number(d.value) || 0),
+          backgroundColor: '#a78bfa', borderRadius: 6,
+        }]
+      },
+      options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}, ticks:{color:'#9590a8',font:{size:10}}}, y:{grid:{color:'#ebe5f5'}, ticks:{color:'#9590a8',font:{size:10}}}}}
+    });
+  } catch (e) { console.warn(e); }
+}
+
+async function loadAudience() {
+  try {
+    const aud = await api.insights.audience({accountId: state.account.id});
+    if (state.charts.age) state.charts.age.destroy();
+    const ageData = aud.gender_age || {};
+    const labels = Object.keys(ageData).slice(0, 12);
+    const values = labels.map(k => ageData[k]);
+    state.charts.age = new Chart(document.getElementById('age-chart'), {
+      type: 'bar',
+      data: {labels, datasets:[{label:'Audiência', data:values, backgroundColor:'#7c3aed', borderRadius:6}]},
+      options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{ticks:{color:'#9590a8',font:{size:10}}}, y:{ticks:{color:'#9590a8',font:{size:10}}}}}
+    });
+
+    const countryList = document.getElementById('country-list');
+    const countries = aud.country || {};
+    const sorted = Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,15);
+    countryList.innerHTML = sorted.map(([k,v]) => `
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--line);font-size:13px">
+        <span style="font-weight:600;flex:1">${k}</span>
+        <span style="color:var(--tx3)">${v.toLocaleString('pt-BR')}</span>
+      </div>
+    `).join('') || '<div style="color:var(--tx3);font-size:12px;padding:14px">Sem dados de audiência disponíveis</div>';
+  } catch (e) { console.warn(e); }
+}
+
+async function loadContentPerf() {
+  if (!state.account) return;
+  try {
+    const {posts} = await api.posts.list({accountId:state.account.id, source:'remote', limit:100});
+    const byType = {};
+    for (const p of posts) {
+      const t = p.media_type || 'IMAGE';
+      if (!byType[t]) byType[t] = {count:0, likes:0, comments:0};
+      byType[t].count++;
+      byType[t].likes += p.like_count || 0;
+      byType[t].comments += p.comments_count || 0;
+    }
+    const labels = Object.keys(byType);
+    const avg = labels.map(t => Math.round((byType[t].likes + byType[t].comments) / byType[t].count));
+    if (state.charts.type) state.charts.type.destroy();
+    state.charts.type = new Chart(document.getElementById('type-chart'), {
+      type:'bar',
+      data: {labels, datasets:[{label:'Engajamento médio', data:avg, backgroundColor:['#7c3aed','#ec4899','#f59e0b','#10b981'], borderRadius:6}]},
+      options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}}
+    });
+  } catch (e) { console.warn(e); }
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function loadSettings() {
+  document.getElementById('set-name').value = state.user.name;
+  document.getElementById('set-email').value = state.user.email;
+  document.getElementById('set-company').value = state.user.company || '';
+  document.getElementById('set-phone').value = state.user.phone || '';
+  document.getElementById('ai-tone').value = localStorage.getItem('ai-tone') || 'profissional';
+  document.getElementById('ai-niche').value = localStorage.getItem('ai-niche') || '';
+  document.getElementById('ai-tone').addEventListener('change', e => localStorage.setItem('ai-tone', e.target.value));
+  document.getElementById('ai-niche').addEventListener('change', e => localStorage.setItem('ai-niche', e.target.value));
+}
+
+async function loadIgAccountsList() {
+  try {
+    const {accounts} = await api.instagram.list();
+    document.getElementById('ig-accounts-list').innerHTML = accounts.map(a => `
+      <div class="ig-account-card">
+        <div class="pfp">${a.profile_picture_url ? `<img src="${a.profile_picture_url}" referrerpolicy="no-referrer">` : '<i class="fab fa-instagram"></i>'}</div>
+        <div class="ig-account-info">
+          <strong>@${escapeHtml(a.username)} ${a.is_primary ? '<span class="primary-tag">Primária</span>' : ''}</strong>
+          <span>${(a.followers_count||0).toLocaleString('pt-BR')} seguidores · ${(a.media_count||0).toLocaleString('pt-BR')} posts</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          ${!a.is_primary ? `<button class="btn btn-ghost btn-sm" onclick="setPrimaryIg(${a.id})">Tornar primária</button>` : ''}
+          <button class="btn btn-ghost btn-sm" onclick="syncIg(${a.id})"><i class="fas fa-sync"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="removeIg(${a.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+function openConnectIg() { document.getElementById('ig-token').value=''; openModal('modal-ig'); }
+
+async function connectIg() {
+  const token = document.getElementById('ig-token').value.trim();
+  if (!token) return;
+  try {
+    const r = await api.instagram.connect(token);
+    toast('@' + r.username + ' conectada', 'success');
+    closeModal('modal-ig');
+    loadIgAccountsList();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function setPrimaryIg(id) {
+  await api.instagram.setPrimary(id);
+  toast('Conta primária alterada', 'success');
+  loadIgAccountsList();
+}
+
+async function syncIg(id) {
+  try { await api.instagram.sync(id); toast('Atualizada', 'success'); loadIgAccountsList(); }
+  catch (e) { toast(e.message, 'error'); }
+}
+
+async function removeIg(id) {
+  if (!confirm('Desconectar esta conta? Posts agendados não serão publicados.')) return;
+  await api.instagram.remove(id);
+  toast('Conta removida', 'success');
+  loadIgAccountsList();
+}
+
+async function changePassword() {
+  const cur = document.getElementById('cur-pwd').value;
+  const next = document.getElementById('new-pwd').value;
+  if (!cur || !next) return toast('Preencha ambos os campos', 'error');
+  if (next.length < 8) return toast('Nova senha deve ter 8+ caracteres', 'error');
+  try {
+    await api.auth.changePassword(cur, next);
+    toast('Senha alterada', 'success');
+    document.getElementById('cur-pwd').value = '';
+    document.getElementById('new-pwd').value = '';
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+async function loadAdmin() {
+  if (state.user.role !== 'admin' && state.user.role !== 'manager') return;
+  try {
+    const {users} = await api.users.list();
+    document.getElementById('admin-tbody').innerHTML = users.map(u => `
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:12px">${u.name[0].toUpperCase()}</div> ${escapeHtml(u.name)}</div></td>
+        <td>${escapeHtml(u.email)}</td>
+        <td><span class="role-badge role-${u.role}">${u.role}</span></td>
+        <td>${u.plan}</td>
+        <td>${u.ig_accounts_count}</td>
+        <td>${new Date(u.created_at).toLocaleDateString('pt-BR')}</td>
+        <td><button class="btn btn-ghost btn-sm" onclick='editUser(${JSON.stringify(u)})'><i class="fas fa-edit"></i></button>
+        ${u.id !== state.user.id ? `<button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>` : ''}</td>
+      </tr>
+    `).join('');
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+function openCreateUser() {
+  document.getElementById('user-modal-title').textContent = 'Novo usuário';
+  ['u-id','u-name','u-email','u-password'].forEach(i => document.getElementById(i).value='');
+  document.getElementById('u-role').value='client';
+  document.getElementById('u-plan').value='starter';
+  document.getElementById('u-password').placeholder='Mínimo 8 caracteres';
+  openModal('modal-user');
+}
+
+function editUser(u) {
+  document.getElementById('user-modal-title').textContent = 'Editar usuário';
+  document.getElementById('u-id').value = u.id;
+  document.getElementById('u-name').value = u.name;
+  document.getElementById('u-email').value = u.email;
+  document.getElementById('u-password').value = '';
+  document.getElementById('u-password').placeholder = '(deixe em branco para manter)';
+  document.getElementById('u-role').value = u.role;
+  document.getElementById('u-plan').value = u.plan;
+  openModal('modal-user');
+}
+
+async function saveUser() {
+  const id = document.getElementById('u-id').value;
+  const data = {
+    name: document.getElementById('u-name').value.trim(),
+    email: document.getElementById('u-email').value.trim(),
+    role: document.getElementById('u-role').value,
+    plan: document.getElementById('u-plan').value,
+  };
+  const pwd = document.getElementById('u-password').value;
+  if (pwd) data.password = pwd;
+
+  try {
+    if (id) await api.users.update(parseInt(id), data);
+    else { if (!pwd) return toast('Senha obrigatória', 'error'); await api.users.create(data); }
+    toast('Usuário salvo', 'success');
+    closeModal('modal-user');
+    loadAdmin();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function deleteUser(id) {
+  if (!confirm('Excluir este usuário?')) return;
+  try { await api.users.remove(id); toast('Excluído', 'success'); loadAdmin(); }
+  catch (e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) {
+  return String(s||'').replace(/'/g, "\\'");
+}
+
+// ── INICIAR ──
+boot();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conectar Instagram — PMI Social Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0814;--bg2:#11091f;--bg3:#1a0f2e;
+  --line:rgba(167,139,250,.13);--line2:rgba(167,139,250,.25);
+  --tx:#f5f0ff;--tx2:#b8a8e0;--tx3:#7d6fa3;
+  --ac:#a78bfa;--hot:#ec4899;--ok:#34d399;
+  --serif:'Instrument Serif', serif;--sans:'Manrope', system-ui, sans-serif;
+}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--tx);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--ac);color:var(--bg)}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(167,139,250,.10), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(236,72,153,.08), transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 48px;position:relative;z-index:10;
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  font-family:var(--serif);font-size:26px;letter-spacing:-.5px;
+  color:var(--tx);text-decoration:none;display:flex;align-items:baseline;gap:2px;
+}
+.logo .dot{color:var(--hot);font-size:32px;line-height:0;margin-left:1px}
+.user-pill{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px;border-radius:999px;
+  background:rgba(167,139,250,.06);border:1px solid var(--line);
+  font-size:13px;color:var(--tx2);
+}
+.user-avatar{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg, var(--ac), var(--hot));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12px;
+}
+.skip-link{
+  background:none;border:none;color:var(--tx3);
+  font-family:var(--sans);font-size:13px;cursor:pointer;text-decoration:underline;
+}
+.skip-link:hover{color:var(--tx2)}
+
+main{
+  position:relative;z-index:1;
+  padding:60px 48px 80px;
+  max-width:920px;margin:0 auto;
+}
+
+.progress-bar{
+  display:flex;align-items:center;gap:12px;margin-bottom:48px;
+}
+.progress-step{
+  flex:1;height:4px;border-radius:2px;background:var(--bg2);
+  position:relative;overflow:hidden;
+}
+.progress-step.active::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg, var(--ac), var(--hot));
+}
+.progress-step.done::after{
+  content:'';position:absolute;inset:0;background:var(--ok);
+}
+.progress-label{
+  font-size:11px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:1.5px;font-weight:600;
+}
+
+.title-block{margin-bottom:48px}
+.eyebrow{
+  font-size:11px;color:var(--ac);text-transform:uppercase;
+  letter-spacing:2px;font-weight:600;margin-bottom:16px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--ac)}
+h1{
+  font-family:var(--serif);
+  font-size:clamp(40px, 5vw, 64px);
+  font-weight:400;line-height:1;letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+h1 em{font-style:italic;color:var(--ac)}
+.subtitle{font-size:17px;color:var(--tx2);max-width:620px;line-height:1.6}
+
+.card{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:20px;padding:36px;margin-bottom:24px;
+}
+
+.tutorial{
+  background:rgba(167,139,250,.04);border:1px solid var(--line);
+  border-radius:14px;padding:24px;margin-bottom:28px;
+}
+.tutorial h3{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.tutorial h3 i{color:var(--ac);font-size:18px}
+.tutorial ol{
+  list-style:none;counter-reset:steps;
+}
+.tutorial ol li{
+  counter-increment:steps;
+  position:relative;padding-left:42px;padding-bottom:14px;
+  font-size:14px;color:var(--tx2);line-height:1.6;
+}
+.tutorial ol li::before{
+  content:counter(steps);
+  position:absolute;left:0;top:0;
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(167,139,250,.15);border:1px solid var(--line2);
+  color:var(--ac);font-weight:700;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.tutorial ol li a{color:var(--ac);text-decoration:none;font-weight:500}
+.tutorial ol li a:hover{text-decoration:underline}
+.tutorial code{
+  background:var(--bg3);padding:2px 6px;border-radius:4px;
+  font-family:'SF Mono', monospace;font-size:12px;color:var(--ac2);
+}
+
+.field{margin-bottom:18px}
+.field label{
+  display:block;font-size:11px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:1.2px;font-weight:600;
+  margin-bottom:8px;
+}
+.field textarea{
+  width:100%;background:var(--bg3);
+  border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px;
+  color:var(--tx);font-family:'SF Mono', monospace;font-size:13px;
+  outline:none;transition:border-color .2s;
+  resize:vertical;min-height:100px;
+}
+.field textarea:focus{border-color:var(--ac)}
+.field textarea::placeholder{color:var(--tx3);font-family:var(--sans)}
+
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 24px;border-radius:10px;
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.2px;
+  border:none;cursor:pointer;text-decoration:none;
+  transition:transform .2s, box-shadow .2s, background .2s;
+}
+.btn-hot{background:linear-gradient(135deg, var(--hot), #f472b6);color:#fff}
+.btn-hot:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 18px 40px -12px rgba(236,72,153,.5)}
+.btn-hot:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--line2);color:var(--tx)}
+.btn-ghost:hover{background:rgba(167,139,250,.08);border-color:var(--ac)}
+
+.alert{
+  padding:14px 18px;border-radius:12px;font-size:14px;
+  margin-bottom:20px;display:none;align-items:flex-start;gap:12px;line-height:1.6;
+}
+.alert.show{display:flex}
+.alert.error{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
+.alert.success{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);color:#6ee7b7}
+.alert.info{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);color:#93c5fd}
+.alert i{font-size:16px;flex-shrink:0;margin-top:2px}
+
+.success-card{
+  text-align:center;padding:48px 36px;
+  background:radial-gradient(ellipse at center, rgba(52,211,153,.08), transparent);
+  border:1px solid rgba(52,211,153,.2);border-radius:20px;
+}
+.success-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:rgba(52,211,153,.15);border:2px solid var(--ok);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 24px;
+  color:var(--ok);font-size:30px;
+}
+.success-card h2{
+  font-family:var(--serif);font-size:36px;font-weight:400;line-height:1.1;
+  margin-bottom:12px;
+}
+.success-card p{color:var(--tx2);margin-bottom:24px;line-height:1.6}
+.connected-account{
+  display:inline-flex;align-items:center;gap:14px;
+  padding:14px 24px;background:var(--bg3);border:1px solid var(--line2);
+  border-radius:14px;margin-bottom:28px;
+}
+.ig-pfp{
+  width:48px;height:48px;border-radius:50%;
+  background:conic-gradient(from 90deg, #f09433, #dc2743, #bc1888);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:18px;
+}
+.ig-info{text-align:left}
+.ig-info strong{display:block;font-size:15px;color:var(--tx)}
+.ig-info span{font-size:12px;color:var(--tx2)}
+
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+  border-radius:50%;animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.help-line{
+  font-size:12px;color:var(--tx3);text-align:center;margin-top:24px;
+}
+.help-line a{color:var(--ac);text-decoration:none}
+
+@media (max-width:768px){
+  nav{padding:18px 24px}
+  main{padding:40px 24px}
+  h1{font-size:32px}
+  .tutorial, .card{padding:24px}
+  .actions{flex-direction:column;align-items:stretch}
+  .actions .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">PMI<span class="dot">.</span></a>
+  <div style="display:flex;align-items:center;gap:18px">
+    <button class="skip-link" onclick="skipOnboarding()">Pular por enquanto</button>
+    <div class="user-pill">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <span id="user-name">Carregando...</span>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <div class="progress-bar">
+    <div style="flex:1">
+      <div class="progress-step done" style="margin-bottom:6px"></div>
+      <div class="progress-label">1. Conta criada</div>
+    </div>
+    <div style="flex:1">
+      <div class="progress-step active" style="margin-bottom:6px"></div>
+      <div class="progress-label" style="color:var(--ac)">2. Conectar Instagram</div>
+    </div>
+    <div style="flex:1">
+      <div class="progress-step" style="margin-bottom:6px"></div>
+      <div class="progress-label">3. Tudo pronto</div>
+    </div>
+  </div>
+
+  <!-- ETAPA 1 — Conectar IG -->
+  <div id="step-connect">
+    <div class="title-block">
+      <div class="eyebrow">Faltam 2 minutos</div>
+      <h1>Vamos conectar<br>seu <em>Instagram</em>.</h1>
+      <p class="subtitle">Para que a plataforma possa publicar e analisar seus posts, precisamos de um token de acesso da Meta. É um processo único e leva menos de 2 minutos.</p>
+    </div>
+
+    <div class="tutorial">
+      <h3><i class="fas fa-graduation-cap"></i> Como gerar o token Meta</h3>
+      <ol>
+        <li>Acesse o <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Graph API Explorer da Meta <i class="fas fa-external-link-alt" style="font-size:10px;margin-left:2px"></i></a></li>
+        <li>Em <strong>Meta App</strong>, selecione sua App (ou crie uma em <code>developers.facebook.com</code>)</li>
+        <li>Em <strong>User or Page</strong>, selecione <code>Get Page Access Token</code> e escolha sua Página do Facebook vinculada ao Instagram</li>
+        <li>Em <strong>Permissions</strong>, adicione: <code>instagram_basic</code>, <code>instagram_content_publish</code>, <code>instagram_manage_comments</code>, <code>instagram_manage_insights</code>, <code>instagram_manage_messages</code>, <code>pages_show_list</code>, <code>pages_read_engagement</code></li>
+        <li>Clique em <strong>Generate Access Token</strong>, autorize e copie o token gerado</li>
+        <li>Cole o token no campo abaixo</li>
+      </ol>
+    </div>
+
+    <div id="alert" class="alert"></div>
+
+    <div class="card">
+      <div class="field">
+        <label for="token">Token de acesso da Meta</label>
+        <textarea id="token" placeholder="EAAJZBxxx... (token longo de 100+ caracteres)"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-hot" id="connect-btn" onclick="connectInstagram()">
+          <i class="fab fa-instagram"></i> Conectar Instagram
+        </button>
+        <button class="btn btn-ghost" onclick="skipOnboarding()">
+          Conectar depois
+        </button>
+      </div>
+    </div>
+
+    <div class="help-line">
+      Travou em algum passo? <a href="https://developers.facebook.com/docs/instagram-api/getting-started" target="_blank">Veja o guia oficial da Meta →</a>
+    </div>
+  </div>
+
+  <!-- ETAPA 2 — Sucesso -->
+  <div id="step-success" style="display:none">
+    <div class="success-card">
+      <div class="success-icon"><i class="fas fa-check"></i></div>
+      <h2>Tudo pronto!</h2>
+      <p>Sua conta foi conectada com sucesso e está pronta para uso.</p>
+
+      <div class="connected-account">
+        <div class="ig-pfp" id="ig-pfp"><i class="fab fa-instagram"></i></div>
+        <div class="ig-info">
+          <strong id="ig-username">@suaconta</strong>
+          <span id="ig-meta">Carregando dados...</span>
+        </div>
+      </div>
+
+      <div style="margin-top:8px">
+        <a href="/app" class="btn btn-hot">
+          Ir para o painel <i class="fas fa-arrow-right" style="font-size:12px"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="/assets/js/api.js"></script>
+<script>
+let currentUser = null;
+
+// Carregar usuário ou redirecionar
+api.auth.me()
+  .then(({user}) => {
+    currentUser = user;
+    document.getElementById('user-name').textContent = user.name;
+    document.getElementById('user-avatar').textContent = user.name[0].toUpperCase();
+    // Se já tem IG conectado, vai pro app
+    if (user.ig_accounts_count > 0) {
+      window.location.href = '/app';
+    }
+  })
+  .catch(() => { window.location.href = '/login'; });
+
+function showAlert(msg, type='error') {
+  const el = document.getElementById('alert');
+  const icons = {error:'exclamation-triangle', success:'check-circle', info:'info-circle'};
+  el.className = `alert show ${type}`;
+  el.innerHTML = `<i class="fas fa-${icons[type]}"></i> <span>${msg}</span>`;
+  if (type === 'error') el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+async function connectInstagram() {
+  const token = document.getElementById('token').value.trim();
+  if (!token) { showAlert('Cole o token Meta no campo acima'); return; }
+  if (token.length < 50) { showAlert('Token muito curto. Verifique se copiou completo.'); return; }
+
+  const btn = document.getElementById('connect-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Validando token e descobrindo conta...';
+
+  document.getElementById('alert').className = 'alert';
+
+  try {
+    const result = await api.instagram.connect(token);
+    showAlert('Conta @' + result.username + ' conectada com sucesso!', 'success');
+
+    // Buscar dados completos
+    const {accounts} = await api.instagram.list();
+    const acc = accounts[0];
+
+    setTimeout(() => {
+      document.getElementById('step-connect').style.display = 'none';
+      document.getElementById('step-success').style.display = 'block';
+      document.querySelectorAll('.progress-step')[2].className = 'progress-step done';
+      document.querySelectorAll('.progress-label')[1].style.color = '';
+      document.querySelectorAll('.progress-label')[2].style.color = 'var(--ac)';
+
+      if (acc) {
+        document.getElementById('ig-username').textContent = '@' + acc.username;
+        document.getElementById('ig-meta').textContent =
+          (acc.followers_count || 0).toLocaleString('pt-BR') + ' seguidores · ' +
+          (acc.media_count || 0).toLocaleString('pt-BR') + ' posts';
+        if (acc.profile_picture_url) {
+          document.getElementById('ig-pfp').innerHTML =
+            `<img src="${acc.profile_picture_url}" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+        }
+      }
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }, 800);
+  } catch (err) {
+    showAlert(err.message || 'Erro ao conectar', 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fab fa-instagram"></i> Tentar novamente';
+  }
+}
+
+function skipOnboarding() {
+  if (confirm('Pular agora? Você pode conectar o Instagram depois nas Configurações do app.')) {
+    window.location.href = '/app';
+  }
+}
+</script>
+
+</body>
+</html>
