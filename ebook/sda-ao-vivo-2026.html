@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDA ao Vivo 2026 — Segredos da Audiência</title>
   <style>
-    /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -18,455 +17,246 @@
       --dark3: #222222;
       --text: #E8E0D0;
       --text-muted: #9A8F7E;
-      --accent: #C9A227;
-      --font-serif: 'Georgia', 'Times New Roman', serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
       --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--text); font-family: var(--font-sans); font-size: 16px; line-height: 1.8; }
 
-    body {
-      background: var(--black);
-      color: var(--text);
-      font-family: var(--font-sans);
-      font-size: 16px;
-      line-height: 1.8;
-    }
-
-    /* ── Cover Page ── */
+    /* ── COVER ── */
     .cover {
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 60px 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 80px 40px;
       background: radial-gradient(ellipse at 50% 30%, #1c1600 0%, #0A0A0A 70%);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-
     .cover::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(201,162,39,0.06) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(201,162,39,0.06) 0%, transparent 50%);
-      pointer-events: none;
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(201,162,39,.07) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(201,162,39,.07) 0%, transparent 50%);
     }
-
-    .cover-ornament {
-      width: 80px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 40px;
+    .cover-logo {
+      width: 220px; max-width: 60vw; margin-bottom: 48px;
+      filter: drop-shadow(0 0 30px rgba(201,162,39,0.3));
     }
-
     .cover-tag {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 24px;
+      font-size: 11px; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
     }
-
     .cover-title {
-      font-family: var(--font-serif);
-      font-size: clamp(36px, 8vw, 72px);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.1;
-      margin-bottom: 16px;
+      font-family: var(--font-serif); font-size: clamp(40px, 9vw, 80px);
+      font-weight: 700; color: #fff; line-height: 1.05; margin-bottom: 16px;
     }
-
-    .cover-title span {
-      color: var(--gold);
-    }
-
+    .cover-title span { color: var(--gold); }
     .cover-subtitle {
-      font-size: clamp(14px, 2.5vw, 18px);
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      max-width: 500px;
+      font-size: clamp(14px, 2.5vw, 18px); color: var(--text-muted);
+      margin-bottom: 56px; max-width: 520px;
     }
-
     .cover-divider {
-      width: 120px;
-      height: 1px;
+      width: 120px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 48px;
+      margin: 0 auto 56px;
     }
-
-    .cover-meta {
-      display: flex;
-      gap: 48px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .cover-meta-item {
-      text-align: center;
-    }
-
+    .cover-meta { display: flex; gap: 56px; justify-content: center; flex-wrap: wrap; }
+    .cover-meta-item { text-align: center; }
     .cover-meta-num {
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--gold);
-      font-family: var(--font-serif);
-      display: block;
+      font-size: 40px; font-weight: 700; color: var(--gold);
+      font-family: var(--font-serif); display: block;
     }
-
     .cover-meta-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
     }
 
-    /* ── Navigation ── */
+    /* ── NAV ── */
     .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(201,162,39,0.2);
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,10,10,.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,162,39,.2);
+      padding: 0 24px; display: flex; align-items: center;
+      justify-content: space-between; height: 56px;
     }
-
-    .nav-brand {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
+    .nav-brand { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
     .nav-toggle {
-      background: none;
-      border: 1px solid rgba(201,162,39,0.4);
-      color: var(--gold);
-      padding: 6px 12px;
-      font-size: 12px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      border-radius: 3px;
-      transition: all 0.2s;
+      background: none; border: 1px solid rgba(201,162,39,.4); color: var(--gold);
+      padding: 6px 14px; font-size: 12px; letter-spacing: 1px;
+      cursor: pointer; border-radius: 3px; transition: all .2s;
     }
+    .nav-toggle:hover { background: rgba(201,162,39,.1); }
 
-    .nav-toggle:hover {
-      background: rgba(201,162,39,0.1);
-    }
-
-    /* ── Sidebar TOC ── */
+    /* ── SIDEBAR ── */
     .sidebar {
-      position: fixed;
-      top: 56px;
-      left: 0;
-      bottom: 0;
-      width: 300px;
-      background: var(--dark2);
-      border-right: 1px solid rgba(201,162,39,0.15);
-      overflow-y: auto;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 90;
-      padding: 24px 0;
+      position: fixed; top: 56px; left: 0; bottom: 0; width: 300px;
+      background: var(--dark2); border-right: 1px solid rgba(201,162,39,.15);
+      overflow-y: auto; transform: translateX(-100%);
+      transition: transform .3s ease; z-index: 90; padding: 20px 0;
     }
-
-    .sidebar.open {
-      transform: translateX(0);
-    }
-
+    .sidebar.open { transform: translateX(0); }
     .sidebar-title {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      padding: 0 24px 16px;
-      border-bottom: 1px solid rgba(201,162,39,0.15);
-      margin-bottom: 8px;
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      padding: 0 20px 16px; border-bottom: 1px solid rgba(201,162,39,.15); margin-bottom: 8px;
     }
-
-    .toc-list {
-      list-style: none;
-      padding: 0;
-    }
-
+    .toc-list { list-style: none; }
     .toc-list li.toc-dia {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold-dark);
-      padding: 16px 24px 6px;
+      font-size: 9px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold-dark); padding: 14px 20px 4px;
     }
-
     .toc-list li a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 24px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-      transition: all 0.2s;
-      border-left: 2px solid transparent;
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 20px; color: var(--text-muted); text-decoration: none;
+      font-size: 12px; transition: all .2s; border-left: 2px solid transparent;
     }
-
-    .toc-list li a:hover {
-      color: var(--gold-light);
-      background: rgba(201,162,39,0.05);
-      border-left-color: var(--gold);
+    .toc-list li a:hover { color: var(--gold-light); background: rgba(201,162,39,.05); border-left-color: var(--gold); }
+    .toc-photo {
+      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+      border: 1px solid rgba(201,162,39,.3); flex-shrink: 0;
     }
+    .toc-info { display: flex; flex-direction: column; }
+    .toc-num { font-size: 9px; color: var(--gold-dark); font-weight: 700; }
+    .toc-name { font-size: 12px; line-height: 1.3; }
 
-    .toc-num {
-      font-size: 10px;
-      color: var(--gold-dark);
-      font-weight: 700;
-      min-width: 24px;
-    }
+    /* ── MAIN ── */
+    .main { max-width: 800px; margin: 0 auto; padding: 80px 40px; }
 
-    /* ── Main Content ── */
-    .main {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
-
-    /* ── DIA Separator ── */
-    .dia-separator {
-      text-align: center;
-      padding: 80px 0 60px;
-      position: relative;
-    }
-
+    /* ── DIA SEPARATOR ── */
+    .dia-separator { text-align: center; padding: 80px 0 60px; position: relative; }
     .dia-separator::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4), transparent);
+      content: ''; position: absolute; top: 50%; left: 0; right: 0;
+      height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,.4), transparent);
     }
-
     .dia-label {
-      display: inline-block;
-      background: var(--black);
-      padding: 12px 40px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      color: var(--gold);
-      position: relative;
-      border: 1px solid rgba(201,162,39,0.3);
+      display: inline-block; background: var(--black); padding: 12px 48px;
+      font-size: 11px; font-weight: 700; letter-spacing: 6px;
+      text-transform: uppercase; color: var(--gold); position: relative;
+      border: 1px solid rgba(201,162,39,.3);
     }
 
-    /* ── Chapter ── */
-    .chapter {
-      margin-bottom: 100px;
-      padding-top: 40px;
-    }
-
+    /* ── CHAPTER ── */
+    .chapter { margin-bottom: 100px; padding-top: 20px; }
     .chapter-header {
-      margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid rgba(201,162,39,0.2);
+      display: flex; align-items: flex-end; gap: 28px;
+      margin-bottom: 40px; padding-bottom: 32px;
+      border-bottom: 1px solid rgba(201,162,39,.2);
     }
-
+    .speaker-photo-wrap {
+      flex-shrink: 0;
+      width: 120px; height: 120px; border-radius: 12px; overflow: hidden;
+      border: 2px solid rgba(201,162,39,.4);
+      box-shadow: 0 0 30px rgba(201,162,39,.15);
+    }
+    .speaker-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .chapter-header-text { flex: 1; }
     .chapter-number {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold-dark);
-      margin-bottom: 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold-dark); margin-bottom: 8px;
     }
-
     .chapter-title {
-      font-family: var(--font-serif);
-      font-size: clamp(24px, 4vw, 36px);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.2;
-      margin-bottom: 12px;
+      font-family: var(--font-serif); font-size: clamp(22px, 4vw, 34px);
+      font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 10px;
     }
+    .chapter-role { font-size: 13px; color: var(--text-muted); }
 
-    .chapter-role {
-      font-size: 13px;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
-    }
-
-    /* ── Chapter Content ── */
+    /* ── CONTENT ── */
     .chapter-content p {
-      margin-bottom: 24px;
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.85;
-      text-align: justify;
-      hyphens: auto;
+      margin-bottom: 22px; color: var(--text); font-size: 16px;
+      line-height: 1.85; text-align: justify; hyphens: auto;
     }
-
     .chapter-content p:first-child::first-letter {
-      font-family: var(--font-serif);
-      font-size: 4em;
-      float: left;
-      line-height: 0.75;
-      margin: 0.1em 0.08em 0 0;
-      color: var(--gold);
-      font-weight: 700;
+      font-family: var(--font-serif); font-size: 4em; float: left;
+      line-height: .75; margin: .1em .08em 0 0; color: var(--gold); font-weight: 700;
     }
 
-    /* ── Image Placeholder ── */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-      margin: 40px 0;
-    }
-
-    .photo-placeholder {
-      aspect-ratio: 4/3;
-      background: var(--dark3);
-      border: 1px dashed rgba(201,162,39,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 12px;
-      text-align: center;
-      border-radius: 4px;
-    }
-
-    /* ── Quote Highlight ── */
-    .pull-quote {
-      border-left: 3px solid var(--gold);
-      padding: 16px 24px;
-      margin: 32px 0;
-      background: rgba(201,162,39,0.05);
-      font-style: italic;
-      font-size: 18px;
-      color: var(--gold-light);
-      line-height: 1.6;
-    }
-
-    /* ── Footer ── */
+    /* ── FOOTER ── */
     .footer {
-      text-align: center;
-      padding: 80px 40px;
-      border-top: 1px solid rgba(201,162,39,0.2);
-      color: var(--text-muted);
-      font-size: 13px;
+      text-align: center; padding: 80px 40px;
+      border-top: 1px solid rgba(201,162,39,.2);
+      color: var(--text-muted); font-size: 13px;
     }
+    .footer-logo { font-family: var(--font-serif); font-size: 26px; color: var(--gold); margin-bottom: 12px; font-weight: 700; }
 
-    .footer-logo {
-      font-family: var(--font-serif);
-      font-size: 24px;
-      color: var(--gold);
-      margin-bottom: 12px;
-      font-weight: 700;
+    /* ── SCROLL TOP ── */
+    .scroll-top {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--gold); color: var(--black);
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 18px; font-weight: 700;
+      opacity: 0; transition: opacity .3s; z-index: 80;
     }
+    .scroll-top.visible { opacity: 1; }
 
-    /* ── Print styles ── */
+    /* ── PRINT ── */
     @media print {
-      .nav, .sidebar, .nav-toggle { display: none; }
+      .nav, .sidebar { display: none; }
       .main { padding: 0; max-width: 100%; }
-      .chapter { page-break-before: always; }
-      .cover { page-break-after: always; }
-      body { background: white; color: black; }
-      .chapter-title { color: black; }
-      .chapter-content p { color: black; }
+      .chapter { page-break-before: always; margin-bottom: 0; }
+      .cover { min-height: auto; page-break-after: always; background: white !important; }
+      .dia-separator { page-break-before: always; }
+      body { background: white; color: #111; }
+      .cover-title, .chapter-title { color: #111; }
+      .chapter-content p { color: #222; }
+      .chapter-role { color: #555; }
+      .chapter-number { color: #C9A227; }
+      .dia-label { color: #C9A227; border-color: #C9A227; background: white; }
+      .chapter-content p:first-child::first-letter { color: #C9A227; }
+      .cover-tag, .cover-meta-label { color: #555; }
+      .cover-meta-num, .cover-subtitle, .cover-title span { color: #C9A227; }
+      .footer { color: #555; }
+      .footer-logo { color: #C9A227; }
+      .speaker-photo-wrap { border-color: #C9A227; box-shadow: none; }
+      .scroll-top { display: none; }
     }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
       .main { padding: 60px 20px; }
-      .cover { padding: 40px 20px; }
-      .cover-meta { gap: 24px; }
-    }
-
-    /* ── Scroll to top ── */
-    .scroll-top {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: var(--gold);
-      color: var(--black);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: 700;
-      opacity: 0;
-      transition: opacity 0.3s;
-      z-index: 80;
-    }
-
-    .scroll-top.visible {
-      opacity: 1;
+      .cover { padding: 60px 20px; }
+      .chapter-header { flex-direction: column; align-items: flex-start; }
+      .speaker-photo-wrap { width: 90px; height: 90px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Fixed Navigation -->
 <nav class="nav">
   <span class="nav-brand">SDA · 2026</span>
   <button class="nav-toggle" onclick="toggleSidebar()">&#9776; Índice</button>
 </nav>
 
-<!-- Sidebar Table of Contents -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-title">Sumário</div>
   <ul class="toc-list">
     <li class="toc-dia">DIA 01</li>
-<li><a href="#cap1"><span class="toc-num">01</span> Samuel Pereira</a></li>
-<li><a href="#cap2"><span class="toc-num">02</span> Alfredo Soares</a></li>
-<li><a href="#cap3"><span class="toc-num">03</span> Pablo Marçal</a></li>
-<li><a href="#cap4"><span class="toc-num">04</span> Samuel Pereira — IA no Marketing</a></li>
-<li><a href="#cap5"><span class="toc-num">05</span> Micha Menezes</a></li>
-<li><a href="#cap6"><span class="toc-num">06</span> Nathalia Beauty</a></li>
-<li><a href="#cap7"><span class="toc-num">07</span> Oscar Balbino</a></li>
-<li><a href="#cap8"><span class="toc-num">08</span> Regis Bortolin</a></li>
-<li><a href="#cap9"><span class="toc-num">09</span> Kaká Diniz</a></li>
+<li><a href="#cap1"><img src="Fotos/SAMUEL.png" alt="Samuel Pereira" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 01</span><span class="toc-name">Samuel Pereira</span></span></a></li>
+<li><a href="#cap2"><img src="Fotos/ALFREDO.png" alt="Alfredo Soares" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 02</span><span class="toc-name">Alfredo Soares</span></span></a></li>
+<li><a href="#cap3"><img src="Fotos/PABLO.png" alt="Pablo Marçal" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 03</span><span class="toc-name">Pablo Marçal</span></span></a></li>
+<li><a href="#cap4"><img src="Fotos/SAMUEL.png" alt="Samuel Pereira — IA no Marketing" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 04</span><span class="toc-name">Samuel Pereira — IA no Marketing</span></span></a></li>
+<li><a href="#cap5"><img src="Fotos/MICHA.png" alt="Micha Menezes" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 05</span><span class="toc-name">Micha Menezes</span></span></a></li>
+<li><a href="#cap6"><img src="Fotos/NATALIA.png" alt="Nathalia Beauty" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 06</span><span class="toc-name">Nathalia Beauty</span></span></a></li>
+<li><a href="#cap7"><img src="Fotos/OSCAR.png" alt="Oscar Balbino" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 07</span><span class="toc-name">Oscar Balbino</span></span></a></li>
+<li><a href="#cap8"><img src="Fotos/REGIS.png" alt="Regis Bortolin" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 08</span><span class="toc-name">Regis Bortolin</span></span></a></li>
+<li><a href="#cap9"><img src="Fotos/KAKA.png" alt="Kaká Diniz" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 09</span><span class="toc-name">Kaká Diniz</span></span></a></li>
 <li class="toc-dia">DIA 03</li>
-<li><a href="#cap10"><span class="toc-num">10</span> Reinaldo Zanon</a></li>
-<li><a href="#cap11"><span class="toc-num">11</span> Reinaldo Boesso</a></li>
-<li><a href="#cap12"><span class="toc-num">12</span> Dr. Sérgio Crivellin</a></li>
-<li><a href="#cap13"><span class="toc-num">13</span> Rogério Minotouro</a></li>
-<li><a href="#cap14"><span class="toc-num">14</span> Dr. Cleyton Baeve</a></li>
-<li><a href="#cap15"><span class="toc-num">15</span> Tiago TCAR</a></li>
-<li><a href="#cap16"><span class="toc-num">16</span> Mesa Redonda — Rede Social vs. Rede de Interesse</a></li>
-<li><a href="#cap17"><span class="toc-num">17</span> Elainne Ourives</a></li>
-<li><a href="#cap18"><span class="toc-num">18</span> Fernanda Sanches</a></li>
-<li><a href="#cap19"><span class="toc-num">19</span> Dr. Lauro e Drª Renata Freire</a></li>
-<li><a href="#cap20"><span class="toc-num">20</span> João Kepler</a></li>
-<li><a href="#cap21"><span class="toc-num">21</span> Roberto Shinyashiki</a></li>
-<li><a href="#cap22"><span class="toc-num">22</span> Janguiê Diniz</a></li>
+<li><a href="#cap10"><img src="Fotos/REINALDO.png" alt="Reinaldo Zanon" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 10</span><span class="toc-name">Reinaldo Zanon</span></span></a></li>
+<li><a href="#cap11"><img src="Fotos/REINALDO TMB.png" alt="Reinaldo Boesso" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 11</span><span class="toc-name">Reinaldo Boesso</span></span></a></li>
+<li><a href="#cap12"><img src="Fotos/CRIVELLIN.png" alt="Dr. Sérgio Crivellin" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 12</span><span class="toc-name">Dr. Sérgio Crivellin</span></span></a></li>
+<li><a href="#cap13"><img src="Fotos/MINOTOURO.png" alt="Rogério Minotouro" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 13</span><span class="toc-name">Rogério Minotouro</span></span></a></li>
+<li><a href="#cap14"><img src="Fotos/CLEYTON.png" alt="Dr. Cleyton Baeve" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 14</span><span class="toc-name">Dr. Cleyton Baeve</span></span></a></li>
+<li><a href="#cap15"><img src="Fotos/TIAGO TCAR.png" alt="Tiago TCAR" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 15</span><span class="toc-name">Tiago TCAR</span></span></a></li>
+<li><a href="#cap16"><img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 16</span><span class="toc-name">Mesa Redonda</span></span></a></li>
+<li><a href="#cap17"><img src="Fotos/ELAINE.png" alt="Elainne Ourives" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 17</span><span class="toc-name">Elainne Ourives</span></span></a></li>
+<li><a href="#cap18"><img src="Fotos/FERNANDA.png" alt="Fernanda Sanches" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 18</span><span class="toc-name">Fernanda Sanches</span></span></a></li>
+<li><a href="#cap19"><img src="Fotos/LAURO E RENATA.png" alt="Dr. Lauro e Drª Renata Freire" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 19</span><span class="toc-name">Dr. Lauro e Drª Renata Freire</span></span></a></li>
+<li><a href="#cap20"><img src="Fotos/JOÃO.png" alt="João Kepler" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 20</span><span class="toc-name">João Kepler</span></span></a></li>
+<li><a href="#cap21"><img src="Fotos/ROBERTO.png" alt="Roberto Shinyashiki" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 21</span><span class="toc-name">Roberto Shinyashiki</span></span></a></li>
+<li><a href="#cap22"><img src="Fotos/JANGUIÊ.png" alt="Janguiê Diniz" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 22</span><span class="toc-name">Janguiê Diniz</span></span></a></li>
 
   </ul>
 </aside>
 
-<!-- Cover Page -->
 <div class="cover" id="top">
-  <div class="cover-ornament"></div>
+  <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="SDA Logo" class="cover-logo">
   <div class="cover-tag">Transcrição Oficial</div>
   <h1 class="cover-title"><span>SDA</span> ao Vivo<br>2026</h1>
   <p class="cover-subtitle">Segredos da Audiência · As melhores palestras do maior evento de marketing digital do Brasil</p>
@@ -487,7 +277,6 @@
   </div>
 </div>
 
-<!-- Main Content -->
 <main class="main">
   
 <div class="dia-separator">
@@ -496,9 +285,15 @@
 
 <section class="chapter" id="cap1">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 01</div>
-    <h2 class="chapter-title">Samuel Pereira</h2>
-    <div class="chapter-role">Fundador do SDA · Abertura do Evento</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/SAMUEL.png" alt="Samuel Pereira" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 01</div>
+      <h2 class="chapter-title">Samuel Pereira</h2>
+      <div class="chapter-role">Fundador do SDA · Abertura do Evento</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Podem sentar que tem mais coisa. Agora vem o momento mais auge que eu preciso mostrar isso aqui pra vocês. Aguenta mais um? Segura, isso aqui é importante. O que se destaca nessa foto pra vocês? O amarelo. Brilha de uma vez. Um dia eu estava rolando o feed do meu Instagram. Galera, eu estou falando, você vai perder a coisa mais incrível dessa Terra nesse momento, quem sair vai se lascar por isso, estou falando sério. Eu estou rolando o feed, de repente, eu vejo um amarelo. Eu estava solteiro, estava com o radar ligado, aí de repente eu viro e falo assim: "Opa, quem que é essa mulher bonita na foto?" Tinha dois caras que eu conhecia, falei: "Mas tem uma mulher ali, quem que é essa mulher que postou?" O que me chamou a atenção, o que brilhou ali, foi o amarelo, foi o que deu destaque.</p>
@@ -572,9 +367,15 @@
 
 <section class="chapter" id="cap2">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 02</div>
-    <h2 class="chapter-title">Alfredo Soares</h2>
-    <div class="chapter-role">Empreendedor · Especialista em Gestão</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/ALFREDO.png" alt="Alfredo Soares" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 02</div>
+      <h2 class="chapter-title">Alfredo Soares</h2>
+      <div class="chapter-role">Empreendedor · Especialista em Gestão</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Eu quero chamar um cara que eu gosto muito, ele construiu uma empresa gigantesca, construiu muitos resultados, eu já conheço ele há algum tempo, o cara é um gerador de resultado e eu acho que muita gente conhece ele aqui. Ele entende muito de "social media", ele entende muito de crescimento em redes sociais e eu quero que vocês recebam ele com uma energia, que a gente vai fazer um bate-papo, um talk incrível aqui. Eu posso contar com vocês para receber ele muito bem aqui? Sim! Pode ser? Com vocês, Alfredo Soares!</p>
@@ -628,9 +429,15 @@
 
 <section class="chapter" id="cap3">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 03</div>
-    <h2 class="chapter-title">Pablo Marçal</h2>
-    <div class="chapter-role">Coach · Empresário · Influenciador Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/PABLO.png" alt="Pablo Marçal" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 03</div>
+      <h2 class="chapter-title">Pablo Marçal</h2>
+      <div class="chapter-role">Coach · Empresário · Influenciador Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Vocês já estão anotando aí? Já estão pegando todas as anotações? Sim ou não? "Rapaz, o que ele falou é ouro, o que ele está falando de distribuição de conteúdo é ouro, o que ele trouxe aqui, pega esse insight". IA, a gente vai falar muito. Depois do nosso palestrante que eu vou chamar agora, eu vou trazer um conteúdo de IA que me fez ficar mais de um mês sem dormir direito. Vocês vão ficar pirados com o que eu vou mostrar aqui pra vocês. Então se prepara, porque antes eu vou trazer esse grande amigo, um grande nome, que eu acredito que é a quarta vez que está conosco.</p>
@@ -730,9 +537,15 @@
 
 <section class="chapter" id="cap4">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 04</div>
-    <h2 class="chapter-title">Samuel Pereira — IA no Marketing</h2>
-    <div class="chapter-role">Inteligência Artificial Aplicada ao Marketing</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/SAMUEL.png" alt="Samuel Pereira — IA no Marketing" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 04</div>
+      <h2 class="chapter-title">Samuel Pereira — IA no Marketing</h2>
+      <div class="chapter-role">Inteligência Artificial Aplicada ao Marketing</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>E aí, aguenta mais um? Podem sentar. Uau, que incrível! Fala sério. O Kaká falando isso e eu relembrando aqui cada coisa que já aconteceu aqui no SDA. Eu já fui criticado, você não tem ideia, a primeira vez que eu resolvi terminar um SDA fazendo uma oração. Eu tive um amigo que um dia me ligou e falou assim: "Samuel, você precisa falar mais do que você vive". E um dia eu senti no coração, contei meu testemunho, eu posso até falar melhor isso no domingo, que eu tenho testemunho de vida. E quando eu falei, contei e terminei orando pra Deus proteger a galera e tudo mais.</p>
@@ -786,9 +599,15 @@
 
 <section class="chapter" id="cap5">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 05</div>
-    <h2 class="chapter-title">Micha Menezes</h2>
-    <div class="chapter-role">Especialista em Conteúdo Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/MICHA.png" alt="Micha Menezes" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 05</div>
+      <h2 class="chapter-title">Micha Menezes</h2>
+      <div class="chapter-role">Especialista em Conteúdo Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Eu quero que vocês recebam um dos maiores nomes do digital também, que se posicionou, ensina muito sobre conteúdo, crescimento no digital. Quem gostaria de crescer mais no digital aqui? Quem gostaria de mais audiência? Segundo o Pablo, botou terror em vocês. Quem gostou da palestra do Pablo aqui, levanta a mão. Quem gostou do Alfredo? Quem gostou do que eu falei de A? Alguém ficou impactado com o que eu falei de A? Alguém ficou? Falei, ficou impactado? Então calma que tem mais. Então agora quero que vocês recebam esse cara que é gigante no mercado e está ficando mais forte ainda, mais gigante, vocês vão perceber.</p>
@@ -872,9 +691,15 @@
 
 <section class="chapter" id="cap6">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 06</div>
-    <h2 class="chapter-title">Nathalia Beauty</h2>
-    <div class="chapter-role">Criadora de Conteúdo · Empreendedora Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/NATALIA.png" alt="Nathalia Beauty" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 06</div>
+      <h2 class="chapter-title">Nathalia Beauty</h2>
+      <div class="chapter-role">Criadora de Conteúdo · Empreendedora Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Vocês sabem uma coisa que ela virou e falou para mim? A gente estava em uma palestra junto lá em Porto Alegre, ela virou e falou assim: "Eu amo falar no SDA, porque o público lá me recebe tão bem". E eu falei: "Uau!" Então eu quero que essa seja a edição mais engajada de todas e a mais engajada que ela já veio. Vamos lá comigo chamar ela? Com vocês, Nathalia Beauty. Toda vez antes de entrar no palco, eu fico assim, meu coração. Vocês imaginam o que é estar aqui de pijama? Porque não é só estar aqui. Tem o pijama.</p>
@@ -959,9 +784,15 @@
 
 <section class="chapter" id="cap7">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 07</div>
-    <h2 class="chapter-title">Oscar Balbino</h2>
-    <div class="chapter-role">Especialista em Tecnologia e IA</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/OSCAR.png" alt="Oscar Balbino" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 07</div>
+      <h2 class="chapter-title">Oscar Balbino</h2>
+      <div class="chapter-role">Especialista em Tecnologia e IA</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Rapaz, eu quero ver maior energia, pode ser? Posso contar com vocês? Com vocês, Oscar Balbino! Rapaz. São três dias, se eu tenho energia pra um, tenho pra três. Então vamos nosso melhor. Eu estou falando pro Oscar, tem um mês que eu estou dando um spoi- Ele está fazendo esse sig há muito tempo, eu não faço ideia. Eu falei que vou preparar agora pra ele. Gente, eu vou fazer uma coisa de coração aqui pra você. Tá. É uma surpresa que eu tenho pra você, é um presente. Eu sei que a gente estava viajando lá, nossa Golf Trip, você estava doido pra olhar isso.</p>
@@ -1020,9 +851,15 @@
 
 <section class="chapter" id="cap8">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 08</div>
-    <h2 class="chapter-title">Regis Bortolin</h2>
-    <div class="chapter-role">Especialista em Vendas</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/REGIS.png" alt="Regis Bortolin" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 08</div>
+      <h2 class="chapter-title">Regis Bortolin</h2>
+      <div class="chapter-role">Especialista em Vendas</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Boa noite, SDA! Quem quer vender mais hoje aqui? Quem quer vender mais hoje aqui? Eu preciso ativar o modo vendedor de todos vocês, OK? E nós vamos fazer agora, nós vamos repetir por quatro vezes o grito do general de vendas. Vamos lá? Todo mundo junto, pra que a gente possa estremecer o Teatro Bradesco. Sim ou não? Sim! Conversa de vendedor é venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Agora sim, eu estou diante de várias pessoas com o modo vendedor ativado.</p>
@@ -1081,9 +918,15 @@
 
 <section class="chapter" id="cap9">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 09</div>
-    <h2 class="chapter-title">Kaká Diniz</h2>
-    <div class="chapter-role">Empreendedor · Fundador da Herbalife Brasil</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/KAKA.png" alt="Kaká Diniz" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 09</div>
+      <h2 class="chapter-title">Kaká Diniz</h2>
+      <div class="chapter-role">Empreendedor · Fundador da Herbalife Brasil</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>E aí, aguenta mais um? Quantos insights! Eu achei muito top isso, porque pegar esses números, ter visão de negócio e estratégia, faz toda a diferença. Vocês estão animados para mais? Quem está animado para bombar muito com o IA aqui? Quem está bombado? Quem vai bombar muito? A galera está arrebentando, se inscrevendo lá, muita gente, inclusive perguntando se eu posso pôr mais de uma pessoa dentro da minha empresa, aí você vai poder adquirir e adicionar mais uma pessoa se quiser. Às vezes você quer levar duas, três pessoas, uma demanda que apareceu.</p>
@@ -1176,9 +1019,15 @@
 
 <section class="chapter" id="cap10">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 10</div>
-    <h2 class="chapter-title">Reinaldo Zanon</h2>
-    <div class="chapter-role">Especialista em Negócios Digitais</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/REINALDO.png" alt="Reinaldo Zanon" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 10</div>
+      <h2 class="chapter-title">Reinaldo Zanon</h2>
+      <div class="chapter-role">Especialista em Negócios Digitais</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Boa! Bom dia! Irmão, tudo bem? Prazer te ter aqui, irmão. O prazer é meu. Quem está animado aí? Anota aí: primeiro sinal de riqueza é entusiasmo. Bate na mão da pessoa que está do lado: mente bilionária. Bate aí. Primeiro vem a mente, depois vem o bolso. Boa! Pode sentar, galera. Inclusive, o Rei, você é o membro mais novo da confraria, não é não? Exatamente. Você sabia que o Pablo falou um negócio ontem aqui? Ele falou que ninguém que se gosta na confraria tem tudo por causa de audiência. Ele falou que estragou a noite.</p>
@@ -1231,9 +1080,15 @@
 
 <section class="chapter" id="cap11">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 11</div>
-    <h2 class="chapter-title">Reinaldo Boesso</h2>
-    <div class="chapter-role">Empreendedor Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/REINALDO TMB.png" alt="Reinaldo Boesso" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 11</div>
+      <h2 class="chapter-title">Reinaldo Boesso</h2>
+      <div class="chapter-role">Empreendedor Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Grande Saul! Fala bem. Arrasa. Jogador de tênis também. Arrasa. Que isso. Arrasa. Cara, é uma honra estar aqui nessa última edição do SDA, vim em várias anteriores, faço parte do Black com o Samuel. Realmente ele apoia bastante, ajuda muito, o conhecimento dele é fantástico e espero que vocês aproveitem muito esses dias aqui no SDA, porque é um conteúdo fantástico e muita coisa bacana que vocês vão ver aqui. Eu participo sempre, então posso falar porque conheço. Vamos falar de dinheiro ou não? Bora, quem gosta de ganhar dinheiro aí?</p>
@@ -1286,9 +1141,15 @@
 
 <section class="chapter" id="cap12">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 12</div>
-    <h2 class="chapter-title">Dr. Sérgio Crivellin</h2>
-    <div class="chapter-role">Médico · Empreendedor</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/CRIVELLIN.png" alt="Dr. Sérgio Crivellin" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 12</div>
+      <h2 class="chapter-title">Dr. Sérgio Crivellin</h2>
+      <div class="chapter-role">Médico · Empreendedor</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Sérgio Crivellin! Vem, arrasa. Estava no seu evento há duas semanas atrás, em Rio Preto, arrasando. Muito bom, parabéns. Obrigado. Tamo junto. Vamos lá. Ele tem um fã clube aí também. Pode deixar. Bom dia. Tem bastante gente aqui. Isso aí. Olha só, me ensinaram que isso daqui era um sinal de sucesso: estudar muito, trabalhar muito e ser respeitado. E não é que eu acho que isso seja errado. Pelo contrário, eu vivi isso e deu certo. Só que ninguém me contou uma coisa. Ninguém me contou que isso daqui também poderia me prender.</p>
@@ -1351,9 +1212,15 @@
 
 <section class="chapter" id="cap13">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 13</div>
-    <h2 class="chapter-title">Rogério Minotouro</h2>
-    <div class="chapter-role">Atleta · Empreendedor</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/MINOTOURO.png" alt="Rogério Minotouro" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 13</div>
+      <h2 class="chapter-title">Rogério Minotouro</h2>
+      <div class="chapter-role">Atleta · Empreendedor</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>E por isso que eu quero que vocês recebam junto comigo, Rogério Minotouro! E aí, mozão. Seja bem-vindo! Obrigado. Seja bem-vindo, irmão. Que sorte a dele, né, Samuel? Sorte tripla. Te amos. Tanto que a gente já cobriu o outro ali. Olha lá ele. A gente tem lá no Black. Desculpa. Não é bom. Brincadeira. A gente fez uma piada que deu bom, viralizou. Eu estava lá, aí o Minotauro chega assim pra mim: "E aí, Samuel, você falou que quer lutar comigo", não sei o quê. Aí eu falei: "Rapaz, sai pra lá, você é grande, mas não é dois".</p>
@@ -1430,9 +1297,15 @@
 
 <section class="chapter" id="cap14">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 14</div>
-    <h2 class="chapter-title">Dr. Cleyton Baeve</h2>
-    <div class="chapter-role">Médico · Especialista em Negócios</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/CLEYTON.png" alt="Dr. Cleyton Baeve" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 14</div>
+      <h2 class="chapter-title">Dr. Cleyton Baeve</h2>
+      <div class="chapter-role">Médico · Especialista em Negócios</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Com a maior energia, porque você vai entender a energia que esse cara tem. Eu tenho certeza que se aplicar pelo menos uma coisa que você aprender na palestra dele, você vai ter muito resultado. Bora receber ele com muita energia? Com vocês, Clayton! Fala aí, SDA! Rala bem. Arrasa. Bora. Arrasa, irmão. Arrebenta aí. Boa tarde, SDA. Povo abençoado. Tenho fã clube também. Vamos lá. Vamos fazer o nosso melhor aqui hoje, bora colocar nossos slides aí. Vamos falar um pouquinho, hoje, de três coisas que todo empresário precisa ter: visão, eficiência e escala.</p>
@@ -1494,9 +1367,15 @@
 
 <section class="chapter" id="cap15">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 15</div>
-    <h2 class="chapter-title">Tiago TCAR</h2>
-    <div class="chapter-role">Especialista em Tráfego e Marketing Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/TIAGO TCAR.png" alt="Tiago TCAR" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 15</div>
+      <h2 class="chapter-title">Tiago TCAR</h2>
+      <div class="chapter-role">Especialista em Tráfego e Marketing Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Vender no digital começa pela estrutura certa, que te dá liberdade para crescer sem travar no caminho. Uma estrutura que trabalha 24 horas sem parar, recuperando vendas perdidas, aumentando o ticket médio por cliente, gerando receita recorrente no automático. Vendas, conteúdos, relacionamento, gestão. Tudo conectado, tudo no mesmo lugar. Mais controle, mais previsibilidade. Eduz: a estrutura que impulsiona suas vendas no digital. Passe no estande ou escaneie o nosso QR code. Todo mundo fala sobre escala.</p>
@@ -1591,9 +1470,15 @@
 
 <section class="chapter" id="cap16">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 16</div>
-    <h2 class="chapter-title">Mesa Redonda — Rede Social vs. Rede de Interesse</h2>
-    <div class="chapter-role">Debate com múltiplos palestrantes</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 16</div>
+      <h2 class="chapter-title">Mesa Redonda</h2>
+      <div class="chapter-role">Debate com múltiplos palestrantes</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>O digital Tekar, o cara é top. O cara é bom. Rapaz, eu estou fazendo a propaganda, que eu vou falar agora de redes sociais e redes de interesse que vai mudar o seu jogo nos próximos meses. Então você pega caneta e papel que vai ser estouro. Eu vou trazer umas histórias antes, que eu gosto de essas inspirações igual do Tekar, pra você. Eu estou prometendo uma parada que vai mudar o seu jogo na rede social, então você vai anotar. E antes disso, vamos receber junto comigo, com aquela energia, com vocês, Marcos Faria, Lauro e Renata Insiglia!</p>
@@ -1698,9 +1583,15 @@
 
 <section class="chapter" id="cap17">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 17</div>
-    <h2 class="chapter-title">Elainne Ourives</h2>
-    <div class="chapter-role">Empreendedora · Especialista em Joalheria</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/ELAINE.png" alt="Elainne Ourives" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 17</div>
+      <h2 class="chapter-title">Elainne Ourives</h2>
+      <div class="chapter-role">Empreendedora · Especialista em Joalheria</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Essa recepção e eu quero que ela sinta que essa é, e de fato é, a turma mais engajada da história do SDA até hoje. Bora comigo? Com vocês, Elaine Ourives. Arrasa! Obrigada. Um prazer te receber aqui. Bom dia! Bom dia. Bom dia, bom dia. Antes deixa eu explicar meu óculos escuro pra vocês não acharem estranho. Meu look totalmente disruptivo pra Elaine que entra com vestidos esvoaçantes, mas Elaine é uma mulher com alguns procedimentos hoje escondido atrás desse óculos, mas eu não deixaria de estar nesse palco.</p>
@@ -1791,9 +1682,15 @@
 
 <section class="chapter" id="cap18">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 18</div>
-    <h2 class="chapter-title">Fernanda Sanches</h2>
-    <div class="chapter-role">Especialista em Marketing Digital</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/FERNANDA.png" alt="Fernanda Sanches" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 18</div>
+      <h2 class="chapter-title">Fernanda Sanches</h2>
+      <div class="chapter-role">Especialista em Marketing Digital</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Para vocês e por isso eu quero que vocês me ajudem a receber essa mulher também maravilhosa aqui ao palco junto comigo, pode ser? Posso contar com aquela máxima energia de vocês? Com vocês, Fernanda Sanches! Arrasa, Fer. Arrasa, manda ver, estamos juntos. Para você aqui. Bom dia! Bom dia! Que plateia mais linda. Vocês não fazem ideia como eu estou feliz de poder estar aqui pela minha terceira vez pisando nesse palco, porque esse palco é um palco de energia, porque o SDA, o Segredos da Audiência, é um verdadeiro espetáculo, onde vocês têm a oportunidade de se conectar e mudar o seu plano de visão.</p>
@@ -1870,9 +1767,15 @@
 
 <section class="chapter" id="cap19">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 19</div>
-    <h2 class="chapter-title">Dr. Lauro e Drª Renata Freire</h2>
-    <div class="chapter-role">Médicos · Empreendedores</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/LAURO E RENATA.png" alt="Dr. Lauro e Drª Renata Freire" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 19</div>
+      <h2 class="chapter-title">Dr. Lauro e Drª Renata Freire</h2>
+      <div class="chapter-role">Médicos · Empreendedores</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Quem quer muito mais aí? Quem quer muito mais? Quem está preparado pra ver o João Kepler? Uau, tem tanta gente incrível também hoje, desde Janguiê. Cara, muita gente legal que eu vou trazer aqui, João Kepler já já com a gente. E antes eu quero mostrar umas pessoas que são responsáveis por mudar a mentalidade de muita gente e crescer também em área da saúde, em área de prestadores. E eu tenho uma surpresa pra vocês. Na volta minha aqui, eu tenho uma surpresa. Inclusive, tem alguém que vem aqui também, que vocês com certeza conhecem, se não conhecer, você está muito desatualizado.</p>
@@ -1947,9 +1850,15 @@
 
 <section class="chapter" id="cap20">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 20</div>
-    <h2 class="chapter-title">João Kepler</h2>
-    <div class="chapter-role">Investidor · Empreendedor Serial</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/JOÃO.png" alt="João Kepler" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 20</div>
+      <h2 class="chapter-title">João Kepler</h2>
+      <div class="chapter-role">Investidor · Empreendedor Serial</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Senhoras e senhores, com vocês, João Keppler! Rebenva, irmão. Bora fazer acontecer. Bora. Obrigado por estar aqui. Que bom. Mais um SDA. E mais um SDA. E o último. Estou aqui para servir. Estamos juntos. Obrigado, irmão. Estou aqui para ajudar. Boa. Que bom! Beleza, obrigado, Samuel. Vamos lá, você me deu três horas. Dessa vez foram três horas que Samuel me deu. Só para saber, quem me conhece aqui, por favor, levanta a mão. Então vou embora, não adianta. Já sabe o que eu vou falar. Mas olha, hoje eu vim validar com vocês.</p>
@@ -2025,9 +1934,15 @@
 
 <section class="chapter" id="cap21">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 21</div>
-    <h2 class="chapter-title">Roberto Shinyashiki</h2>
-    <div class="chapter-role">Escritor · Médico · Palestrante Motivacional</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/ROBERTO.png" alt="Roberto Shinyashiki" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 21</div>
+      <h2 class="chapter-title">Roberto Shinyashiki</h2>
+      <div class="chapter-role">Escritor · Médico · Palestrante Motivacional</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>O China Chic! Essa música. Valeu, irmão. Obrigado. Tamo junto. Rapaz. Maravilhoso. Um dos momentos mais marcantes pra mim, foi o dia que a gente tocou guitarra aqui, "Guns N' Roses", nesse palco, a gente pulou, o China Chic falou: "Vem comigo". Pum, ele pulou, a galera segurou ele. Quem estava aqui, que me segurou. Foi muito louco esse dia. É o seguinte, Samuel, você sabe. Arrasa aí. Segura aí. Tá. Aqui tem nego, que mata o pai pra ir no baile dos órfãos. Eu falei: "Samuel". Aí depois: "Roberto, vamos fazer a palestra do rock".</p>
@@ -2088,9 +2003,15 @@
 
 <section class="chapter" id="cap22">
   <div class="chapter-header">
-    <div class="chapter-number">Capítulo 22</div>
-    <h2 class="chapter-title">Janguiê Diniz</h2>
-    <div class="chapter-role">Empresário · Fundador do Grupo Ser Educacional</div>
+    
+    <div class="speaker-photo-wrap">
+      <img src="Fotos/JANGUIÊ.png" alt="Janguiê Diniz" class="speaker-photo">
+    </div>
+    <div class="chapter-header-text">
+      <div class="chapter-number">Capítulo 22</div>
+      <h2 class="chapter-title">Janguiê Diniz</h2>
+      <div class="chapter-role">Empresário · Fundador do Grupo Ser Educacional</div>
+    </div>
   </div>
   <div class="chapter-content">
     <p>Com vocês, Janguiê Diniz! Obstinado, amor. E aí, seja bem-vindo, obstinado. Obrigado. Tudo bem? Boa noite, obstinados e obstinadas. Boa noite! Quem é obstinado levanta a mão aí e diga: "Eu!" Ou você é obstinado ou torna-se outra fora do jogo. Do jogo do sucesso, da prosperidade, da riqueza financeira. Vamos sentar? Vamos sentar. Sabe o que é ser obstinado, pessoal? Um f****o obstinado, jamais um f****o vitimizado. F****o com O e não com U. F****o obstado com O é um guerreiro, aquela pessoa que se pauta pelos princípios dos guerreiros e um deles diz o seguinte: se você estiver disposto a realizar o que é difícil, sua vida será fácil, de sucesso, de prosperidade e de riqueza financeira.</p>
@@ -2154,48 +2075,29 @@
 
 </main>
 
-<!-- Footer -->
 <footer class="footer">
   <div class="footer-logo">SDA ao Vivo 2026</div>
   <p>Segredos da Audiência · Transcrição das Palestras</p>
-  <p style="margin-top: 8px; font-size: 11px;">© 2026 · Todos os direitos reservados</p>
+  <p style="margin-top:8px;font-size:11px">© 2026 · Todos os direitos reservados</p>
 </footer>
 
-<!-- Scroll to top button -->
 <a href="#top" class="scroll-top" id="scrollTop">↑</a>
 
 <script>
-  // Sidebar toggle
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
   }
-
-  // Close sidebar when clicking a link
-  document.querySelectorAll('.toc-list a').forEach(link => {
-    link.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.remove('open');
-    });
-  });
-
-  // Scroll to top visibility
+  document.querySelectorAll('.toc-list a').forEach(l => l.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  }));
   window.addEventListener('scroll', () => {
-    const btn = document.getElementById('scrollTop');
-    if (window.scrollY > 600) {
-      btn.classList.add('visible');
-    } else {
-      btn.classList.remove('visible');
-    }
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 600);
   });
-
-  // Close sidebar on outside click
-  document.addEventListener('click', (e) => {
-    const sidebar = document.getElementById('sidebar');
-    const toggle = document.querySelector('.nav-toggle');
-    if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggle) {
-      sidebar.classList.remove('open');
-    }
+  document.addEventListener('click', e => {
+    const s = document.getElementById('sidebar');
+    if (s.classList.contains('open') && !s.contains(e.target) && !e.target.closest('.nav-toggle'))
+      s.classList.remove('open');
   });
 </script>
-
 </body>
 </html>
