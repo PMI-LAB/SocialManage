@@ -1,221 +1,239 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDA ao Vivo 2026 — Segredos da Audiência</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDA ao Vivo 2026 — Segredos da Audiência</title>
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #C9A227; --gold-light: #F0C84A; --gold-dark: #8B6914;
+  --black: #0A0A0A; --dark2: #1A1A1A;
+  --text: #E8E0D0; --text-muted: #9A8F7E;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: 'Segoe UI', system-ui, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.8; }
 
-    :root {
-      --gold: #C9A227;
-      --gold-light: #F0C84A;
-      --gold-dark: #8B6914;
-      --black: #0A0A0A;
-      --dark: #111111;
-      --dark2: #1A1A1A;
-      --dark3: #222222;
-      --text: #E8E0D0;
-      --text-muted: #9A8F7E;
-      --font-serif: Georgia, 'Times New Roman', serif;
-      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,10,.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,162,39,.2);
+  padding: 0 24px; display: flex; align-items: center;
+  justify-content: space-between; height: 56px;
+}
+.nav-brand { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.nav-toggle {
+  background: none; border: 1px solid rgba(201,162,39,.4); color: var(--gold);
+  padding: 6px 14px; font-size: 12px; letter-spacing: 1px; cursor: pointer; border-radius: 3px;
+}
+.nav-toggle:hover { background: rgba(201,162,39,.1); }
 
-    html { scroll-behavior: smooth; }
-    body { background: var(--black); color: var(--text); font-family: var(--font-sans); font-size: 16px; line-height: 1.8; }
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; top: 56px; left: 0; bottom: 0; width: 300px;
+  background: var(--dark2); border-right: 1px solid rgba(201,162,39,.15);
+  overflow-y: auto; transform: translateX(-100%);
+  transition: transform .3s; z-index: 90; padding: 20px 0;
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); padding: 0 20px 14px; border-bottom: 1px solid rgba(201,162,39,.15); margin-bottom: 6px;
+}
+.toc-list { list-style: none; }
+.toc-list li.toc-dia {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold-dark); padding: 14px 20px 4px;
+}
+.toc-list li a {
+  display: flex; align-items: center; gap: 10px; padding: 6px 20px;
+  color: var(--text-muted); text-decoration: none; font-size: 12px;
+  transition: all .2s; border-left: 2px solid transparent;
+}
+.toc-list li a:hover { color: var(--gold-light); background: rgba(201,162,39,.05); border-left-color: var(--gold); }
+.toc-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(201,162,39,.3); flex-shrink: 0; }
+.toc-photo-placeholder { width: 36px; height: 36px; border-radius: 50%; background: var(--dark2); flex-shrink: 0; }
+.toc-info { display: flex; flex-direction: column; }
+.toc-num { font-size: 9px; color: var(--gold-dark); font-weight: 700; }
+.toc-name { font-size: 12px; line-height: 1.3; }
 
-    /* ── COVER ── */
-    .cover {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 80px 40px;
-      background: radial-gradient(ellipse at 50% 30%, #1c1600 0%, #0A0A0A 70%);
-      position: relative; overflow: hidden;
-    }
-    .cover::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 20% 80%, rgba(201,162,39,.07) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(201,162,39,.07) 0%, transparent 50%);
-    }
-    .cover-logo {
-      width: 220px; max-width: 60vw; margin-bottom: 48px;
-      filter: drop-shadow(0 0 30px rgba(201,162,39,0.3));
-    }
-    .cover-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
-    }
-    .cover-title {
-      font-family: var(--font-serif); font-size: clamp(40px, 9vw, 80px);
-      font-weight: 700; color: #fff; line-height: 1.05; margin-bottom: 16px;
-    }
-    .cover-title span { color: var(--gold); }
-    .cover-subtitle {
-      font-size: clamp(14px, 2.5vw, 18px); color: var(--text-muted);
-      margin-bottom: 56px; max-width: 520px;
-    }
-    .cover-divider {
-      width: 120px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 56px;
-    }
-    .cover-meta { display: flex; gap: 56px; justify-content: center; flex-wrap: wrap; }
-    .cover-meta-item { text-align: center; }
-    .cover-meta-num {
-      font-size: 40px; font-weight: 700; color: var(--gold);
-      font-family: var(--font-serif); display: block;
-    }
-    .cover-meta-label {
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
-    }
+/* ── COVER ── */
+.cover {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 80px 40px;
+  background: radial-gradient(ellipse at 50% 30%, #1c1600 0%, #0A0A0A 70%);
+}
+.cover-logo { width: 220px; max-width: 60vw; margin-bottom: 48px; filter: drop-shadow(0 0 30px rgba(201,162,39,.3)); }
+.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.cover-title { font-family: var(--serif); font-size: clamp(40px,9vw,80px); font-weight: 700; color: #fff; line-height: 1.05; margin-bottom: 16px; }
+.cover-title span { color: var(--gold); }
+.cover-sub { font-size: clamp(13px,2vw,17px); color: var(--text-muted); margin-bottom: 48px; max-width: 500px; }
+.cover-rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 0 auto 48px; }
+.cover-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-n { display: block; font-size: 36px; font-weight: 700; color: var(--gold); font-family: var(--serif); }
+.stat-l { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
-    /* ── NAV ── */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(10,10,10,.96); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,162,39,.2);
-      padding: 0 24px; display: flex; align-items: center;
-      justify-content: space-between; height: 56px;
-    }
-    .nav-brand { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
-    .nav-toggle {
-      background: none; border: 1px solid rgba(201,162,39,.4); color: var(--gold);
-      padding: 6px 14px; font-size: 12px; letter-spacing: 1px;
-      cursor: pointer; border-radius: 3px; transition: all .2s;
-    }
-    .nav-toggle:hover { background: rgba(201,162,39,.1); }
+/* ── MAIN ── */
+.main { max-width: 800px; margin: 0 auto; padding: 80px 40px; }
 
-    /* ── SIDEBAR ── */
-    .sidebar {
-      position: fixed; top: 56px; left: 0; bottom: 0; width: 300px;
-      background: var(--dark2); border-right: 1px solid rgba(201,162,39,.15);
-      overflow-y: auto; transform: translateX(-100%);
-      transition: transform .3s ease; z-index: 90; padding: 20px 0;
-    }
-    .sidebar.open { transform: translateX(0); }
-    .sidebar-title {
-      font-size: 10px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold);
-      padding: 0 20px 16px; border-bottom: 1px solid rgba(201,162,39,.15); margin-bottom: 8px;
-    }
-    .toc-list { list-style: none; }
-    .toc-list li.toc-dia {
-      font-size: 9px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold-dark); padding: 14px 20px 4px;
-    }
-    .toc-list li a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 6px 20px; color: var(--text-muted); text-decoration: none;
-      font-size: 12px; transition: all .2s; border-left: 2px solid transparent;
-    }
-    .toc-list li a:hover { color: var(--gold-light); background: rgba(201,162,39,.05); border-left-color: var(--gold); }
-    .toc-photo {
-      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-      border: 1px solid rgba(201,162,39,.3); flex-shrink: 0;
-    }
-    .toc-info { display: flex; flex-direction: column; }
-    .toc-num { font-size: 9px; color: var(--gold-dark); font-weight: 700; }
-    .toc-name { font-size: 12px; line-height: 1.3; }
+/* ── DIA BANNER ── */
+.dia-banner {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 0 14px;
+  border-top: 2px solid var(--gold);
+  border-bottom: 1px solid rgba(201,162,39,.2);
+  margin: 48px 0 32px;
+}
+.dia-banner:first-child { margin-top: 0; }
+.dia-tag { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
+.dia-name { font-size: 10px; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase; }
 
-    /* ── MAIN ── */
-    .main { max-width: 800px; margin: 0 auto; padding: 80px 40px; }
+/* ── CHAPTER ── */
+.chapter { margin-bottom: 0; }
+.chapter-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  padding: 24px 0 16px;
+  border-top: 1.5px solid var(--gold);
+  margin-top: 4px; margin-bottom: 16px;
+}
+.chapter:first-of-type .chapter-header { border-top: none; padding-top: 0; }
+.speaker-photo {
+  width: 100px; height: 100px; border-radius: 8px; object-fit: cover;
+  border: 1.5px solid rgba(201,162,39,.4); flex-shrink: 0;
+}
+.chapter-header-text { flex: 1; }
+.cap-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 6px; }
+h2 { font-family: var(--serif); font-size: clamp(20px,3.5vw,30px); font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+.role { font-size: 12px; color: var(--text-muted); }
 
-    /* ── DIA SEPARATOR ── */
-    .dia-separator { text-align: center; padding: 80px 0 60px; position: relative; }
-    .dia-separator::before {
-      content: ''; position: absolute; top: 50%; left: 0; right: 0;
-      height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,.4), transparent);
-    }
-    .dia-label {
-      display: inline-block; background: var(--black); padding: 12px 48px;
-      font-size: 11px; font-weight: 700; letter-spacing: 6px;
-      text-transform: uppercase; color: var(--gold); position: relative;
-      border: 1px solid rgba(201,162,39,.3);
-    }
+/* ── BODY TEXT ── */
+.chapter-body p {
+  margin-bottom: 14px; color: var(--text); font-size: 15.5px;
+  line-height: 1.82; text-align: justify; hyphens: auto;
+}
 
-    /* ── CHAPTER ── */
-    .chapter { margin-bottom: 100px; padding-top: 20px; }
-    .chapter-header {
-      display: flex; align-items: flex-end; gap: 28px;
-      margin-bottom: 40px; padding-bottom: 32px;
-      border-bottom: 1px solid rgba(201,162,39,.2);
-    }
-    .speaker-photo-wrap {
-      flex-shrink: 0;
-      width: 120px; height: 120px; border-radius: 12px; overflow: hidden;
-      border: 2px solid rgba(201,162,39,.4);
-      box-shadow: 0 0 30px rgba(201,162,39,.15);
-    }
-    .speaker-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .chapter-header-text { flex: 1; }
-    .chapter-number {
-      font-size: 10px; font-weight: 700; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--gold-dark); margin-bottom: 8px;
-    }
-    .chapter-title {
-      font-family: var(--font-serif); font-size: clamp(22px, 4vw, 34px);
-      font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 10px;
-    }
-    .chapter-role { font-size: 13px; color: var(--text-muted); }
+/* ── SCROLL TOP ── */
+.scroll-top {
+  position: fixed; bottom: 28px; right: 28px; background: var(--gold); color: var(--black);
+  width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; text-decoration: none; font-size: 18px; font-weight: 700;
+  opacity: 0; transition: opacity .3s; z-index: 80;
+}
+.scroll-top.visible { opacity: 1; }
 
-    /* ── CONTENT ── */
-    .chapter-content p {
-      margin-bottom: 22px; color: var(--text); font-size: 16px;
-      line-height: 1.85; text-align: justify; hyphens: auto;
-    }
-    .chapter-content p:first-child::first-letter {
-      font-family: var(--font-serif); font-size: 4em; float: left;
-      line-height: .75; margin: .1em .08em 0 0; color: var(--gold); font-weight: 700;
-    }
+/* ══════════════════════════════════════
+   PRINT / PDF  —  tudo que o Puppeteer usa
+   ══════════════════════════════════════ */
+@media print {
+  .nav, .sidebar, .scroll-top { display: none !important; }
 
-    /* ── FOOTER ── */
-    .footer {
-      text-align: center; padding: 80px 40px;
-      border-top: 1px solid rgba(201,162,39,.2);
-      color: var(--text-muted); font-size: 13px;
-    }
-    .footer-logo { font-family: var(--font-serif); font-size: 26px; color: var(--gold); margin-bottom: 12px; font-weight: 700; }
+  @page {
+    size: A4;
+    margin: 2cm 2.5cm 2.2cm 2.5cm;
+  }
+  @page :first {
+    margin: 0;
+  }
 
-    /* ── SCROLL TOP ── */
-    .scroll-top {
-      position: fixed; bottom: 32px; right: 32px;
-      background: var(--gold); color: var(--black);
-      width: 44px; height: 44px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none; font-size: 18px; font-weight: 700;
-      opacity: 0; transition: opacity .3s; z-index: 80;
-    }
-    .scroll-top.visible { opacity: 1; }
+  html, body {
+    background: white !important;
+    color: #1a1a1a !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 10.5pt !important;
+    line-height: 1.72 !important;
+  }
 
-    /* ── PRINT ── */
-    @media print {
-      .nav, .sidebar { display: none; }
-      .main { padding: 0; max-width: 100%; }
-      .chapter { page-break-before: always; margin-bottom: 0; }
-      .cover { min-height: auto; page-break-after: always; background: white !important; }
-      .dia-separator { page-break-before: always; }
-      body { background: white; color: #111; }
-      .cover-title, .chapter-title { color: #111; }
-      .chapter-content p { color: #222; }
-      .chapter-role { color: #555; }
-      .chapter-number { color: #C9A227; }
-      .dia-label { color: #C9A227; border-color: #C9A227; background: white; }
-      .chapter-content p:first-child::first-letter { color: #C9A227; }
-      .cover-tag, .cover-meta-label { color: #555; }
-      .cover-meta-num, .cover-subtitle, .cover-title span { color: #C9A227; }
-      .footer { color: #555; }
-      .footer-logo { color: #C9A227; }
-      .speaker-photo-wrap { border-color: #C9A227; box-shadow: none; }
-      .scroll-top { display: none; }
-    }
+  /* Capa ocupa a primeira página inteira */
+  .cover {
+    page-break-after: always;
+    min-height: 0;
+    height: 100vh;
+    background: #0a0a0a !important;
+    padding: 60pt 40pt;
+  }
+  .cover-title { font-size: 46pt !important; color: white !important; }
+  .cover-title span { color: #C9A227 !important; }
+  .cover-sub { color: #9a8f7e !important; font-size: 10pt !important; }
+  .cover-tag { color: #C9A227 !important; font-size: 7.5pt !important; }
+  .cover-rule { background: #C9A227 !important; }
+  .stat-n { color: #C9A227 !important; font-size: 28pt !important; }
+  .stat-l { color: #666 !important; font-size: 7pt !important; }
 
-    @media (max-width: 600px) {
-      .main { padding: 60px 20px; }
-      .cover { padding: 60px 20px; }
-      .chapter-header { flex-direction: column; align-items: flex-start; }
-      .speaker-photo-wrap { width: 90px; height: 90px; }
-    }
-  </style>
+  /* Main sem padding excessivo */
+  .main { padding: 0 !important; max-width: 100% !important; }
+
+  /* DIA banner inline — SEM page-break próprio */
+  .dia-banner {
+    display: flex !important;
+    border-top: 2pt solid #C9A227 !important;
+    border-bottom: 0.5pt solid #d0c4a0 !important;
+    margin: 20pt 0 14pt !important;
+    padding: 10pt 0 8pt !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: white !important;
+  }
+  .dia-tag { color: #C9A227 !important; font-size: 14pt !important; }
+  .dia-name { color: #aaa !important; font-size: 7.5pt !important; }
+
+  /* Capítulos fluem sem quebra forçada */
+  .chapter { page-break-before: auto !important; break-before: auto !important; margin-bottom: 0 !important; }
+
+  /* Cabeçalho: linha dourada + título grudado ao texto */
+  .chapter-header {
+    border-top: 1.5pt solid #C9A227 !important;
+    padding: 14pt 0 8pt !important;
+    margin-top: 6pt !important;
+    margin-bottom: 8pt !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    display: block !important;
+  }
+  .chapter:first-of-type .chapter-header { border-top: none !important; }
+
+  /* Foto do palestrante */
+  .speaker-photo {
+    float: left;
+    width: 70pt !important; height: 70pt !important;
+    margin: 0 12pt 8pt 0;
+    border: 1pt solid #C9A227 !important;
+    border-radius: 6pt;
+    page-break-inside: avoid;
+  }
+  .chapter-header-text { display: block !important; overflow: hidden; }
+
+  .cap-label { font-size: 7pt !important; color: #C9A227 !important; display: block; margin-bottom: 3pt; }
+  h2 { font-size: 16pt !important; color: #0a0a0a !important; margin-bottom: 3pt !important; }
+  .role { font-size: 8pt !important; color: #777 !important; }
+
+  /* Texto denso e uniforme */
+  .chapter-body p {
+    font-size: 10.5pt !important;
+    line-height: 1.72 !important;
+    margin-bottom: 6pt !important;
+    text-align: justify !important;
+    hyphens: auto !important;
+    color: #1a1a1a !important;
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .main { padding: 60px 20px; }
+  .cover { padding: 60px 20px; }
+  .chapter-header { flex-direction: column; }
+  .speaker-photo { width: 80px; height: 80px; }
+}
+</style>
 </head>
 <body>
 
@@ -226,8 +244,7 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-title">Sumário</div>
-  <ul class="toc-list">
-    <li class="toc-dia">DIA 01</li>
+  <ul class="toc-list"><li class="toc-dia">DIA 01</li>
 <li><a href="#cap1"><img src="Fotos/SAMUEL.png" alt="Samuel Pereira" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 01</span><span class="toc-name">Samuel Pereira</span></span></a></li>
 <li><a href="#cap2"><img src="Fotos/ALFREDO.png" alt="Alfredo Soares" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 02</span><span class="toc-name">Alfredo Soares</span></span></a></li>
 <li><a href="#cap3"><img src="Fotos/PABLO.png" alt="Pablo Marçal" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 03</span><span class="toc-name">Pablo Marçal</span></span></a></li>
@@ -244,59 +261,44 @@
 <li><a href="#cap13"><img src="Fotos/MINOTOURO.png" alt="Rogério Minotouro" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 13</span><span class="toc-name">Rogério Minotouro</span></span></a></li>
 <li><a href="#cap14"><img src="Fotos/CLEYTON.png" alt="Dr. Cleyton Baeve" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 14</span><span class="toc-name">Dr. Cleyton Baeve</span></span></a></li>
 <li><a href="#cap15"><img src="Fotos/TIAGO TCAR.png" alt="Tiago TCAR" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 15</span><span class="toc-name">Tiago TCAR</span></span></a></li>
-<li><a href="#cap16"><img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 16</span><span class="toc-name">Mesa Redonda</span></span></a></li>
+<li><a href="#cap16"><img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda — Rede Social vs. Rede de Interesse" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 16</span><span class="toc-name">Mesa Redonda — Rede Social vs. Rede de Interesse</span></span></a></li>
 <li><a href="#cap17"><img src="Fotos/ELAINE.png" alt="Elainne Ourives" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 17</span><span class="toc-name">Elainne Ourives</span></span></a></li>
 <li><a href="#cap18"><img src="Fotos/FERNANDA.png" alt="Fernanda Sanches" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 18</span><span class="toc-name">Fernanda Sanches</span></span></a></li>
 <li><a href="#cap19"><img src="Fotos/LAURO E RENATA.png" alt="Dr. Lauro e Drª Renata Freire" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 19</span><span class="toc-name">Dr. Lauro e Drª Renata Freire</span></span></a></li>
 <li><a href="#cap20"><img src="Fotos/JOÃO.png" alt="João Kepler" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 20</span><span class="toc-name">João Kepler</span></span></a></li>
 <li><a href="#cap21"><img src="Fotos/ROBERTO.png" alt="Roberto Shinyashiki" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 21</span><span class="toc-name">Roberto Shinyashiki</span></span></a></li>
 <li><a href="#cap22"><img src="Fotos/JANGUIÊ.png" alt="Janguiê Diniz" class="toc-photo"><span class="toc-info"><span class="toc-num">Cap. 22</span><span class="toc-name">Janguiê Diniz</span></span></a></li>
-
-  </ul>
+</ul>
 </aside>
 
 <div class="cover" id="top">
   <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="SDA Logo" class="cover-logo">
-  <div class="cover-tag">Transcrição Oficial</div>
+  <div class="cover-tag">Transcrição Oficial · Segredos da Audiência</div>
   <h1 class="cover-title"><span>SDA</span> ao Vivo<br>2026</h1>
-  <p class="cover-subtitle">Segredos da Audiência · As melhores palestras do maior evento de marketing digital do Brasil</p>
-  <div class="cover-divider"></div>
-  <div class="cover-meta">
-    <div class="cover-meta-item">
-      <span class="cover-meta-num">22</span>
-      <span class="cover-meta-label">Palestrantes</span>
-    </div>
-    <div class="cover-meta-item">
-      <span class="cover-meta-num">2</span>
-      <span class="cover-meta-label">Dias de Evento</span>
-    </div>
-    <div class="cover-meta-item">
-      <span class="cover-meta-num">∞</span>
-      <span class="cover-meta-label">Insights</span>
-    </div>
+  <p class="cover-sub">As melhores palestras do maior evento de marketing digital do Brasil, transcritas na íntegra</p>
+  <div class="cover-rule"></div>
+  <div class="cover-stats">
+    <div class="stat"><span class="stat-n">22</span><span class="stat-l">Palestrantes</span></div>
+    <div class="stat"><span class="stat-n">2</span><span class="stat-l">Dias</span></div>
+    <div class="stat"><span class="stat-n">2026</span><span class="stat-l">Edição</span></div>
   </div>
 </div>
 
 <main class="main">
-  
-<div class="dia-separator">
-  <div class="dia-label">DIA 01</div>
+<div class="dia-banner">
+  <span class="dia-tag">DIA 01</span>
+  <span class="dia-name">SDA ao Vivo 2026</span>
 </div>
-
 <section class="chapter" id="cap1">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/SAMUEL.png" alt="Samuel Pereira" class="speaker-photo">
-    </div>
+    <img src="Fotos/SAMUEL.png" alt="Samuel Pereira" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 01</div>
-      <h2 class="chapter-title">Samuel Pereira</h2>
-      <div class="chapter-role">Fundador do SDA · Abertura do Evento</div>
+      <span class="cap-label">Capítulo 01</span>
+      <h2>Samuel Pereira</h2>
+      <p class="role">Fundador do SDA · Abertura do Evento</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Podem sentar que tem mais coisa. Agora vem o momento mais auge que eu preciso mostrar isso aqui pra vocês. Aguenta mais um? Segura, isso aqui é importante. O que se destaca nessa foto pra vocês? O amarelo. Brilha de uma vez. Um dia eu estava rolando o feed do meu Instagram. Galera, eu estou falando, você vai perder a coisa mais incrível dessa Terra nesse momento, quem sair vai se lascar por isso, estou falando sério. Eu estou rolando o feed, de repente, eu vejo um amarelo. Eu estava solteiro, estava com o radar ligado, aí de repente eu viro e falo assim: "Opa, quem que é essa mulher bonita na foto?" Tinha dois caras que eu conhecia, falei: "Mas tem uma mulher ali, quem que é essa mulher que postou?" O que me chamou a atenção, o que brilhou ali, foi o amarelo, foi o que deu destaque.</p>
+  <div class="chapter-body"><p>Podem sentar que tem mais coisa. Agora vem o momento mais auge que eu preciso mostrar isso aqui pra vocês. Aguenta mais um? Segura, isso aqui é importante. O que se destaca nessa foto pra vocês? O amarelo. Brilha de uma vez. Um dia eu estava rolando o feed do meu Instagram. Galera, eu estou falando, você vai perder a coisa mais incrível dessa Terra nesse momento, quem sair vai se lascar por isso, estou falando sério. Eu estou rolando o feed, de repente, eu vejo um amarelo. Eu estava solteiro, estava com o radar ligado, aí de repente eu viro e falo assim: "Opa, quem que é essa mulher bonita na foto?" Tinha dois caras que eu conhecia, falei: "Mas tem uma mulher ali, quem que é essa mulher que postou?" O que me chamou a atenção, o que brilhou ali, foi o amarelo, foi o que deu destaque.</p>
 <p>Eu olhei, eu estava solteiro, o radar fica ligado. Tem um negócio chamado viés cognitivo, é quando você está com o radar ligado pra algo. Você quer comprar carro verde. Aí, de repente, meu amigo, toda vez que você vê um carro verde na rua, parece que está vendo em todo lugar. Então o que acontece? Eu cheguei, abordei ela e falei: "Moça, de onde eu te conheço?" Mandei pra ela, elogiei o vestido que ela estava, em outra foto. E aí ela falou: "Do curso de oratória". Eu falei: "Pô, que legal". E aí eu virei e falei assim: "Vou chamá-la pra sair".</p>
 <p>Eu falei: "E aí, topa sair pra jantar comigo?" Aí ela falou: "Não". Aí eu virei e falei assim: "E aí, você topa ir no cinema comigo?" Aí ela falou: "Não". Aí eu falei: "Pô, vou inovar. Topa tomar açaí comigo?" Ela falou: "Não". Falei: "Topa ir no kart comigo?" Ela: "Não". Razin tem que ser vendedor. Viro e falo assim: "Menina", depois de seis meses, gente, eu virei e falei assim: "Menina, qual que é a sua última objeção pra sair comigo?" Aí ela falou: "Você lembra da sua altura versus a minha?" Naquela hora eu virei e falei assim: "Olha, eu não tenho nenhum problema se você é uma girafinha, está tudo bem pra mim".</p>
 <p>Resultado, ela gostou, saiu comigo, o resultado está aqui. A nossa família, nossos bebês estão chegando aí já já. Eu gosto de contar essa história porque eu estava com um amigo no Vale do Silício, chegou a namorada dele, bem mais alta que ele, uma modelo, e eu viro e falo assim: "Amigo, você não se incomoda?" Olha a pergunta que eu fiz pra ele. "Você não se incomoda de namorar uma mulher tão mais alta que você?" Olha a minha pergunta, minha pergunta já dizia o que eu estava pensando. "Você não se incomoda?" Naquela hora ele virou e falou assim: "Não, eu acho da hora".</p>
@@ -361,24 +363,18 @@
 <p>E daqui a um ano, se você não começar, você vai querer ter começado hoje. O maior incentivo que eu tenho para vocês: foquem, presença, poder do agora. O que é o poder do agora? É a junção de três coisas. A pessoa que está na sua frente, no momento que a pessoa está na sua frente, ela é a pessoa mais importante. Você está jantando com sua esposa, é a pessoa mais importante nesse momento. Está no celular, não vai dar certo. Eu estou agora na frente de vocês. Quem é a pessoa mais importante que vocês têm que ouvir agora?</p>
 <p>Eu. Quando eu chamar alguém aqui, um palestrante. Ele. Cara, foca, o poder do agora é a pessoa que está na sua frente, a situação que você está vivendo, essa energia aqui dentro do SDA, essa vibração, esse mindset de vocês começar a mudar e essa vibração toda. E depois é o local. Não se perca nos horários, estejam focados, estejam 100% no SDA, porque a gente está trabalhando com muito suor para entregar uma transformação para vocês e a gente fazer o melhor SDA da história até hoje. Bora. Então vou fazer alguns combinados com vocês.</p>
 <p>Agora, a gente vai voltar. Calma, não levanta. A gente tem uma hora e meia de almoço. Eu preciso pedir para vocês, a gente vai ter uma hora e meia, ou seja, a gente vai voltar, vai abrir um pouco antes para o platinum, para o black, para o VIP, e a gente vai voltar aqui dentro da plenária 14h10. Beleza? Esse é o nosso horário. Recado importante: levem todos os seus pertences, o que ficar vai ser recolhido e vai ser levado no achados e perdidos. E a gente vai voltar com muito mais e se prepara. Quem está preparado para mais fala "eu"!</p>
-<p>Eu!</p>
-  </div>
+<p>Eu!</p></div>
 </section>
-
 <section class="chapter" id="cap2">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/ALFREDO.png" alt="Alfredo Soares" class="speaker-photo">
-    </div>
+    <img src="Fotos/ALFREDO.png" alt="Alfredo Soares" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 02</div>
-      <h2 class="chapter-title">Alfredo Soares</h2>
-      <div class="chapter-role">Empreendedor · Especialista em Gestão</div>
+      <span class="cap-label">Capítulo 02</span>
+      <h2>Alfredo Soares</h2>
+      <p class="role">Empreendedor · Especialista em Gestão</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Eu quero chamar um cara que eu gosto muito, ele construiu uma empresa gigantesca, construiu muitos resultados, eu já conheço ele há algum tempo, o cara é um gerador de resultado e eu acho que muita gente conhece ele aqui. Ele entende muito de "social media", ele entende muito de crescimento em redes sociais e eu quero que vocês recebam ele com uma energia, que a gente vai fazer um bate-papo, um talk incrível aqui. Eu posso contar com vocês para receber ele muito bem aqui? Sim! Pode ser? Com vocês, Alfredo Soares!</p>
+  <div class="chapter-body"><p>Eu quero chamar um cara que eu gosto muito, ele construiu uma empresa gigantesca, construiu muitos resultados, eu já conheço ele há algum tempo, o cara é um gerador de resultado e eu acho que muita gente conhece ele aqui. Ele entende muito de "social media", ele entende muito de crescimento em redes sociais e eu quero que vocês recebam ele com uma energia, que a gente vai fazer um bate-papo, um talk incrível aqui. Eu posso contar com vocês para receber ele muito bem aqui? Sim! Pode ser? Com vocês, Alfredo Soares!</p>
 <p>Oi, tudo bem. Se não der, fala juntinho. Esse negócio é na fé. E aí, galera, tudo bem? Bom dia. Bom dia. Bom dia. Quem conhece o G4 aí? Deixa eu ver. Quem já ouviu falar do Alfredo? Você imagina o quanto eu não sou grato pelo conteúdo desse cara na internet. Quando eu comecei a produzir conteúdo lá em 2014, 2015, eu já seguia esse cara. E muito do que ele falava lá, de graça, era o que eu aprendia e colocava em prática na época da XTech. Hoje, está tendo evento do club, que é o grupo lá do G4, é o produto mais caro do G4 no Rio de Janeiro.</p>
 <p>Começou ontem. E eu não fui para estar aqui hoje com você. Olha, galera. Obrigado, irmão. Vê se o cara não está com moral. Estamos juntos. Estamos juntos, irmão. Boa! Muito bom. E tem uma história legal do SDA, que eu comecei a palestrar em evento, comecei a criar autoridade no mercado e comecei a falar em vários eventos, em vários lugares. E eu fiz uma lista de todos os eventos que eu via e que eu tinha a vontade de estar no palco, de palestrar, e o SDA era um desse. Eu liguei pro Samu com o Di, você me convidou para ir falar no mastermind, eu fui lá falar sobre negócio e vendas, e aí eu virei para ele e falei no camarim assim: "E o SDA, irmão, tu não vai me chamar não?</p>
 <p>O que está rolando?". Aí ele falou: "Não, no próximo tu vai". É, se eu não falar... Aí quando eu vi ele falando que era o último. Eu acho que isso aí foi gatilho para todo mundo ligar para ele e falar: "Não, o último, não, irmão. Quero estar no próximo". Ele está duvidando até agora. Ontem no telefone: "Não é possível". Eu não acreditei ainda. Está escrito já, então não tem jeito, não tem volta. Pior que eu sei que tu tem coragem, esse é o problema. Como eu não tenho coragem. Cara, é um prazer estar aqui com você, Alfredo.</p>
@@ -423,24 +419,18 @@
 <p>Como eu falei para vocês, eu sou um cara que quem me acompanha, quem me conhece, eu sou muito grato, e eu sou muito grato por ele, pelo conteúdo dele. Eu e ele fizemos mil peripécias para poder conseguir estar aqui, agradecer o Marçal também que conseguiu ajustar o horário. A mensagem final para vocês, eu acho que eu vou falar para vocês aproveitarem esses três dias. Tem coisas que você não aprende em livro, não aprende em stories, que é essa atmosfera, que é ambição e visão. Eu tenho certeza absoluta que com o conteúdo e o lineup que esse cara preparou e toda a estruturação dele, organização dele, da esposa dele, vocês vão ter um conteúdo estruturado ao longo desses três dias, que vocês vão sair daqui com muita coisa para colocar em prática.</p>
 <p>Quando vocês anotarem, anotem tudo com o número um, dois e três de complexidade e impacto de operação do teu negócio. Ninguém veio aqui escrever um livro, vocês vieram aqui e um insight já valeu a pena. Então se organizem, foquem no evento, tentem se manter longe do celular enquanto está tendo conteúdo relevante e eu tenho certeza que vocês vão sair daqui com muito mais ambição, com muito mais clareza, com muito mais visão do negócio de vocês e de como vocês vão usar a audiência para gerar valor para o negócio e para a vida de vocês.</p>
 <p>Tem uma frase que eu ouvi no IPO quando a gente abriu capital na bolsa, que é muito poderosa: "Tenha mais paixão pelo futuro que orgulho do passado". Uau! Eu espero que vocês saiam desses três dias aqui, mais apaixonados pelos próximos 10 anos do negócio de vocês, do que orgulhosos dos últimos anos do negócio de vocês. Uau! Obrigado! Obrigado pelo carinho. Bora vender, estamos juntos. Bora vender. E aproveita esse cara incrível aí. Tamo junto. Obrigado, irmão. Estamos juntos, irmão. Obrigado. Olha só, tem um presente para você.</p>
-<p>É chique. Cuidado que vai cair, se virar assim. Cara, não acaba com esse v***o. Tamo junto, irmão. Boa, galera. Bom demais.</p>
-  </div>
+<p>É chique. Cuidado que vai cair, se virar assim. Cara, não acaba com esse v***o. Tamo junto, irmão. Boa, galera. Bom demais.</p></div>
 </section>
-
 <section class="chapter" id="cap3">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/PABLO.png" alt="Pablo Marçal" class="speaker-photo">
-    </div>
+    <img src="Fotos/PABLO.png" alt="Pablo Marçal" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 03</div>
-      <h2 class="chapter-title">Pablo Marçal</h2>
-      <div class="chapter-role">Coach · Empresário · Influenciador Digital</div>
+      <span class="cap-label">Capítulo 03</span>
+      <h2>Pablo Marçal</h2>
+      <p class="role">Coach · Empresário · Influenciador Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Vocês já estão anotando aí? Já estão pegando todas as anotações? Sim ou não? "Rapaz, o que ele falou é ouro, o que ele está falando de distribuição de conteúdo é ouro, o que ele trouxe aqui, pega esse insight". IA, a gente vai falar muito. Depois do nosso palestrante que eu vou chamar agora, eu vou trazer um conteúdo de IA que me fez ficar mais de um mês sem dormir direito. Vocês vão ficar pirados com o que eu vou mostrar aqui pra vocês. Então se prepara, porque antes eu vou trazer esse grande amigo, um grande nome, que eu acredito que é a quarta vez que está conosco.</p>
+  <div class="chapter-body"><p>Vocês já estão anotando aí? Já estão pegando todas as anotações? Sim ou não? "Rapaz, o que ele falou é ouro, o que ele está falando de distribuição de conteúdo é ouro, o que ele trouxe aqui, pega esse insight". IA, a gente vai falar muito. Depois do nosso palestrante que eu vou chamar agora, eu vou trazer um conteúdo de IA que me fez ficar mais de um mês sem dormir direito. Vocês vão ficar pirados com o que eu vou mostrar aqui pra vocês. Então se prepara, porque antes eu vou trazer esse grande amigo, um grande nome, que eu acredito que é a quarta vez que está conosco.</p>
 <p>É uma honra, quando ele chegou aqui, ele falou: "Uau, isso aqui é Hollywood". Eu lembro da frase dele falar isso. E ele fala que eu sou muito contido na hora de falar. Tem gente que gosta, tem gente que não gosta. Esse cara, tem gente que fala assim: "Louco é diferente, louco é quem não dá resultado". Quando tem resultado, todo mundo admira. E eu quando vi esse cara, desde 2018, eu falei: "É um cara diferenciado, que vai chegar num lugar muito grande". Eu acredito que vai ser até presidente do nosso país em algum momento.</p>
 <p>Mas deixa eu falar uma coisa. A mente desse cara e o quanto ele cria. Cara, pega insight pra aprender. Pega insight, esteja aberto, seja realmente um livro aberto, porque vai te chacoalhar aqui, vai te colocar numa frequência, numa vibração. Eu admiro a inteligência, o raciocínio, o quanto fez transformação em tantas pessoas e eu quero que vocês recebam com muita energia. Pode ser? Vamos? Com o que destrava a galera. Com vocês, Pablo Marçal. Eaê! Fala, Samuca! Tudo bom, trindão? Fala, gente, tudo bem com vocês?</p>
 <p>Arrasa! Ele falou que eu fui contido. Não, arrebenta. Esse cara aqui, absurdo. Esse é o último segredo da audiência, posso definitivamente contar o segredo? Pode, conta o segredo, total. Estamos juntos, irmão. É nós. Podem tomar seus lugares. E aê! Estamos juntos. Vai chegar a hora. Essa luz está forte, não consigo nem ver a plateia, p***a. Tem gente lá em cima? A luz não deixa eu enxergar. Agora está mais ou menos. E aí? O que vocês querem? Vocês querem uma palestra? Quer aula? O que vocês estão buscando? Quer segredo.</p>
@@ -531,24 +521,18 @@
 <p>Segundo, se fosse um picareta, ele nunca importa pelo que está devendo, o honesto preocupa o tempo inteiro. E é esse o problema do honesto. O honesto precisa ser honesto com ele mesmo, se ele ficar pensando isso o tempo inteiro, ele não dá conta de reerguer. Agora, conto pra audiência. Aconteceu isso, eu quebrei e vocês vão participar de uma jornada, a jornada de todo brasileiro, como reconstruir a própria vida. E aí você começa a colocar o marco zero. Quebrei por isso. E aqui eu quero ser o pioneiro na vida de vários brasileiros a entender como é que faz pra resolver isso.</p>
 <p>Primeira coisa: tem que tirar essa energia de que você está devendo o tempo inteiro. Não é agiota que você está devendo. Se for agiota, irmão, aí você arrumou. Não sendo agiota, você tem que colocar na cabeça o seguinte: vamos reconstruir essa jornada. Sabe por quê? Está todo mundo aqui, pelo menos sete a cada 10 estão devendo. Então dívida não é tão assustador, é só olhar pro lado. Você olha pro lado, a pessoa está sorrindo ainda, está tudo certo. Os maiores países, o povo mais rico do mundo são os que mais devem.</p>
 <p>Dívida tem duas: dívida por alavancagem, pra crescimento e dívida de consumo. Você quebrou por causa de dívida de consumo? A pergunta é: como é que você chama? Omar. Omar, você não quebrou. Só quebra o dono, emocionalmente. Empresas não quebram. Você teve um negócio mal sucedido, você estava jogando no tabuleiro, alguém te obrigou a voltar pra casa um. É só continuar jogando. Não desanime, documente tudo e essa vai ser uma grande reviravolta. Essa história vai sair em livro, vai sair em mentoria, vai ser um monte de coisa.</p>
-<p>Muita gente precisa dessa história. Vai firme. Boa! Senhoras e senhores, Pablo Marçal. Valeu, gente. 40 minutos pra falar nada. Show. Obrigado. Tamo junto. Até depois do fim. Sai de let. Tchau, gente.</p>
-  </div>
+<p>Muita gente precisa dessa história. Vai firme. Boa! Senhoras e senhores, Pablo Marçal. Valeu, gente. 40 minutos pra falar nada. Show. Obrigado. Tamo junto. Até depois do fim. Sai de let. Tchau, gente.</p></div>
 </section>
-
 <section class="chapter" id="cap4">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/SAMUEL.png" alt="Samuel Pereira — IA no Marketing" class="speaker-photo">
-    </div>
+    <img src="Fotos/SAMUEL.png" alt="Samuel Pereira — IA no Marketing" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 04</div>
-      <h2 class="chapter-title">Samuel Pereira — IA no Marketing</h2>
-      <div class="chapter-role">Inteligência Artificial Aplicada ao Marketing</div>
+      <span class="cap-label">Capítulo 04</span>
+      <h2>Samuel Pereira — IA no Marketing</h2>
+      <p class="role">Inteligência Artificial Aplicada ao Marketing</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>E aí, aguenta mais um? Podem sentar. Uau, que incrível! Fala sério. O Kaká falando isso e eu relembrando aqui cada coisa que já aconteceu aqui no SDA. Eu já fui criticado, você não tem ideia, a primeira vez que eu resolvi terminar um SDA fazendo uma oração. Eu tive um amigo que um dia me ligou e falou assim: "Samuel, você precisa falar mais do que você vive". E um dia eu senti no coração, contei meu testemunho, eu posso até falar melhor isso no domingo, que eu tenho testemunho de vida. E quando eu falei, contei e terminei orando pra Deus proteger a galera e tudo mais.</p>
+  <div class="chapter-body"><p>E aí, aguenta mais um? Podem sentar. Uau, que incrível! Fala sério. O Kaká falando isso e eu relembrando aqui cada coisa que já aconteceu aqui no SDA. Eu já fui criticado, você não tem ideia, a primeira vez que eu resolvi terminar um SDA fazendo uma oração. Eu tive um amigo que um dia me ligou e falou assim: "Samuel, você precisa falar mais do que você vive". E um dia eu senti no coração, contei meu testemunho, eu posso até falar melhor isso no domingo, que eu tenho testemunho de vida. E quando eu falei, contei e terminei orando pra Deus proteger a galera e tudo mais.</p>
 <p>Só que esse amigo me ligou antes e falou: "Mas vai ter gente que vai sair da sua vida e vai ter gente nova que vai entrar". E dito e feito. Você não tem noção de pessoas que falaram assim: "Nunca mais fala comigo". Porque eu tinha feito uma oração aqui no SDA. Olha que loucura. Eu já tive um problemão uma vez quando eu confirmei um pastor no SDA, o André Fernandes, quem conhece? Eu confirmei ele, teve gente que ficou mais bravo que quando confirmou o Marçal. Que doideira, mas cada um na sua fé. Mas eu acho que é muito legal ver o quanto de história que a gente já passou nesses 12 mais um ano de SDA. 12 mais um ano de SDA.</p>
 <p>E tantas coisas incríveis, tantas vidas transformadas. Eu acho que talvez hoje você chegou aqui, tem muita gente que não tinha nem noção do que era isso, SDA, e quando chega aqui, fala: "Caraca". Eu ouvi uma história, não sei quem que é, que parece que ligou pro sócio de Minas Gerais e virou e falou assim, comprou o ingresso agora e falou: "Você tem que estar aqui amanhã". O pessoal me contou essa história, não sei se quer se manifestar, se está aqui ainda. Foi você? Você ligou pro sócio e falou: "Você tem que vir".</p>
 <p>Foi você? A sua esposa? Estava em Minas Gerais? Estava voltando pra Minas. Estava voltando pra Minas, você falou: "Não vai, não". Olha só que legal. Cara, é muito massa isso, e o que a gente quer aqui, é que durante o SDA, esses três dias sejam disruptivos na sua vida e no seu negócio. Sejam disruptivos no seu negócio e na sua vida. Esses insights, esse mindset que você está pegando, que seja disruptivo pra você aplicar, porque é a energia que a gente está trazendo, não só técnico, não só estratégia, mas essa energia.</p>
@@ -593,24 +577,18 @@
 <p>É a gente que tem que escolher. Faz sentido pra vocês? A partir de agora, e você pisou aqui dentro do SDA, você está nesse primeiro dia pro SDA, você está aqui pra fazer resultado, pra fazer transformação. E olha, confia em mim, confia na gente, em todo mundo que está pisando, porque a gente está aqui pra entregar nosso melhor. E hoje foi apenas 10%, beleza? Falta 90% ainda. E eu não quero ver ninguém cansado. Esse é o SDA mais engajado de todos. Já estou falando. Como vai acontecer? Amanhã a gente vai começar com uma atração bala, mas um cara, nível, pra você ter noção, o cara tem avião intercontinental.</p>
 <p>É um nível de riqueza e prosperidade também, por causa do que ele faz, o tanto que ele é inteligente e bom. Amanhã, às 09h, a gente vai começar a abrir um pouco antes, 08:45, já começa a abrir pros platinos e tudo mais. E quem é platinum, inclusive, hoje a gente tem um coquetel. Vocês ficam na sala, platinums e blacks, que o pessoal vai te direcionar. Tem um presente pra vocês que é platinum. Amanhã, pouco antes da volta do almoço, eu vou trazer vocês pros bastidores. E a gente vai ter um momento de conversa comigo ali de uns 20 minutos, pode ser?</p>
 <p>Topa? Vai ser o momento da gente fazer um bate-papo junto ali, de vocês entrarem nos bastidores e entenderem algumas coisas amanhã ainda. Dá pra fazer o upgrade, você fala com a Ju, no balcão da experience. E hoje a gente tem o coquetel nosso. E gente, amanhã, 09h, não esqueça os pertences, senão vai ficar no achados e perdidos, não tem como deixar pertences ainda. E gente, agora nós vamos ter momento de confraternização do coquetel. E gente, faça network, conecta com as pessoas. Tem gente do Brasil inteiro, gente f**a de todo lugar.</p>
-<p>Bora fazer acontecer. E o SDA só começou e tem 90% ainda, beleza? Bora, galera! Até amanhã.</p>
-  </div>
+<p>Bora fazer acontecer. E o SDA só começou e tem 90% ainda, beleza? Bora, galera! Até amanhã.</p></div>
 </section>
-
 <section class="chapter" id="cap5">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/MICHA.png" alt="Micha Menezes" class="speaker-photo">
-    </div>
+    <img src="Fotos/MICHA.png" alt="Micha Menezes" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 05</div>
-      <h2 class="chapter-title">Micha Menezes</h2>
-      <div class="chapter-role">Especialista em Conteúdo Digital</div>
+      <span class="cap-label">Capítulo 05</span>
+      <h2>Micha Menezes</h2>
+      <p class="role">Especialista em Conteúdo Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Eu quero que vocês recebam um dos maiores nomes do digital também, que se posicionou, ensina muito sobre conteúdo, crescimento no digital. Quem gostaria de crescer mais no digital aqui? Quem gostaria de mais audiência? Segundo o Pablo, botou terror em vocês. Quem gostou da palestra do Pablo aqui, levanta a mão. Quem gostou do Alfredo? Quem gostou do que eu falei de A? Alguém ficou impactado com o que eu falei de A? Alguém ficou? Falei, ficou impactado? Então calma que tem mais. Então agora quero que vocês recebam esse cara que é gigante no mercado e está ficando mais forte ainda, mais gigante, vocês vão perceber.</p>
+  <div class="chapter-body"><p>Eu quero que vocês recebam um dos maiores nomes do digital também, que se posicionou, ensina muito sobre conteúdo, crescimento no digital. Quem gostaria de crescer mais no digital aqui? Quem gostaria de mais audiência? Segundo o Pablo, botou terror em vocês. Quem gostou da palestra do Pablo aqui, levanta a mão. Quem gostou do Alfredo? Quem gostou do que eu falei de A? Alguém ficou impactado com o que eu falei de A? Alguém ficou? Falei, ficou impactado? Então calma que tem mais. Então agora quero que vocês recebam esse cara que é gigante no mercado e está ficando mais forte ainda, mais gigante, vocês vão perceber.</p>
 <p>E eu quero que vocês, de pé, junto comigo, recebam esse grande nome. Com vocês, Micha Menezes. Meu irmão, arrasa. Está grande. Arrasa, irmão. Obrigado, Samuel. Acho que é a segunda vez, é a mesma coisa. Segunda vez. Segunda vez. Mineiro. Atleticano. Atleticano sensacional. E aê, todo mundo bem? Comeram bem, sim ou não? Sim. Gente, é engraçado que em São Paulo a gente acha que come pão de queijo. Eu sou mineiro. Vocês acham que vocês comem pão de queijo, mas vocês comem pão de polvilho. É verdade ou mentira, quem é mineiro, que já comeu?</p>
 <p>Quando vocês forem pra Minas Gerais, vocês vão entender o que eu estou falando. Eu moro no melhor lugar do planeta, que é Belo Horizonte, porque o mineiro, melhor comida, gente boa, só gente bonita. Ainda bem que a gente não tem mais, por quê? Se a gente tivesse mais, a gente ia ser insuportável. Então Deus não dá asa a cobra. Estou muito feliz de estar aqui pela segunda vez, no encontro de despedida. Não, vou de novo, pro Samuel acreditar. No encontro de despedida. Estou muito feliz de estar aqui, de verdade.</p>
 <p>E o Samuel é um cara que eu admiro muito, eu conheço ele há muito tempo, eu estou no mercado digital já há 10 anos e é engraçado que todo mundo que passa pela vida do Samuel, prospera. Verdade ou mentira? Verdade. Não tem como você estar perto do Samuel e não prosperar. O cara tem muitas conexões, ele tem sempre uma palavra de motivação. Ele me ligou uns três, quatro meses atrás, pelo número secreto, porque ele tem um número secreto. Ele me ligou pelo número secreto, Samuel Pereira secreto, eu falei: "Cara, será que aconteceu alguma coisa?" Atendi o telefone, e quando a gente está conversando, a gente fala de negócio, sempre vem aquele pensamento: "Poxa, será que ele vai pedir alguma coisa?" E eu esperando ele pedir, ele só me ligou pra poder saber se eu estava bem, como que estava a família.</p>
@@ -685,24 +663,18 @@
 <p>Eu sou muito fã do Samuel e tudo que o Samuel oferecer pra vocês, comprem, porque o cara é 10. Eu tinha um sonho de estar nesse palco. E só Deus sabe como eu desejei estar nesse palco. E eu só subi aqui na primeira vez, há dois anos atrás, três anos atrás, não lembro, porque eu não desisti no meio do caminho. Se você continuar, "começa e para. Eu não sei se vai dar certo. Eu vou parar". A vida vai continuar do mesmo jeito, você vai passar pelos mesmos problemas. Agora, o que será que vai acontecer se você não desistir?</p>
 <p>Gente, eu já quebrei várias vezes, subi, desci, ganhei dinheiro, perdi dinheiro, ascendi, descendi. Gente, mas todos os dias eu olho pra essa frase e penso: eu quero ver o que acontece se eu não desistir. Eu tenho uma visão muito forte sobre como vai ser a parte final da minha vida, 70 e tantos anos. Eu vou estar lá em Minas Gerais, porque eu não vou me render ao Alfaville de forma alguma. Vou estar lá em Minas Gerais, de frente pras montanhas, na Lagoa dos Ingleses, a cama lotada, de filho, de neto, e tal.</p>
 <p>Vai chegar o Alfred, que vai ser o meu mordomo, vai bater na taça. "Tin, tin, tin. Pessoal, vamos sentar à mesa, porque o vovô Misha vai contar as histórias da vida". Aí vai vir todos os filhos, os netos, árvore de Natal lotada e eu vou poder contar pra eles que a nossa família venceu porque eu não desisti. Eu quero ver o que acontece se eu não desistir. Eu confio em vocês. Eu confio no seu potencial. Só faça a sua parte. Senhoras e senhores, eu sou Misha Menese, muito obrigado a todos vocês. Parabéns, man.</p>
-<p>Arrasou. Obrigado. Senhoras e senhores, Misha Menese. Maravilhoso. Obrigado. Obrigado, irmão. Valeu. Maravilhoso, rapaz do céu. Que incrível. Quem está gostando aí? Uau! Ei, Davizinho, cadê você aí?</p>
-  </div>
+<p>Arrasou. Obrigado. Senhoras e senhores, Misha Menese. Maravilhoso. Obrigado. Obrigado, irmão. Valeu. Maravilhoso, rapaz do céu. Que incrível. Quem está gostando aí? Uau! Ei, Davizinho, cadê você aí?</p></div>
 </section>
-
 <section class="chapter" id="cap6">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/NATALIA.png" alt="Nathalia Beauty" class="speaker-photo">
-    </div>
+    <img src="Fotos/NATALIA.png" alt="Nathalia Beauty" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 06</div>
-      <h2 class="chapter-title">Nathalia Beauty</h2>
-      <div class="chapter-role">Criadora de Conteúdo · Empreendedora Digital</div>
+      <span class="cap-label">Capítulo 06</span>
+      <h2>Nathalia Beauty</h2>
+      <p class="role">Criadora de Conteúdo · Empreendedora Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Vocês sabem uma coisa que ela virou e falou para mim? A gente estava em uma palestra junto lá em Porto Alegre, ela virou e falou assim: "Eu amo falar no SDA, porque o público lá me recebe tão bem". E eu falei: "Uau!" Então eu quero que essa seja a edição mais engajada de todas e a mais engajada que ela já veio. Vamos lá comigo chamar ela? Com vocês, Nathalia Beauty. Toda vez antes de entrar no palco, eu fico assim, meu coração. Vocês imaginam o que é estar aqui de pijama? Porque não é só estar aqui. Tem o pijama.</p>
+  <div class="chapter-body"><p>Vocês sabem uma coisa que ela virou e falou para mim? A gente estava em uma palestra junto lá em Porto Alegre, ela virou e falou assim: "Eu amo falar no SDA, porque o público lá me recebe tão bem". E eu falei: "Uau!" Então eu quero que essa seja a edição mais engajada de todas e a mais engajada que ela já veio. Vamos lá comigo chamar ela? Com vocês, Nathalia Beauty. Toda vez antes de entrar no palco, eu fico assim, meu coração. Vocês imaginam o que é estar aqui de pijama? Porque não é só estar aqui. Tem o pijama.</p>
 <p>Nossa, e eu adoro esse evento. Quando o Samuca me chamou de novo, eu falei: "Com certeza". É um dos eventos que eu sinto a atmosfera mais animada, mais alegre, entusiasmada. Maravilhosos. Eu tenho uma colaboradora muito antiga que está comigo, maravilhosa, e ela fala algo muito poderoso. Ela fala que Pix gosta de entusiasmo. Não é? Cara, o dinheiro ama a energia da felicidade, do entusiasmo. E reparem, as pessoas mais bem-sucedidas que vocês vão conhecer são muito entusiasmadas. Com a vida, com o trabalho, com tudo.</p>
 <p>Pessoas felizes. Não enchem o saco também. O que é muito bom. Quem aqui já viu uma palestra minha, só para eu saber? Olha, nossa, gente, que legal ter vocês aqui de novo. Eu trouxe muito da minha trajetória. Eu acho muito importante trazer história e reforçar no nosso coração tudo quanto é possível, a gente sair de uma situação muito difícil, não aceitar aquela situação como algo definitivo na nossa vida e mudar a partir disso. Eu passei muito por isso e a minha trajetória empreendedora foi marcada por ser apaixonada por muitos problemas.</p>
 <p>A gente quando começa a empreender, e isso contribuiu muito até para eu criar movimento de marca, para tudo, olhar muito para o problema que eu tenho que resolver. Então eu comecei a fazer sobrancelha justamente por querer resolver um problema que nem era meu. Se eu não tivesse ido para resolver esse problema ou tivesse essa boa vontade, eu jamais estaria aqui. Jamais. Talvez eu estivesse lá ainda na recepção, no caixa. Nada contra. Mas eu reforço a importância de a gente olhar para os problemas com carinho, com paixão.</p>
@@ -778,24 +750,18 @@
 <p>E daí vem criar estratégia de conteúdo, pra onde vai sair, criar narrativas, mas sempre baseado nisso. E quando eu falo projeto social marca, a gente tem muito forte na empresa os projetos sociais, que é reconstrução de aréola, desde que eu comecei. A gente atende mulheres que passaram pelo câncer de mama e fizeram a mastectomia, de graça nas clínicas. A gente doa prótese de aréola. Na educação também. A gente vai na penitenciária feminina todos os meses, que é a segunda maior da América Latina ou a maior, se eu não me engano.</p>
 <p>E lá, muitas mulheres que passam, voltam pra lá, não têm oportunidade. O que a gente começou a fazer há dois anos? Quase três, já. A gente dá curso pra elas gratuito lá na penitenciária todos os meses. Então hoje eu recebo muita mensagem, o que faz com que eu tenha mais força pra continuar, de mulheres que estavam lá, fizeram o curso e hoje trabalham com sobrancelha, não voltaram pro crime, não estão em relacionamento abusivo e conseguiram mudar sua realidade. Então pra mim, uma marca não faz sentido se não for para marcar.</p>
 <p>O que é uma marca? Cria marca, gera marca, qual é a marca que a minha marca está deixando nas pessoas? Para que a minha marca veio? Só pra ter lucro? Não é, gente. Olha pro propósito, olha pra vocês. A gente está numa posição muito privilegiada de poder ajudar e não de pedir ajuda. Só o fato de não estar na posição de pedir ajuda, já coloca a gente como uma ferramenta de ajuda pras pessoas. Então sempre, até hoje, eu busco como eu posso impactar mais pessoas positivamente. E pra finalizar, não podia deixar, mas eu tenho que passar um vídeo pra vocês verem como é importante, como é maravilhoso poder ver o nosso trabalho, fazendo outras pessoas felizes.</p>
-<p>Bora lá? Você viu? Assim de novo. Eu não tinha nada. É muito importante você saber que você pode se ver. Devolve uma parte. Aê, gente! E aqui eu me despeço de vocês. Muito obrigada. E brilhem muito e façam brilhar outras pessoas, que é o mais importante. Uau, Nati, obrigado. Maravilhosa. Obrigado, Nati. Obrigada! Incrível! Uma salva de palmas,</p>
-  </div>
+<p>Bora lá? Você viu? Assim de novo. Eu não tinha nada. É muito importante você saber que você pode se ver. Devolve uma parte. Aê, gente! E aqui eu me despeço de vocês. Muito obrigada. E brilhem muito e façam brilhar outras pessoas, que é o mais importante. Uau, Nati, obrigado. Maravilhosa. Obrigado, Nati. Obrigada! Incrível! Uma salva de palmas,</p></div>
 </section>
-
 <section class="chapter" id="cap7">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/OSCAR.png" alt="Oscar Balbino" class="speaker-photo">
-    </div>
+    <img src="Fotos/OSCAR.png" alt="Oscar Balbino" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 07</div>
-      <h2 class="chapter-title">Oscar Balbino</h2>
-      <div class="chapter-role">Especialista em Tecnologia e IA</div>
+      <span class="cap-label">Capítulo 07</span>
+      <h2>Oscar Balbino</h2>
+      <p class="role">Especialista em Tecnologia e IA</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Rapaz, eu quero ver maior energia, pode ser? Posso contar com vocês? Com vocês, Oscar Balbino! Rapaz. São três dias, se eu tenho energia pra um, tenho pra três. Então vamos nosso melhor. Eu estou falando pro Oscar, tem um mês que eu estou dando um spoi- Ele está fazendo esse sig há muito tempo, eu não faço ideia. Eu falei que vou preparar agora pra ele. Gente, eu vou fazer uma coisa de coração aqui pra você. Tá. É uma surpresa que eu tenho pra você, é um presente. Eu sei que a gente estava viajando lá, nossa Golf Trip, você estava doido pra olhar isso.</p>
+  <div class="chapter-body"><p>Rapaz, eu quero ver maior energia, pode ser? Posso contar com vocês? Com vocês, Oscar Balbino! Rapaz. São três dias, se eu tenho energia pra um, tenho pra três. Então vamos nosso melhor. Eu estou falando pro Oscar, tem um mês que eu estou dando um spoi- Ele está fazendo esse sig há muito tempo, eu não faço ideia. Eu falei que vou preparar agora pra ele. Gente, eu vou fazer uma coisa de coração aqui pra você. Tá. É uma surpresa que eu tenho pra você, é um presente. Eu sei que a gente estava viajando lá, nossa Golf Trip, você estava doido pra olhar isso.</p>
 <p>Tá. E o Oscar, no casamento dele, um cara sacaneou ele, X Paia. O cara foi lá e deu um relógio para ele, só que era falso. P**a sacanagem. Eu falei: "Coitado, Oscar". Mas, meu irmão, eu preparei aqui pra você, há dois anos eu estava esgueirando esse aqui, foi um grande amigo nosso também. Isso aqui é um presente pra você, é o seu primeiro Rolex, Oscar. Olha só, é o seu primeiro Rolex aí. Pra você usar, pra você arrebentar, você merece. C*****o! No SDA nos ajudou muito, gera muito valor. Nosso maior vendedor aí, Jacques Montoro, ligou pra gente lá.</p>
 <p>Rapaz, não tem noção. Você merece. Precisa chorar não, está bom. Meu Deus! Presente pra você. É isso aí, arrebenta lá. Você quer usar? Lógico. Vai trocar aí. Deixa eu ver se cabe. Vamos ver se vai caber. Nossa! Ajusta. Vamos ver, se não der, está bom. Você só toca. Rapaz, esse é original. P***a. Quer usar? Lógico. Arrebenta, irmão. Estamos juntos. Vou levar esse aqui pra você. O passador. Passador, rapaz. Presente também. Obrigado. Agora destrói tudo aí, irmão. Boa tarde, SDA. Boa tarde! Galera, eu estou muito feliz de estar aqui.</p>
 <p>E cara, é real, o Samuca está há três meses falando: "Não, tem uma surpresa pra antes da sua palestra". Há um tempo, eu tentando descobrir o que era, até agora não tinha... Estou chocado. Desculpa a ameação. Galera, meu objetivo aqui é bem simples com vocês. Assim como eu trouxe pro Samuca a minha visão de IA, eu falei: "Cara, você precisa olhar pra isso, porque você vai mudar completamente a história do SDA daqui pra frente". Eu sei qual é o poder disso daqui. Eu sei qual o poder que se vocês realmente pegarem isso, que eu vou mostrar pra vocês implantar, o barulho que vocês vão fazer, a mudança que vai mudar no negócio de vocês.</p>
@@ -845,24 +811,18 @@
 <p>Então, de novo, como que você consegue otimizar isso e qual que é esse processo que hoje, na tua empresa, se você plugar a ferramenta certa, pode mudar completamente a tua história? Qual que é esse processo? Vou dar só um tempinho pra vocês, porque essa é uma das perguntas mais importantes que eu faria agora. É um momento que a gente entende que talvez não está tudo bem. É um momento, assim como eu mostrei pra vocês, que talvez eu tenha um feeling que algo poderia ser melhor ou poderia ser diferente.</p>
 <p>Então o que hoje ou vai trazer uma alavanca de crescimento pra você, te fazer faturar mais, ou vai te trazer uma redução de custo significativa, uma otimização no processo. Porque somente assim a gente vai conseguir realmente fazer essa promessa, que é crescer mais com menos. Então você consegue talvez dobrar o tamanho da tua empresa com o mesmo time, o que antes era praticamente impossível. Então qual é essa resposta? E vocês ficaram com uma resposta agora. A provocação que eu trago pra vocês agora, quando vocês saírem daqui, chegarem em casa e estiverem deitados, continuem pensando, continuem ativamente, mesmo depois que vocês já começarem a implantar, fazer isso na empresa, isso é um exercício contínuo que a gente tem que continuar fazendo, de falar: "Cara", olhar pra dentro e entender, "o que eu consigo fazer diferente?</p>
 <p>O que eu consigo otimizar aqui?" Eu quero fazer uma pergunta pra vocês. Quem aqui está disposto a mudar esse cenário e sair na frente do mercado? Levanta a mão e fala eu. Eu! Boa. E galera, cara, tenham em mente que agora a gente está, de fato, na maior janela de oportunidade de geração de riqueza. Antigamente, de fato, pra você fazer uma empresa gigantesca, você precisava de um monte de gente, você precisava de uma estrutura gigantesca. E hoje, talvez com um time enxuto, tu consegue fazer resultados inimagináveis, entregar mais valor pro seu cliente, lucrar mais e realmente fazer acontecer.</p>
-<p>Senhoras e senhores, meu nome é Oscar Balbino e muito obrigado. Ô, animal, velho. Parabéns, tamo junto. Obrigado, irmão. Salva de palmas para o Oscar, galera.</p>
-  </div>
+<p>Senhoras e senhores, meu nome é Oscar Balbino e muito obrigado. Ô, animal, velho. Parabéns, tamo junto. Obrigado, irmão. Salva de palmas para o Oscar, galera.</p></div>
 </section>
-
 <section class="chapter" id="cap8">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/REGIS.png" alt="Regis Bortolin" class="speaker-photo">
-    </div>
+    <img src="Fotos/REGIS.png" alt="Regis Bortolin" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 08</div>
-      <h2 class="chapter-title">Regis Bortolin</h2>
-      <div class="chapter-role">Especialista em Vendas</div>
+      <span class="cap-label">Capítulo 08</span>
+      <h2>Regis Bortolin</h2>
+      <p class="role">Especialista em Vendas</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Boa noite, SDA! Quem quer vender mais hoje aqui? Quem quer vender mais hoje aqui? Eu preciso ativar o modo vendedor de todos vocês, OK? E nós vamos fazer agora, nós vamos repetir por quatro vezes o grito do general de vendas. Vamos lá? Todo mundo junto, pra que a gente possa estremecer o Teatro Bradesco. Sim ou não? Sim! Conversa de vendedor é venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Agora sim, eu estou diante de várias pessoas com o modo vendedor ativado.</p>
+  <div class="chapter-body"><p>Boa noite, SDA! Quem quer vender mais hoje aqui? Quem quer vender mais hoje aqui? Eu preciso ativar o modo vendedor de todos vocês, OK? E nós vamos fazer agora, nós vamos repetir por quatro vezes o grito do general de vendas. Vamos lá? Todo mundo junto, pra que a gente possa estremecer o Teatro Bradesco. Sim ou não? Sim! Conversa de vendedor é venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Conversa de vendedor é? Venda. Agora sim, eu estou diante de várias pessoas com o modo vendedor ativado.</p>
 <p>Eu profetizo na vida de vocês que vocês vão vender muito, igual eu vendo na minha, OK? É isso aí. Vamos lá. Pra quem ainda não me conhece, eu sou o general do Exército de Vendas. Nos meus últimos 20 anos, vendi mais de R$ 22 bilhões de todas as empresas que eu passei. Nos últimos quatro anos, tive a oportunidade de montar empresa junto com a minha linda esposa, que está ali, chamada Exército de Vendas. E o Exército de Vendas tem três pilares: vender, conhecer um funil, conhecendo neurovendas. Pra quê? Pra que o vendedor possa ter força interior.</p>
 <p>Mas hoje eu tenho uma questão aqui pra todos vocês aqui do SDA, da última edição do SDA. Eu tenho certeza que todos vocês aqui não têm problema de tráfego. Todos vocês aqui estão recebendo muitos leads, estou certo? Mas o problema não está no tráfego. O problema está no que está acontecendo depois do tráfego. Vamos ver se a minha bola de cristal está certa. Chega muito lead, mas as equipes estão fracas. Chegam muitos leads, as objeções não são quebradas. Chegam muitos leads, mas o follow-up não acontece.</p>
 <p>Estou certo ou estou errado? Certíssimo. Exatamente. Vamos lá. O que eu quero falar com vocês agora, e você está com o caderno aí, maravilhoso do SDA, anote aí. As minhas experiências no varejo e no digital, dizem que 19% já são clientes de vocês. Ou seja, independente do produto ou do serviço que você vende, você já tem esse cliente. Vinte e um por cento não vão comprar de vocês. Sabe por quê? Porque eles não são seu cliente. Agora, olha só, presta atenção. Sobraram 60%. E é aqui que o general de vendas gosta de atuar.</p>
@@ -912,24 +872,18 @@
 <p>Os clientes que usam isso dobram o ticket médio, ou seja, você traz um cliente esperando conseguir 100 reais, você consegue, usando essa ferramenta, 200. Só que só 15% da base usa. Por quê? Às vezes a pessoa está tão preocupada com um monte de coisa, que esquece do básico, esquece do parafuso. E está lá disponível, a um clique de distância na nossa plataforma. Olha só isso aqui, principais motivos de recusa de pagamento. Saldo insuficiente, fraude, e pra cada coisa dessa, você tem aqui alguma ferramenta na Eduzz pra te ajudar.</p>
 <p>Você pode conversar de novo lá no nosso estande com o pessoal, a gente pode fazer uma consultoria pra entender o negócio de vocês e entender onde aplicar cada coisa, porque a nossa missão não é gerar pagamento. A nossa missão é gerar receita, lucro. Lembra da última linha que eu falei. E pessoal, hoje, o mercado como um todo, eu não estou falando só do digital, estou falando do mercado, dessa loucura que está acontecendo com IA, mudança, volatilidade. Hoje o mercado favorece quem estrutura experiência, tem a ver com a história do empilhar clientes.</p>
 <p>Quem domina o calendário, ano de Copa, eleições. Cara, beleza, tem um monte de gente reclamando, mas tem um monte de gente ganhando, tem um monte de gente aproveitando essa sazonalidade pra crescer. Constrói base recorrente, também tem a ver com o empilhamento de clientes, monetiza melhor cada cliente, cria comunidade. Isso aqui é o playbook de hoje e é o que não muda nunca. Eu posso voltar daqui a 10 anos, fazer uma nova palestra e provavelmente eu vou falar as mesmas coisas e continuar firmando, porque como eu falei, a gente está preocupado com aquilo que dá certo.</p>
-<p>Nosso compromisso é com o resultado, nosso compromisso é, de fato, com o que vai transformar cada um de vocês. E hoje o mercado não premia quem sabe, premia quem faz, está na hora da gente executar, evoluir e focar naquilo que é essencial. Muito obrigado e contem com a gente. Valeu! Valeu! Aqui,</p>
-  </div>
+<p>Nosso compromisso é com o resultado, nosso compromisso é, de fato, com o que vai transformar cada um de vocês. E hoje o mercado não premia quem sabe, premia quem faz, está na hora da gente executar, evoluir e focar naquilo que é essencial. Muito obrigado e contem com a gente. Valeu! Valeu! Aqui,</p></div>
 </section>
-
 <section class="chapter" id="cap9">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/KAKA.png" alt="Kaká Diniz" class="speaker-photo">
-    </div>
+    <img src="Fotos/KAKA.png" alt="Kaká Diniz" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 09</div>
-      <h2 class="chapter-title">Kaká Diniz</h2>
-      <div class="chapter-role">Empreendedor · Fundador da Herbalife Brasil</div>
+      <span class="cap-label">Capítulo 09</span>
+      <h2>Kaká Diniz</h2>
+      <p class="role">Empreendedor · Fundador da Herbalife Brasil</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>E aí, aguenta mais um? Quantos insights! Eu achei muito top isso, porque pegar esses números, ter visão de negócio e estratégia, faz toda a diferença. Vocês estão animados para mais? Quem está animado para bombar muito com o IA aqui? Quem está bombado? Quem vai bombar muito? A galera está arrebentando, se inscrevendo lá, muita gente, inclusive perguntando se eu posso pôr mais de uma pessoa dentro da minha empresa, aí você vai poder adquirir e adicionar mais uma pessoa se quiser. Às vezes você quer levar duas, três pessoas, uma demanda que apareceu.</p>
+  <div class="chapter-body"><p>E aí, aguenta mais um? Quantos insights! Eu achei muito top isso, porque pegar esses números, ter visão de negócio e estratégia, faz toda a diferença. Vocês estão animados para mais? Quem está animado para bombar muito com o IA aqui? Quem está bombado? Quem vai bombar muito? A galera está arrebentando, se inscrevendo lá, muita gente, inclusive perguntando se eu posso pôr mais de uma pessoa dentro da minha empresa, aí você vai poder adquirir e adicionar mais uma pessoa se quiser. Às vezes você quer levar duas, três pessoas, uma demanda que apareceu.</p>
 <p>Mas cara, quem vai estar com a gente no SDA Club IA, vamos arrebentar. Pode contar conosco, que a gente nos próximos 12 meses, a gente vai botar essa IA para trabalhar para a gente como nunca antes a gente teve uma ferramenta tão poderosa na nossa vida. Beleza? Bora? Vocês estão preparados para receber? Olha, esse é um irmão, um querido, uma pessoa que eu gosto muito, aprendi muito com ele. Ele hoje é sócio e é CEO, inclusive, do maior ecossistema conglomerado de creators do país. Toca carreiras, pessoas como Whindersson Nunes, Simone Mendes, grandes nomes.</p>
 <p>Esse cara é um baita de um empreendedor, de um nível muito legal e eu acredito que vocês têm que observar. Eu quando estou junto com ele numa confraria eu falo: "Cara, deixa eu aprender com esse cara o que ele está falando". Porque além de ser um coração muito incrível, é uma pessoa que sabe muito. Então como a gente ainda tem muito mais hoje, se prepara, gente, que a gente vai entrar aqui, eu tenho mais conteúdo para vocês, a gente tem muita coisa legal, então vamos embora. Eu quero que vocês me ajudem, mas aquela energia maior do que no início do dia, pode ser?</p>
 <p>Para receber esse grande irmão, é a primeira vez. Tem três anos que eu estou tentando trazer ele no SDA, eu quero compartilhar a visão desse cara para vocês. Então fiquem de pé, senhoras e senhores, recebam comigo com muita energia, com aquela sintonia, com vocês, Kaká Diniz. E aí, turma. Rapaz, o povo aqui é animado. E aí, Mario, tudo bom? O povo aqui é animado. Estão desanimados? Me deram 40 minutos, mas quem topa ficar uma hora comigo aqui? Duas? Dá para ficar até meia-noite? Prazer estar aqui falando com vocês hoje, eu não podia recusar esse convite do Samuel, afinal de contas, tem três anos que a gente literalmente está nessa negociação para tentar vir aqui para o SDA.</p>
@@ -1009,28 +963,22 @@
 <p>Eu não sei quais são as dificuldades, quais são os problemas, o que elas procuram, pai, o que está tirando o sono, senhor, quais são os pesos nos ombros, as pedras que elas carregam, as etiquetas, esses nomes. Mas eu creio, pai, em nome de Jesus, que o SDA, esse evento, pai, a qual o Samuel, a sua esposa, tem feito há 13 anos, Deus. Eu tenho certeza que tantas vidas transformadas e não vai ser diferente dessa vez. Essas pessoas vão sair desse lugar transformadas, tocadas, completamente impactadas, pai.</p>
 <p>Porque eu olho, senhor, pra cada cadeira aqui e eu vejo o nome de cada pessoa escrita, senhor. Eu vejo vidas transformadas, eu vejo porção de coragem, eu vejo pessoas falando, pessoas transbordando daquilo que estão cheias, pai. Eu vejo pessoas saindo daqui e outras pessoas nem reconhecendo mais, porque algo vai sair daqui diferente dessas pessoas. Quem pede a chuva, senhor, tem que aprender a suportar a lama. Esse é um dos maiores aprendizados. Eu declaro, pai, vidas transformadas aqui nesse lugar, em nome de Jesus, pai.</p>
 <p>Só pra acabar, porque eu já vou sair. Esse é o verdadeiro significado da audiência, autenticidade, é ser quem você é de verdade, é não se render ao que os outros querem, mas ser aquilo que você nasceu pra ser. Isso aqui, é o meu maior patrimônio. Isso aqui. Não é avião, não é carro, não é negócios, não é dinheiro em conta, porque é tudo passa. Quando eu paro pra pensar que todas as pessoas, se eu perdesse o que eu tenho, me abandonaria, essas aqui não me abandonariam, não. Me lembra que a fome de um pão mostra o talento, mas a verdade está nos olhos delas.</p>
-<p>Em nome de Jesus. Obrigado. Fica com Deus. Obrigado. Até o próximo evento. Beijo. Arrasou, irmão. Gratidão, irmão. Tudo junto. Uma salva de palmas para o Cacá, galera.</p>
-  </div>
+<p>Em nome de Jesus. Obrigado. Fica com Deus. Obrigado. Até o próximo evento. Beijo. Arrasou, irmão. Gratidão, irmão. Tudo junto. Uma salva de palmas para o Cacá, galera.</p></div>
 </section>
-
-<div class="dia-separator">
-  <div class="dia-label">DIA 03</div>
+<div class="dia-banner">
+  <span class="dia-tag">DIA 03</span>
+  <span class="dia-name">SDA ao Vivo 2026</span>
 </div>
-
 <section class="chapter" id="cap10">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/REINALDO.png" alt="Reinaldo Zanon" class="speaker-photo">
-    </div>
+    <img src="Fotos/REINALDO.png" alt="Reinaldo Zanon" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 10</div>
-      <h2 class="chapter-title">Reinaldo Zanon</h2>
-      <div class="chapter-role">Especialista em Negócios Digitais</div>
+      <span class="cap-label">Capítulo 10</span>
+      <h2>Reinaldo Zanon</h2>
+      <p class="role">Especialista em Negócios Digitais</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Boa! Bom dia! Irmão, tudo bem? Prazer te ter aqui, irmão. O prazer é meu. Quem está animado aí? Anota aí: primeiro sinal de riqueza é entusiasmo. Bate na mão da pessoa que está do lado: mente bilionária. Bate aí. Primeiro vem a mente, depois vem o bolso. Boa! Pode sentar, galera. Inclusive, o Rei, você é o membro mais novo da confraria, não é não? Exatamente. Você sabia que o Pablo falou um negócio ontem aqui? Ele falou que ninguém que se gosta na confraria tem tudo por causa de audiência. Ele falou que estragou a noite.</p>
+  <div class="chapter-body"><p>Boa! Bom dia! Irmão, tudo bem? Prazer te ter aqui, irmão. O prazer é meu. Quem está animado aí? Anota aí: primeiro sinal de riqueza é entusiasmo. Bate na mão da pessoa que está do lado: mente bilionária. Bate aí. Primeiro vem a mente, depois vem o bolso. Boa! Pode sentar, galera. Inclusive, o Rei, você é o membro mais novo da confraria, não é não? Exatamente. Você sabia que o Pablo falou um negócio ontem aqui? Ele falou que ninguém que se gosta na confraria tem tudo por causa de audiência. Ele falou que estragou a noite.</p>
 <p>É "incrê", "incrê", não é? Foi engraçado. Ele falou: "É brincadeira". Mas foi engraçado. Eu estava escutando você falando do Pablo, da evolução dele. Conheci o Pablo também no começo de 2020. Para você ter uma ideia, a primeira Porsche que o Pablo comprou, fui eu que vendi pra ele. O primeiro jato que o Pablo comprou, eu vendi meu jato pra ele. E o que o Samuel falou, questão de acesso. Pablo, chamei ele pra ir pro meu rancho, meu jatinho buscou ele lá, ele acessou. E quando você acessa, ferrou. Depois que você vê, não tem como desver mais.</p>
 <p>É verdade. Aí você vai pra cima. Rapaz do céu. Depois que eu andei no seu avião, eu estava acostumado a andar de Phenom 300. Rapaz, depois que eu andei no seu avião, o negócio ressignificou também. Subiu um pouquinho a régua, Samuca. Irmão, conta aqui um pouquinho da trajetória. Quem que é o Reinaldo? Gustavo, que seu irmão também, que sempre está junto. Sou vendedor, pessoal. Vendedor? Eu digo que tudo na vida são vendas. Comecei vendendo produto pra emagrecer de porta em porta, usava um botton "perca peso agora".</p>
 <p>Herbalife? Herbalife. Panfletei em semáforo, colei pôster. Pensei que ele queria falar. Por que eu falo isso? A profissão mais importante, eu vejo o pessoal querendo explodir no digital, ter audiência, mas audiência não serve de nada se você não souber vender pra sua audiência. Audiência por audiência não adianta nada. Então eu sou vendedor raiz mesmo e meu irmão, meu braço direito no grupo Zanon. Fundamos a Seguralta Franchising, que já era uma empresa familiar, que já existia há 40 anos, mas era uma empresa local.</p>
@@ -1074,24 +1022,18 @@
 <p>Só que eu tinha uma promessa, que eu seria pai de um menino. E hoje eu sou pai de três meninos, natural, parto normal. Eu não sei se a sua infertilidade hoje é no campo financeiro, se é nos relacionamentos ou se é como eu, era infértil, mesmo de não poder ter filho. Deus pode mudar a sua história. Entenda isso, porque empreender no Brasil não é fácil. Você vai precisar de algo a mais. E esse algo a mais, essa confiança, essa paz, essa visão, essas conexões, quem vai te conectar é Ele. Me conecto na fonte, prospero.</p>
 <p>Me desligo da fonte, acho que eu sou o f**a, eu sou o cara, você começa a afundar. Isso é um fato. E tem pessoas, só pra finalizar, que já estourou o tempo. Pode falar. Que são tão pobres, que a única coisa que eles têm é dinheiro. Riqueza não tem a ver com dinheiro. Riqueza é uma consequência, o dinheiro. Riqueza tem a ver com propósito. Por que vocês estão aqui? A única certeza que nós temos é que a gente vai morrer um dia. E eu quero perguntar pra vocês, qual é o legado que vocês querem deixar? Será que no dia do seu enterro vai estar vazio?</p>
 <p>Ou vai ter alguém que vai lá pra aplaudir que você foi embora, que você era um miserável, um lazarento? Ou as pessoas vão chorar e vão falar assim: "Vai fazer falta". Isso é propósito. E se você não tiver um propósito claro, você não vai conseguir prosperar de maneira exponencial. Tenha um propósito claro, se conecte na fonte e creia que sim, é possível, não importa sua situação. Você pode chegar em qualquer lugar que você quiser na sua vida. Eu sou prova viva disso. E me aguardem. Pode escrever, cinco anos.</p>
-<p>O que eu estou vivendo hoje não é nem a sombra do que está por vir. Olha a pessoa que fala, a pessoa que está do seu lado: o que você está vivendo hoje não é nem a sombra do que está por vir. O que olho nenhum viu, coração nenhum sentiu, é o que Deus preparou pra aqueles que o amam. Está escrito. E se está escrito, vai acontecer. Senhoras e senhores, Reinaldo Zanon. Muito bom,</p>
-  </div>
+<p>O que eu estou vivendo hoje não é nem a sombra do que está por vir. Olha a pessoa que fala, a pessoa que está do seu lado: o que você está vivendo hoje não é nem a sombra do que está por vir. O que olho nenhum viu, coração nenhum sentiu, é o que Deus preparou pra aqueles que o amam. Está escrito. E se está escrito, vai acontecer. Senhoras e senhores, Reinaldo Zanon. Muito bom,</p></div>
 </section>
-
 <section class="chapter" id="cap11">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/REINALDO TMB.png" alt="Reinaldo Boesso" class="speaker-photo">
-    </div>
+    <img src="Fotos/REINALDO TMB.png" alt="Reinaldo Boesso" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 11</div>
-      <h2 class="chapter-title">Reinaldo Boesso</h2>
-      <div class="chapter-role">Empreendedor Digital</div>
+      <span class="cap-label">Capítulo 11</span>
+      <h2>Reinaldo Boesso</h2>
+      <p class="role">Empreendedor Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Grande Saul! Fala bem. Arrasa. Jogador de tênis também. Arrasa. Que isso. Arrasa. Cara, é uma honra estar aqui nessa última edição do SDA, vim em várias anteriores, faço parte do Black com o Samuel. Realmente ele apoia bastante, ajuda muito, o conhecimento dele é fantástico e espero que vocês aproveitem muito esses dias aqui no SDA, porque é um conteúdo fantástico e muita coisa bacana que vocês vão ver aqui. Eu participo sempre, então posso falar porque conheço. Vamos falar de dinheiro ou não? Bora, quem gosta de ganhar dinheiro aí?</p>
+  <div class="chapter-body"><p>Grande Saul! Fala bem. Arrasa. Jogador de tênis também. Arrasa. Que isso. Arrasa. Cara, é uma honra estar aqui nessa última edição do SDA, vim em várias anteriores, faço parte do Black com o Samuel. Realmente ele apoia bastante, ajuda muito, o conhecimento dele é fantástico e espero que vocês aproveitem muito esses dias aqui no SDA, porque é um conteúdo fantástico e muita coisa bacana que vocês vão ver aqui. Eu participo sempre, então posso falar porque conheço. Vamos falar de dinheiro ou não? Bora, quem gosta de ganhar dinheiro aí?</p>
 <p>E se eu falasse pra vocês que não tem nenhuma história muito grande aqui, nenhuma mágica maluca, mas dá pra aumentar em 15 vezes o faturamento. É bom ou não? É bom pra caramba. Cadê o grito? Bom ou não? Bom. Pô, tem que ser bom pra caramba, gente. Vambora, 15 vezes mais, é brincadeira. Galera, tem um lance muito legal que eu vou falar pra vocês, que a gente negligencia, que é olhar o nosso dinheiro. Se não olhar pro nosso dinheiro, o dinheiro não leva desaforo. Então o que ganha, gasta e não sabe nem pra onde foi.</p>
 <p>E quando a gente olha isso com algumas estratégias financeiras bem simples, nada muito maluco, não, vocês conseguem escalar o negócio. E escalar sem fazer nenhuma mágica comercial absurda. Sem fazer nenhum exagero, sem fazer nenhuma loucura, só fazendo conta. Quem gosta de conta, tenho certeza que vai ganhar mais dinheiro, porque conta é importante. E aqui a gente vai falar de uma coisa que a gente olha pouco. Quem que olha o financeiro todo dia da empresa aí? Tem pouco, tem que olhar. A primeira coisa que a gente faz é vender.</p>
 <p>Sem vender, a gente nem está aqui, não discute. Primeiro tem que vender. E por isso que o SDA é importante pra vocês, porque vai falar muitas técnicas que vão ajudar vocês a venderem pra caramba. Agora, depois disso, se não olhar o financeiro, tudo que vendeu, vai embora. É como jogar água num balde furado. Está entrando água, está saindo ao mesmo tempo ou até em mais velocidade, e aí não tem dinheiro que dê conta. Eu trago aqui pra vocês um exemplo claro, 48% das empresas quebram por questões de fluxo de caixa, não sabem o que tem que pagar ou o que tem que receber no próximo mês. 60% das empresas encerram a sua atividade, não porque pararam de vender, mas porque não sabiam fazer fluxo de caixa e não tinham noção da questão financeira da empresa.</p>
@@ -1135,24 +1077,18 @@
 <p>Mesmo um mês de baixa venda ou de sazonalidade, aquele mês que você vende menos, você tem dinheiro entrando das vendas anteriores, porque você deu a oportunidade para o cara comprar, o teu cliente estava muito afim de comprar teu produto, ele comprou teu produto, está pagando, e aquele mês que você vende menos, você continua recebendo porque você fez uma receita recorrente no trabalho de vocês e vocês recebem todo mês. E óbvio, e o mais importante, custo de aquisição de cliente hoje é muito alto. Vocês devem saber disso, se não sabe, vamos fazer a conta, vocês vão ver que o custo de aquisição de cliente é muito alto e não dá para desperdiçar o custo alto desse cliente sem dar a oportunidade para ele comprar teu produto.</p>
 <p>Você gastou caro para trazer seu cliente. Ele veio até você querendo comprar teu produto, mas ele não conseguiu comprar por conta de forma de pagamento diferente. Sugiro, façam conta, faz a planilhinha, é só olhar a planilha, entrada e saída de dinheiro, mais e menos, durante 12 meses, dentro do planejamento de vocês. Utilize o conhecimento que vocês têm aqui no SDA para montar esse plano, mas faz isso na planilha antes de sair executando e olha o quanto que isso vai facilitar a tua vida e realmente quanto isso vai dar de dinheiro lá no final.</p>
 <p>Isso é superimportante para que vocês entendam como que eu vou realmente ter dinheiro. Esquece olhar conta bancária, comece a fazer esse plano a partir de hoje, pensando em uma planilhinha 12 meses, que eu não tenho dúvida que vai dar certo. Beleza, pessoal? Dá para aumentar aí? Então escalem o negócio de vocês com Pix e boleto parcelado. Obrigado, pessoal. Valeu. Boa! Valeu, "man". Arrasou. Obrigado. Inclusive, o Reinaldo, a gente do Black vai visitar você lá em julho. A gente vai marcar, viu, galera? Todo mundo em julho lá no Black.</p>
-<p>Vai ser top. Valeu, galera.</p>
-  </div>
+<p>Vai ser top. Valeu, galera.</p></div>
 </section>
-
 <section class="chapter" id="cap12">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/CRIVELLIN.png" alt="Dr. Sérgio Crivellin" class="speaker-photo">
-    </div>
+    <img src="Fotos/CRIVELLIN.png" alt="Dr. Sérgio Crivellin" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 12</div>
-      <h2 class="chapter-title">Dr. Sérgio Crivellin</h2>
-      <div class="chapter-role">Médico · Empreendedor</div>
+      <span class="cap-label">Capítulo 12</span>
+      <h2>Dr. Sérgio Crivellin</h2>
+      <p class="role">Médico · Empreendedor</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Sérgio Crivellin! Vem, arrasa. Estava no seu evento há duas semanas atrás, em Rio Preto, arrasando. Muito bom, parabéns. Obrigado. Tamo junto. Vamos lá. Ele tem um fã clube aí também. Pode deixar. Bom dia. Tem bastante gente aqui. Isso aí. Olha só, me ensinaram que isso daqui era um sinal de sucesso: estudar muito, trabalhar muito e ser respeitado. E não é que eu acho que isso seja errado. Pelo contrário, eu vivi isso e deu certo. Só que ninguém me contou uma coisa. Ninguém me contou que isso daqui também poderia me prender.</p>
+  <div class="chapter-body"><p>Sérgio Crivellin! Vem, arrasa. Estava no seu evento há duas semanas atrás, em Rio Preto, arrasando. Muito bom, parabéns. Obrigado. Tamo junto. Vamos lá. Ele tem um fã clube aí também. Pode deixar. Bom dia. Tem bastante gente aqui. Isso aí. Olha só, me ensinaram que isso daqui era um sinal de sucesso: estudar muito, trabalhar muito e ser respeitado. E não é que eu acho que isso seja errado. Pelo contrário, eu vivi isso e deu certo. Só que ninguém me contou uma coisa. Ninguém me contou que isso daqui também poderia me prender.</p>
 <p>Porque quando eu vesti ele pela primeira vez, eu senti muito orgulho. Quando você veste o jaleco, você se torna o médico, você se torna o especialista e você se torna o executor. Mas muitas das vezes, você deixa de ser o dono. E isso não acontece só na medicina. Isso acontece com quem tem muito conhecimento, mas não tem estrutura. Sabe muito, mas não consegue escalar. Ou trabalha todos os dias e continua no mesmo lugar. E foi aí que eu comecei a perceber que quanto mais eu me especializava, mais eu crescia, mais eu trabalhava.</p>
 <p>Quanto mais o meu negócio crescia, mais ficava dependente de mim. E uma pergunta começou a me incomodar: será que eu sou realmente livre ou será que eu sou muito bem remunerado pra continuar preso? E eu percebi que eu estava construindo uma carreira, mas uma carreira que dependia exclusivamente apenas de mim. E isso, que havia me dado tudo, começou a cobrar um preço muito caro. Na verdade, começou a cobrar aquilo que eu mais queria: liberdade, tempo. E aí eu tive que fazer uma escolha muito importante.</p>
 <p>Ou eu continuava sendo apenas isso, ou eu me tornaria algo muito maior. Bora! Onta essa galera aí. Cadê a família Fledge aqui? Sabe por quê, pessoal? Olha só, o conhecimento te traz respeito, te traz prestígio, mas é o conhecimento estratégico que vai realmente te trazer liberdade. Eu não deixei a medicina. Eu apenas parei de ela me limitar. Eu não parei de ser médico. Eu apenas deixei de ser só médico. E seja você médico, seja você empresário, seja você que tem um negócio, seja você que tenha audiência ou não, se você continuar fazendo somente aquilo que você sabe, você nunca descobrirá o potencial que você pode se tornar.</p>
@@ -1206,24 +1142,18 @@
 <p>No seu consultório. Não só no meu escritório, lá na nossa casa, no escritório de casa, eu tenho uma coleção. Pior que você falou em jogar um golfe lá, nós vamos. Boa! Inclusive, vem cá, eu quero passar seu vídeo. Chega aí, toca o vídeo do Clevelin aqui, animal. Olha só. Eu tripliquei as minhas unidades e eu quintupliquei o meu faturamento. Bom, o Sérgio, antes do Black, já era um profissional maduro. Tudo que manda a regra, eu havia feito: inauguração, capa de revista. Eu tinha agenda cheia, mas eu não tinha tempo.</p>
 <p>Muitas vezes, o faturamento não correspondia a todo esse esforço. Eu via outros médicos, até menos experientes que eu, com posicionamento muito melhor e também com um sucesso muito maior, mesmo tendo uma bagagem menor. Eu não estava satisfeito com os resultados. Assim, a gente vivia bem, tudo, mas a gente sentia que podia mais. Algo precisa acontecer. Eu preciso mudar de nicho. E quando eu comecei a pesquisar, a primeira pesquisa que apareceu foi o Segredos da Audiência ao Vivo. Quando eu cheguei, o espetáculo já me impactou muito, os palestrantes.</p>
 <p>Eu olhei assim: Black. E quando eles começaram a falar do Black, me arrepiava e eu sabia que eu precisava estar lá dentro. A decisão foi instantânea. E aí isso começou a contagiar a gente. E o Black me trouxe essa felicidade. Foi um outro nicho. E foi aí que eu comecei a entrar nesse mundo também. E no primeiro encontro do Black, no primeiro insight, um membro do Black me deu uma orientação que pagou o investimento do Black mais de cinco vezes. Eu vi pessoas, empresários, maiores do que eu, com outras dores, que me ajudaram muito e também empresários que eram menores do que eu, também me ajudaram.</p>
-<p>E essa troca me levou do ponto A ao ponto B. É um ambiente que é propício, que te traz não só o que falta na sua carreira, mas também potencializa aquilo que você já tem. Posicionamento, mentalidade, gestão, liderança. O conhecimento não tem preço. Então hoje eu tenho uma linha educacional muito mais bem planejada. Eu tripliquei as minhas unidades, eu tripliquei o meu número de colaboradores e eu quintupliquei o meu faturamento. Existe o meu negócio antes do Black e depois do Black.</p>
-  </div>
+<p>E essa troca me levou do ponto A ao ponto B. É um ambiente que é propício, que te traz não só o que falta na sua carreira, mas também potencializa aquilo que você já tem. Posicionamento, mentalidade, gestão, liderança. O conhecimento não tem preço. Então hoje eu tenho uma linha educacional muito mais bem planejada. Eu tripliquei as minhas unidades, eu tripliquei o meu número de colaboradores e eu quintupliquei o meu faturamento. Existe o meu negócio antes do Black e depois do Black.</p></div>
 </section>
-
 <section class="chapter" id="cap13">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/MINOTOURO.png" alt="Rogério Minotouro" class="speaker-photo">
-    </div>
+    <img src="Fotos/MINOTOURO.png" alt="Rogério Minotouro" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 13</div>
-      <h2 class="chapter-title">Rogério Minotouro</h2>
-      <div class="chapter-role">Atleta · Empreendedor</div>
+      <span class="cap-label">Capítulo 13</span>
+      <h2>Rogério Minotouro</h2>
+      <p class="role">Atleta · Empreendedor</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>E por isso que eu quero que vocês recebam junto comigo, Rogério Minotouro! E aí, mozão. Seja bem-vindo! Obrigado. Seja bem-vindo, irmão. Que sorte a dele, né, Samuel? Sorte tripla. Te amos. Tanto que a gente já cobriu o outro ali. Olha lá ele. A gente tem lá no Black. Desculpa. Não é bom. Brincadeira. A gente fez uma piada que deu bom, viralizou. Eu estava lá, aí o Minotauro chega assim pra mim: "E aí, Samuel, você falou que quer lutar comigo", não sei o quê. Aí eu falei: "Rapaz, sai pra lá, você é grande, mas não é dois".</p>
+  <div class="chapter-body"><p>E por isso que eu quero que vocês recebam junto comigo, Rogério Minotouro! E aí, mozão. Seja bem-vindo! Obrigado. Seja bem-vindo, irmão. Que sorte a dele, né, Samuel? Sorte tripla. Te amos. Tanto que a gente já cobriu o outro ali. Olha lá ele. A gente tem lá no Black. Desculpa. Não é bom. Brincadeira. A gente fez uma piada que deu bom, viralizou. Eu estava lá, aí o Minotauro chega assim pra mim: "E aí, Samuel, você falou que quer lutar comigo", não sei o quê. Aí eu falei: "Rapaz, sai pra lá, você é grande, mas não é dois".</p>
 <p>Aí chega ele e fala: "O quê?" Aí os dois. Não dava nem pra fazer isso porque escola com eles. Esse vídeo é clássico. Não dava nem pra fazer isso na escola com vocês. Você é grande, mas não é dois. Samuel já treinou boxe comigo, treina direitinho. E jiu-jitsu também, que você mencionou. Está escondendo o jogo, Samuel. Rapaz do céu, tem que ter coragem. Na pandemia a gente deu uma treinada. Tem até luva nossa guardada. Tem, autografada. Te mandei a luva autografada também. Lá no Black, vocês foram, levaram pra galera, autografada a luva.</p>
 <p>Você foi animal. Você está bem, está magrinho, está treinando. Estou. Não o jiu-jitsu. Tem que voltar. Tem que voltar. Irmão, é um prazer. Jiu-jitsu tem que estar treinando sempre. É verdade. E você é um prazer, uma referência. Eu já vi palestra sua, a gente está comentando, antes da pandemia, em 2019, você falando. É extraordinário, a gente já se conhece tem muitos anos também. Sempre você e seu irmão andando junto. Me conta um pouco. Primeiro, quem que é o Rogério Minotouro, pra quem não sabe ainda, por acaso, um pouco da trajetória.</p>
 <p>Acho difícil não saber. Bom dia, pessoal. Bom dia, quem responder apanha. Eu achei um barato quando o Samuel chamou aqui, apresentou quem são os principais da família. Rogério Minotouro é isso, é família, o cara que pensa na família em primeiro lugar, que tem os seus valores. Sempre vai colocar a família em primeiro lugar. Eu acho que a gente tem que ter nossas prioridades. É um cara que tenta honrar a palavra. Eu sempre falo, meu pai falava muito: "Você tem um cheque verbal. Esse cheque não pode bater sem fundo.</p>
@@ -1291,24 +1221,18 @@
 <p>Eu: "Vou resolver essa. Quando eu entrar, o cara pega". Eu já sabia disso, então eu focava no meu soco. Eu fazia algumas coisas para ficar completinho, mas você tem que ser um cara. Então eu fazia, tentava cumprir aquela palavra. E a promessa, muitas vezes, pessoal, é com você mesmo. Ele falava o seguinte: "Cheque verbal. Não deixe o seu cheque verbal entrar sem fundo". Você tem um cheque verbal. Se o seu cheque entrar sem fundo, o cara: "P***a, esse cara fala, é conversinha". E eu vejo muita gente falando: "Eu vou fazer isso, vou fazer aquilo", chega na horaE não cumpre.</p>
 <p>Aí você: "Poxa, esse cara está falando demais, não tem palavra". Então, o principal ativo seu é a sua palavra. É verdade. Senhoras e senhores, Rogério Minotouro! Valeu, irmão. Obrigado. Obrigado, incrível. Estamos juntos, irmão. Val, quem gostou aí aplaude. Quem não aplaudir vai apanhar. Vamos tirar uma foto? Tirar uma foto com ele. Bora. Tira aí, galera. Cadê? Espera aí, vamos pegar a galera aí. Levanta mais. É vídeo, estamos juntos. Bom, podem sentar. Galera, aviso importante. Que demais, Val, que inspiração. Eu tenho uma surpresa pra vocês.</p>
 <p>Antes de falar da surpresa, vou fazer alguns combinados. O pessoal do platinum, eu falei que eu queria levar vocês pros bastidores e ter um momento de perguntas e respostas ali com vocês. É um momento de ir pros bastidores. Então eu vou pedir pra vocês ficarem na sala, porque a gente vai organizar isso. A gente tem uma hora e meia de almoço e agora é 13h. A gente vai abrir 14h50, é isso? Não. Agora é 13h, a gente vai voltar 14h30. 14h30, 10 minutos antes, já começa a abrir pros blacks, pros platinum, já começa a receber vocês.</p>
-<p>E eu tenho uma surpresa logo na volta, então quero que vocês fiquem, vai ser muito legal. E essa tarde está recheada, tem muita gente conhecida, que você vai amar estar aqui e ouvir. Beleza? Quem está preparado pra mais aqui fala "eu".</p>
-  </div>
+<p>E eu tenho uma surpresa logo na volta, então quero que vocês fiquem, vai ser muito legal. E essa tarde está recheada, tem muita gente conhecida, que você vai amar estar aqui e ouvir. Beleza? Quem está preparado pra mais aqui fala "eu".</p></div>
 </section>
-
 <section class="chapter" id="cap14">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/CLEYTON.png" alt="Dr. Cleyton Baeve" class="speaker-photo">
-    </div>
+    <img src="Fotos/CLEYTON.png" alt="Dr. Cleyton Baeve" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 14</div>
-      <h2 class="chapter-title">Dr. Cleyton Baeve</h2>
-      <div class="chapter-role">Médico · Especialista em Negócios</div>
+      <span class="cap-label">Capítulo 14</span>
+      <h2>Dr. Cleyton Baeve</h2>
+      <p class="role">Médico · Especialista em Negócios</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Com a maior energia, porque você vai entender a energia que esse cara tem. Eu tenho certeza que se aplicar pelo menos uma coisa que você aprender na palestra dele, você vai ter muito resultado. Bora receber ele com muita energia? Com vocês, Clayton! Fala aí, SDA! Rala bem. Arrasa. Bora. Arrasa, irmão. Arrebenta aí. Boa tarde, SDA. Povo abençoado. Tenho fã clube também. Vamos lá. Vamos fazer o nosso melhor aqui hoje, bora colocar nossos slides aí. Vamos falar um pouquinho, hoje, de três coisas que todo empresário precisa ter: visão, eficiência e escala.</p>
+  <div class="chapter-body"><p>Com a maior energia, porque você vai entender a energia que esse cara tem. Eu tenho certeza que se aplicar pelo menos uma coisa que você aprender na palestra dele, você vai ter muito resultado. Bora receber ele com muita energia? Com vocês, Clayton! Fala aí, SDA! Rala bem. Arrasa. Bora. Arrasa, irmão. Arrebenta aí. Boa tarde, SDA. Povo abençoado. Tenho fã clube também. Vamos lá. Vamos fazer o nosso melhor aqui hoje, bora colocar nossos slides aí. Vamos falar um pouquinho, hoje, de três coisas que todo empresário precisa ter: visão, eficiência e escala.</p>
 <p>Isso tudo, dentro do nosso negócio, a gente chama de cultura de resultado. Todo mundo aqui é empresário, a grande maioria é empresário, empreendedor, quem não é, está à frente de algum negócio, dirigindo algum negócio, algum departamento, é líder de algum setor. Então nós temos aqui dois cenários que eu queria compartilhar com vocês pra gente começar a conversa. Mesmo escritório, um ano de diferença, 2023: 2000 contratos fechados, quatro sócios e 50 colaboradores. 2024: 2000 contratos, um titular e 36 colaboradores.</p>
 <p>Aqui, a gente começa com eficiência. Aqui, nós vamos entender um pouquinho do que é eficiência. Meu nome é Clayton Bayvet de Souza, eu sou servo do Deus Altíssimo, advogado em Campo Grande, no Mato Grosso do Sul, sou empreendedor, sou mentor de líderes de alta performance e eu sou esposo, casado com uma mulher maravilhosa, com a Vilkiane Santos, pai da Pietra Bayvet e pai do Petrus Calebe Bayvet. Minha família, a razão de tudo que nós fazemos, o motivo de nós nos entregarmos com muita força todos os dias.</p>
 <p>Esse sou eu, essa é minha família, eu sou especialista em auxílio-acidente. Um benefício que foi visto por muito poucos advogados, um benefício que foi negligenciado pela advocacia brasileira, um benefício que existe desde o início da década de 90. Aliás, desde antes da década de 90. E a advocacia brasileira não deu importância pra esse benefício. Eu me especializei nesse benefício, descobri esse benefício de uma forma aleatória. Eu não tive aula de direito previdenciário na faculdade. Eu descobri o direito previdenciário e comecei trabalhar o direito previdenciário depois que eu me formei.</p>
@@ -1361,24 +1285,18 @@
 <p>A maioria usa pra sair do aluguel. Nós geramos transformação verdadeira na vida das pessoas todos os dias. É pra isso que nós existimos. Nós existimos só pra isso. O meu escritório trabalha todos os dias pra transformar a vida das pessoas. E como consequência disso, nós também somos abençoados. Então é assim que a gente faz, é assim que a gente trabalha, é dessa maneira que a gente se entrega, e é desse jeito que a gente vem escalando. E vamos escalar muito mais, porque nós estamos só começando. Agora, a partir de 2028, é que o crescimento vai vir de verdade.</p>
 <p>E a pergunta que fica pra vocês é a seguinte: o que vocês vão fazer segunda-feira? Se alguém estava atento aqui, pegou alguns insights valiosos. Como que você vai olhar pro que passa dentro da tua operação todos os dias? Será que você vai achar que aquele produto extremamente rentável dentro da tua operação é o bonequinho feio? Será que você vai se preocupar com o que o outro pensa? Ou será que você vai se preocupar com o resultado que você pode gerar na vida do outro e depois na tua? Porque é disso que se trata, no final das contas.</p>
 <p>É isso que vai mexer na última linha. É isso que vai gerar resultado. E pra gente fechar, que o nosso tempo está esgotando, eu queria convidar aqui pra subir, o Petrus, a Pietra e a minha maravilhosa esposa, a Vilkiane. Tem uma água aqui? Essa água está limpa? E por que eu quero que eles subam aqui, gente? Porque a minha família, que pra mim, assim como pra vocês, é o que nós temos de mais precioso nessa existência, que é a mesma esposa, a mesma filha e o mesmo filho que sentaram comigo àquela mesa lá em 2021, pra ouvirem da boca daquele que é o sacerdote do lar, daquele que é o mantenedor, daquele que deve ser o protetor, que eles teriam que fazer uma renúncia, que os dois nem sabiam o motivo.</p>
-<p>Ela sabia, eles não. E hoje, quando nós chegamos aqui neste momento, eles têm que subir nesse palco, porque o palco não é meu, gente. O palco é nosso. O palco é de vocês junto comigo.</p>
-  </div>
+<p>Ela sabia, eles não. E hoje, quando nós chegamos aqui neste momento, eles têm que subir nesse palco, porque o palco não é meu, gente. O palco é nosso. O palco é de vocês junto comigo.</p></div>
 </section>
-
 <section class="chapter" id="cap15">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/TIAGO TCAR.png" alt="Tiago TCAR" class="speaker-photo">
-    </div>
+    <img src="Fotos/TIAGO TCAR.png" alt="Tiago TCAR" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 15</div>
-      <h2 class="chapter-title">Tiago TCAR</h2>
-      <div class="chapter-role">Especialista em Tráfego e Marketing Digital</div>
+      <span class="cap-label">Capítulo 15</span>
+      <h2>Tiago TCAR</h2>
+      <p class="role">Especialista em Tráfego e Marketing Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Vender no digital começa pela estrutura certa, que te dá liberdade para crescer sem travar no caminho. Uma estrutura que trabalha 24 horas sem parar, recuperando vendas perdidas, aumentando o ticket médio por cliente, gerando receita recorrente no automático. Vendas, conteúdos, relacionamento, gestão. Tudo conectado, tudo no mesmo lugar. Mais controle, mais previsibilidade. Eduz: a estrutura que impulsiona suas vendas no digital. Passe no estande ou escaneie o nosso QR code. Todo mundo fala sobre escala.</p>
+  <div class="chapter-body"><p>Vender no digital começa pela estrutura certa, que te dá liberdade para crescer sem travar no caminho. Uma estrutura que trabalha 24 horas sem parar, recuperando vendas perdidas, aumentando o ticket médio por cliente, gerando receita recorrente no automático. Vendas, conteúdos, relacionamento, gestão. Tudo conectado, tudo no mesmo lugar. Mais controle, mais previsibilidade. Eduz: a estrutura que impulsiona suas vendas no digital. Passe no estande ou escaneie o nosso QR code. Todo mundo fala sobre escala.</p>
 <p>Mais vendas, mais leads, mais lançamentos, mais, mais, mais. Mas ninguém fala sobre o que fica do lado de fora. Você já pensou quantas pessoas deixaram de mudar de vida porque não conseguiram começar? Não por falta de vontade, mas por falta de uma opção. 35,3 milhões de brasileiros não têm cartão. 75 milhões estão inadimplentes. O limite médio do cartão é de R$ 1.401. Talvez eles tenham clicado no seu anúncio, assistido a sua aula gratuita, feito planos, contado para alguém. E na hora de comprar, travaram.</p>
 <p>Não tinham cartão ou já tinham estourado o limite, ou precisavam de prazo, mas não havia porta aberta. Não foi sua culpa. Você nem percebeu. Ninguém percebeu, até agora. Porque quem não consegue comprar, não reclama, só vai embora. Agora pense comigo, se você promete transformação, o que diz sobre o seu negócio, o fato de que ele só alcança quem já pode pagar? É por isso que o boleto parcelado existe, para colocar o acesso onde antes havia uma barreira, para transformar quase em começo. Para garantir que o que você ensina não fique restrito a quem tem crédito.</p>
 <p>Com a TMB, desejo se transforma em venda e venda em margem. Você vende mais com estrutura, com inteligência, sem ruído. Você continua fazendo o que sabe e nós garantimos que mais gente possa pagar por isso. Escalar é mais do que apenas alcançar mais gente, é permitir que mais gente comece. Se você já entendeu isso, este é o seu ponto de virada. Boleto parcelado TMB, conectando conhecimento, ampliando faturamento. Tem uma coisa que eu preciso falar. O Black não me entregou aquilo que eu esperava. O Black me entregou muito mais.</p>
@@ -1464,24 +1382,18 @@
 <p>Conseguiu entender? Sim, claro. Então tem vários macetes, horário pra postar. Qual que é o melhor horário? Meio-dia, às 18h, porque é o horário que todo mundo sai pra almoçar, todo mundo é viciado nisso aqui, a pessoa já sai, já fica aquele vício. Quando a pessoa entrar, a sua publicação vai ser a primeira pra ele aparecer. Então tem vários macetes, que se você pegar, você vai entender, você vai começar a ter mais visualização. Se vocês começarem a olhar os grandes, quem que é o cara dos carros? TKAR, fulano, beltrano, Cariani.</p>
 <p>Você vê que nós começamos a mudar o jeito de postar. O que foi? Sabor! Sabor. Começar a mudar o jeito de postar, você acompanha, fala assim: "Deixa eu acompanhar também, porque se está fazendo, é porque está dando certo". Então você tem que acompanhar a galera aí que vai fazer isso, entendeu? Boa. Se puder deixar uma mensagem final pra galera. Adorei sua participação, rapaz, deixa uma mensagem pra galera aí. Gente, a mensagem final aqui é o seguinte: não vai ser fácil, porque antigamente todo mundo corria atrás de audiência.</p>
 <p>Hoje, agora surgiu o posicionamento. Então não é mais só audiência, é audiência e posicionamento. Não vai ser fácil. E a mensagem final que eu deixo pra vocês é o seguinte: a coisa mais democrática que apareceu nas nossas vidas é isso aqui, internet. Use com força. Leve isso aqui como um trabalho, igual você leva o trabalho de vocês, porque o faturamento que vai te trazer isso aqui vai ser mil vezes mais do que o seu produto físico. Então, a mensagem final que eu deixo pra vocês é o seguinte: use a internet, porque a internet conseguiu tirar muita gente da pobreza.</p>
-<p>Então leve a sério isso aqui, que isso aqui é o caminho. Verdade. Senhoras e senhores, Thiago TKAR. Boa, irmão.</p>
-  </div>
+<p>Então leve a sério isso aqui, que isso aqui é o caminho. Verdade. Senhoras e senhores, Thiago TKAR. Boa, irmão.</p></div>
 </section>
-
 <section class="chapter" id="cap16">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda" class="speaker-photo">
-    </div>
+    <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="Mesa Redonda — Rede Social vs. Rede de Interesse" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 16</div>
-      <h2 class="chapter-title">Mesa Redonda</h2>
-      <div class="chapter-role">Debate com múltiplos palestrantes</div>
+      <span class="cap-label">Capítulo 16</span>
+      <h2>Mesa Redonda — Rede Social vs. Rede de Interesse</h2>
+      <p class="role">Debate com múltiplos palestrantes</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>O digital Tekar, o cara é top. O cara é bom. Rapaz, eu estou fazendo a propaganda, que eu vou falar agora de redes sociais e redes de interesse que vai mudar o seu jogo nos próximos meses. Então você pega caneta e papel que vai ser estouro. Eu vou trazer umas histórias antes, que eu gosto de essas inspirações igual do Tekar, pra você. Eu estou prometendo uma parada que vai mudar o seu jogo na rede social, então você vai anotar. E antes disso, vamos receber junto comigo, com aquela energia, com vocês, Marcos Faria, Lauro e Renata Insiglia!</p>
+  <div class="chapter-body"><p>O digital Tekar, o cara é top. O cara é bom. Rapaz, eu estou fazendo a propaganda, que eu vou falar agora de redes sociais e redes de interesse que vai mudar o seu jogo nos próximos meses. Então você pega caneta e papel que vai ser estouro. Eu vou trazer umas histórias antes, que eu gosto de essas inspirações igual do Tekar, pra você. Eu estou prometendo uma parada que vai mudar o seu jogo na rede social, então você vai anotar. E antes disso, vamos receber junto comigo, com aquela energia, com vocês, Marcos Faria, Lauro e Renata Insiglia!</p>
 <p>Estou de novo aqui, gente. Uhul! De novo, cheguei. Senta aí. Insiglia, pode sentar aqui. Seja bem-vinda. Rê. Novos moradores de Alphaville, podem sentar. Lauro. Galera, seguinte. Quer ficar onde? Seguinte, eu gosto de ouvir história de gente inspiradora, gente que tem resultado, só tem gente de resultado aqui em volta. Marcos, conta pra gente qual que é os maiores insights, você como empresário, que você transformou no seu negócio, o resultado que você tem hoje. Olá, gente. Boa tarde, novamente. Boa tarde, vou chamar o minuto para quem não respondeu.</p>
 <p>Boa tarde, gente. Isso aí. Minuto. Boa noite! Boa noite. Você viu, boa tarde, eu sou carioca. Tarde. Boa. O grande insight que eu tenho, e nós estávamos conversando ali, foi sair da ambiência jurídica e andar com empreendedores que pensam diferente. Boa. Isso aí foi algo extraordinário, porque nesse ambiente, foi quando eu comecei a parar de falar que eu sou advogado. E aí eu comecei a dizer: "Eu estou advogado, porque hoje eu sou empreendedor". Pegou essa? Foi fantástico. Muito bom, man. Essa mudança de chave.</p>
 <p>E pra você hoje, você me contou aqui, falou pra gente: "Poxa, meu patrimônio subiu seis vezes". Você já era um cara muito bem-sucedido, que veio de Dourados, um cara já muito bem-sucedido, tem vários patrimônios. Qual foram essas viradas importantes pra você? Eu estava até conversando ali nos bastidores e falando assim, da cidade que eu vim, ali bati um platô, aquilo que eu sempre busquei, principalmente da geladeira cheia, que era muito importante. Geladeira cheia. Mas profissionalmente, em relação a resultados, uma posição social, aquilo ali foi bacana naquele momento, mas eu falei: "Cara, eu agora só estou dando conselho, não tenho com quem conversar pra tomar uma grande opinião".</p>
@@ -1577,24 +1489,18 @@
 <p>Eu estou muito bonzinho. Todo mundo que está aqui, se quiser acesso ao nosso imã de seguidores, custa R$ 1.500,00, eu vou dar presente pra vocês. Pronto, falei. Faz o seguinte, só tem que fazer pelo menos um post. Só pra não sair tão de graça. É muito barato. Se não fizer, também, eu dou, só pra dar uma honrada. Quem aqui está muito animado pra ouvir Jean Gui, Diniz, João Kepler, Bruna VelarElaine Ourives. Amanhã a gente vai começar cedo com Elaine Ourives e João Kepler. Cara, vai ser absurdo. Amanhã é o 60%.</p>
 <p>Está preparado, Sigla? Vocês estão preparados pros 60%? Revolucionário aqui. Eu quero dar os parabéns pra você, você é engajado, você é forte, você está aqui até esse horário, não arredou o pé, está anotando, toca uma caderno aí. Por isso eu estou dando presente, não estou querendo entregar, é o valor que você pode ter, porque de verdade, eu acho que pra mim, a maior recompensa que vocês podem ter, é ter resultado com o SDA, é ter resultado com o que a gente está trazendo e é isso que eu te desejo, é isso que eu quero.</p>
 <p>Vamos transformar esse país, que não é nenhum político desse, não é nenhum ministro desse que está mudando essa realidade. É a gente e é a gente que vai fazer essa realidade, é a gente que vai mudar esse ano, quem sabe a gente muda a realidade desse ano, mas nesse Brasil é a nossa, independente de quem ganhar em outubro, vai ser a gente que vai mudar a nossa realidade, saindo do SDA, tendo melhores resultados. Amanhã 60%, vamos começar cedo. A gente começa a abrir 08h45, é isso? O nosso horário. Vamos ter coquetel do VIP agora, os platinum juntos, os black juntos.</p>
-<p>Então vocês ficam aqui na frente, que o pessoal vai direcionar vocês, qual é a orientação pra gente ir pro coquetel. Pode me trazer aqui. Quem quer ganhar? Eu acho que meu PPM hoje foi alto. Sabe o que é PPM? Palavras por minuto, eu acho que foi um pouco alto. Quem quer? Vamos ver se vai longe. Cadê? Vamos ver. Aí, lá em cima, vamos ver isso aí. Eita, mais nada. Valeu! Até agora no coquetel, a gente se encontra lá, se abraça e até amanhã também. Bora! Pessoal, vamos lá pro recadinho aqui do coquetel. A fila</p>
-  </div>
+<p>Então vocês ficam aqui na frente, que o pessoal vai direcionar vocês, qual é a orientação pra gente ir pro coquetel. Pode me trazer aqui. Quem quer ganhar? Eu acho que meu PPM hoje foi alto. Sabe o que é PPM? Palavras por minuto, eu acho que foi um pouco alto. Quem quer? Vamos ver se vai longe. Cadê? Vamos ver. Aí, lá em cima, vamos ver isso aí. Eita, mais nada. Valeu! Até agora no coquetel, a gente se encontra lá, se abraça e até amanhã também. Bora! Pessoal, vamos lá pro recadinho aqui do coquetel. A fila</p></div>
 </section>
-
 <section class="chapter" id="cap17">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/ELAINE.png" alt="Elainne Ourives" class="speaker-photo">
-    </div>
+    <img src="Fotos/ELAINE.png" alt="Elainne Ourives" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 17</div>
-      <h2 class="chapter-title">Elainne Ourives</h2>
-      <div class="chapter-role">Empreendedora · Especialista em Joalheria</div>
+      <span class="cap-label">Capítulo 17</span>
+      <h2>Elainne Ourives</h2>
+      <p class="role">Empreendedora · Especialista em Joalheria</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Essa recepção e eu quero que ela sinta que essa é, e de fato é, a turma mais engajada da história do SDA até hoje. Bora comigo? Com vocês, Elaine Ourives. Arrasa! Obrigada. Um prazer te receber aqui. Bom dia! Bom dia. Bom dia, bom dia. Antes deixa eu explicar meu óculos escuro pra vocês não acharem estranho. Meu look totalmente disruptivo pra Elaine que entra com vestidos esvoaçantes, mas Elaine é uma mulher com alguns procedimentos hoje escondido atrás desse óculos, mas eu não deixaria de estar nesse palco.</p>
+  <div class="chapter-body"><p>Essa recepção e eu quero que ela sinta que essa é, e de fato é, a turma mais engajada da história do SDA até hoje. Bora comigo? Com vocês, Elaine Ourives. Arrasa! Obrigada. Um prazer te receber aqui. Bom dia! Bom dia. Bom dia, bom dia. Antes deixa eu explicar meu óculos escuro pra vocês não acharem estranho. Meu look totalmente disruptivo pra Elaine que entra com vestidos esvoaçantes, mas Elaine é uma mulher com alguns procedimentos hoje escondido atrás desse óculos, mas eu não deixaria de estar nesse palco.</p>
 <p>Ok? Vamos lá. Preparados, gente? Estão preparados para uma nova identidade vibracional? Todo mundo? Como criar uma identidade vibracional para faturar múltiplos milhões. Múltiplos milhões no digital, ok? Vamos entender? Vamos entender. Eu quero com que você pense aí agora: quais são os resultados que você está tendo? Seis dígitos? Sete? Já chegou no oito? Qual é o teu faturamento mês? Eu quero com que você pense no teu dia a dia. O que que você faz? A força, o tráfego, a copy, a narrativa, a busca de lead, o vídeo.</p>
 <p>Que faturamento que você está alcançando? Eu quero com que você pense nesse momento, naquele momento que você pensa o seguinte: "Cara, como é que não vai? Como é que Elaine já faturou mais de trezentos milhões, cem milhões só num produto? O que que ela fez? Como que ela fez oito dígitos em sete dias, mais de dez milhões de reais? Como que o Samuel faz? Como que o outro faz?" Vocês se perguntam isso? E a parte mais fascinante disso tudo é que existe um código invisível. Um código invisível que não está no teu funil de vendas.</p>
 <p>Eu não tenho o melhor funil de vendas. Vocês sabiam que eu tenho milhões de seguidores no YouTube e eu nunca gravei um vídeo pro YouTube? Nunca. Eu só tenho cortes no YouTube. Eu não tenho tempo, eu sou mãe de um monte de filhos. Não dá pra gravar pro YouTube. Não está na tua copy. Não está no teu tráfego pago. E também não está na estratégia do teu lançamento aonde você está errando. Porque eu tenho certeza que tudo isso aqui, diariamente, você fica checando, melhorando, participando de treinamentos, lives, lançamentos, mentorias.</p>
@@ -1676,24 +1582,18 @@
 <p>Você vai vestir e experienciar a alegria, celebrar, comemorar. Um. Prepara pela última vez a imantar, plasmar nas tuas células o teu futuro realizado. Fica de pé. Um, dois. Pode ficar de pé. Levanta, de olho fechado, não abre o olho. Olho fechado. Um, dois, três. Entra no teu futuro. Abre os braços, ergue a cabeça. Comemora. Deixe os olhos fechados. Apenas sente. Silencia em ponto zero. Sente o corpo arrepiando. Sente o teu futuro se materializando. E eu vou contar mais uma vez. É a última vez. Olho fechado. Olho fechado.</p>
 <p>Veja a imagem na tua frente, a imagem do teu futuro, o teu eu do futuro realizado. Você tem que entrar nesse holograma e você vai comemorar, você vai vibrar alegria, você vai celebrar, você vai brindar o teu futuro realizado. Preparando para entrar. Um. Veja a imagem que representa o teu futuro. Aumenta de tamanho. Traga clareza. Traga nitidez. Veja se é isso. Dois. Que roupa você está usando? Postura, semblante. Dois, três, entra! Comemora! Comemora! Comemora o teu futuro realizado. Erga a cabeça e estende. Uhul!</p>
 <p>O seu momento, pode abrir os olhos e voltar. Uhul! Quem tá feliz? Gostaram? Todo mundo. Sabe o que a gente acabou de fazer? Pra que drogas, gente? Eu acabei de colocar em vocês endorfina, dopamina, ocitocina, pra que essas pessoas soubessem produzir os seus próprios neurotransmissores. Vocês estão endorfinados total, vivendo o eu do futuro. Tudo isso está reverberando no nervo vago, que é quem leva essa informação para o cérebro e pra todo o corpo. E eu queria finalizar agradecendo vocês. E aquilo que eu sempre digo que pra mim é super importante.</p>
-<p>Um dia, lá atrás, eu estive aí, no lugarzinho de vocês, visualizando a vida dos meus sonhos, vibrando, comemorando tudo aquilo que eu queria realizar, tudo aquilo que eu queria ser, tudo que eu queria ter. E hoje vocês estão diante do meu eu do futuro realizado. Eu amo vocês. Obrigada. Obrigado. Obrigada. Obrigada, amiga. Beijo. Uma salva de palmas, senhoras e senhores. Elaine Ourives.</p>
-  </div>
+<p>Um dia, lá atrás, eu estive aí, no lugarzinho de vocês, visualizando a vida dos meus sonhos, vibrando, comemorando tudo aquilo que eu queria realizar, tudo aquilo que eu queria ser, tudo que eu queria ter. E hoje vocês estão diante do meu eu do futuro realizado. Eu amo vocês. Obrigada. Obrigado. Obrigada. Obrigada, amiga. Beijo. Uma salva de palmas, senhoras e senhores. Elaine Ourives.</p></div>
 </section>
-
 <section class="chapter" id="cap18">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/FERNANDA.png" alt="Fernanda Sanches" class="speaker-photo">
-    </div>
+    <img src="Fotos/FERNANDA.png" alt="Fernanda Sanches" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 18</div>
-      <h2 class="chapter-title">Fernanda Sanches</h2>
-      <div class="chapter-role">Especialista em Marketing Digital</div>
+      <span class="cap-label">Capítulo 18</span>
+      <h2>Fernanda Sanches</h2>
+      <p class="role">Especialista em Marketing Digital</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Para vocês e por isso eu quero que vocês me ajudem a receber essa mulher também maravilhosa aqui ao palco junto comigo, pode ser? Posso contar com aquela máxima energia de vocês? Com vocês, Fernanda Sanches! Arrasa, Fer. Arrasa, manda ver, estamos juntos. Para você aqui. Bom dia! Bom dia! Que plateia mais linda. Vocês não fazem ideia como eu estou feliz de poder estar aqui pela minha terceira vez pisando nesse palco, porque esse palco é um palco de energia, porque o SDA, o Segredos da Audiência, é um verdadeiro espetáculo, onde vocês têm a oportunidade de se conectar e mudar o seu plano de visão.</p>
+  <div class="chapter-body"><p>Para vocês e por isso eu quero que vocês me ajudem a receber essa mulher também maravilhosa aqui ao palco junto comigo, pode ser? Posso contar com aquela máxima energia de vocês? Com vocês, Fernanda Sanches! Arrasa, Fer. Arrasa, manda ver, estamos juntos. Para você aqui. Bom dia! Bom dia! Que plateia mais linda. Vocês não fazem ideia como eu estou feliz de poder estar aqui pela minha terceira vez pisando nesse palco, porque esse palco é um palco de energia, porque o SDA, o Segredos da Audiência, é um verdadeiro espetáculo, onde vocês têm a oportunidade de se conectar e mudar o seu plano de visão.</p>
 <p>Hoje eu escolhi um tema muito especial para vocês, porque é um tema que foi a virada de chave da minha vida, onde eu pude conquistar a maioria dos meus sonhos e ter uma empresa com valuation acima de R$ 1 bilhão nas minhas marcas. Eu quero saber se vocês querem que eu conte esse segredo para vocês. Sim ou sim? Sim! Então eu quero mostrar para vocês que esse segredo é exatamente o nome da minha palestra: "O segredo por dentro do frasco". Por quê? Quando você olha para uma marca de sucesso, por um negócio de sucesso, você está enxergando o frasco.</p>
 <p>O que é o frasco? É o resultado, é o posicionamento, é como você é visto no mercado. Mas o mais importante é o que está dentro do frasco, porque o que está dentro do frasco sustenta o seu negócio. E isso está conectado com a sua mentalidade, com o seu poder de decisão, com a sua velocidade de implementação, com a sua ousadia, a sua disponibilidade, comprometimento e responsabilidade. E é isso que eu quero mostrar para vocês, o quanto você está comprometido com o resultado do seu negócio. Porque eu já vivi os dois lados.</p>
 <p>Eu já construí marcas para os outros e hoje eu construí o meu frasco, o meu próprio frasco. E isso fez eu crescer de uma forma muito exponencial. E tudo isso aconteceu por quê? Porque eu tomei a decisão de ter sucesso, de ter resultado, de ser ousada. Para quem não me conhece, eu sou a doutora Fernanda Sanches, sou farmacêutica bioquímica e cosmetóloga, proprietária das marcas Cosmo Beauty, Bio Marine, Samana, Cosmo Farma. E eu construí um império baseado no primeiro pilar, que é o mais importante da minha vida, que é a minha família.</p>
@@ -1761,24 +1661,18 @@
 <p>E Deus colocou no meu lado pessoas maravilhosas, que se conectam com a verdade, que estão dispostas a caminhar ao meu lado e viver essa vibração bilionária que acontece no nosso segmento. E tudo isso, valorizando as pessoas. Vocês não têm ideia. Eu posso dizer pra vocês e garantir que mais de 99% das pessoas que já saíram da minha empresa, porque tem momentos que a pessoa precisa sair, voltaram. E se elas voltaram é por quê? Porque a valorização dentro do meu grupo, Cosmo Beauty, é extremamente diferenciada.</p>
 <p>Os meus colaboradores me abraçam, eles pedem pra tirar foto comigo. Eu os motivo no caminhar da vitória, na evolução da vida. No início, eles não tinham carro, hoje todos têm carro, já estão comprando apartamento de sacada gourmet. Agora eu preciso construir um estacionamento pra colocar o carro de todo mundo. Então isso é uma delícia, isso é extremamente prazeroso e eu incentivo todo o meu colaborador nesse crescimento. E sempre com compromisso com o cliente, porque dentro do grupo Cosmo Beauty, é proibido ter preguiça.</p>
 <p>É proibido mimimi. É proibido dizer: "Não consigo, não posso, não vou entregar no prazo". É uma empresa de solução. E é assim, no dia a dia, que eu vou capacitando todos os meus colaboradores. E essa jornada é uma jornada de sucesso, uma jornada abençoada. E eu quero fazer uma pergunta pra vocês: qual é a projeção que você fez pra o ano de 2026? Escreve aí, porque nós precisamos trabalhar com metas. E essas metas precisam ser claras e objetivas, porque tudo na vida só depende de você. Sucesso é uma decisão.</p>
-<p>Muito obrigada.</p>
-  </div>
+<p>Muito obrigada.</p></div>
 </section>
-
 <section class="chapter" id="cap19">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/LAURO E RENATA.png" alt="Dr. Lauro e Drª Renata Freire" class="speaker-photo">
-    </div>
+    <img src="Fotos/LAURO E RENATA.png" alt="Dr. Lauro e Drª Renata Freire" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 19</div>
-      <h2 class="chapter-title">Dr. Lauro e Drª Renata Freire</h2>
-      <div class="chapter-role">Médicos · Empreendedores</div>
+      <span class="cap-label">Capítulo 19</span>
+      <h2>Dr. Lauro e Drª Renata Freire</h2>
+      <p class="role">Médicos · Empreendedores</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Quem quer muito mais aí? Quem quer muito mais? Quem está preparado pra ver o João Kepler? Uau, tem tanta gente incrível também hoje, desde Janguiê. Cara, muita gente legal que eu vou trazer aqui, João Kepler já já com a gente. E antes eu quero mostrar umas pessoas que são responsáveis por mudar a mentalidade de muita gente e crescer também em área da saúde, em área de prestadores. E eu tenho uma surpresa pra vocês. Na volta minha aqui, eu tenho uma surpresa. Inclusive, tem alguém que vem aqui também, que vocês com certeza conhecem, se não conhecer, você está muito desatualizado.</p>
+  <div class="chapter-body"><p>Quem quer muito mais aí? Quem quer muito mais? Quem está preparado pra ver o João Kepler? Uau, tem tanta gente incrível também hoje, desde Janguiê. Cara, muita gente legal que eu vou trazer aqui, João Kepler já já com a gente. E antes eu quero mostrar umas pessoas que são responsáveis por mudar a mentalidade de muita gente e crescer também em área da saúde, em área de prestadores. E eu tenho uma surpresa pra vocês. Na volta minha aqui, eu tenho uma surpresa. Inclusive, tem alguém que vem aqui também, que vocês com certeza conhecem, se não conhecer, você está muito desatualizado.</p>
 <p>Com certeza você conhece a pessoa. E ninguém sabe ainda. E a surpresa, porque eu falei com essa pessoa no telefone tem 15 minutos, eu acho que só umas duas, três pessoas do meu time sabe até agora. Vocês vão pirar. Vocês estão preparados pra mais surpresas? Sim! Eu, por um acaso, descobri que essa pessoa pisou no Brasil hoje, liguei pra ela, ela falou assim: "Pode contar comigo". Segura o coração, gente. Então vamos receber um casal maravilhoso, que tem resultados extraordinários e que hoje muita gente que está pegando insights do que eles estão fazendo.</p>
 <p>Gente, vamos pegar essas estratégias, porque muita gente que está pegando esses insights com eles, estão faturando alguns milhões a mais por ano e eu quero que você pegue essa ideia, esses insights. Então bora receber aqui, com vocês, Lauro e Renata! Uhul! Bora, galera. O fã clube também. Bora arrasar. Que prazer estar aqui mais uma vez nesse palco. Que honra estar nesse palco aqui hoje com vocês. Eu sei que vocês vieram aqui atrás dos segredos, eu sei que esse caderninho está cheio de segredo aí. Segredo da audiência, segredo pra chamar atenção, segredo pro vídeo performar mais, segredo pro seu time comercial, pro seu time de vendas.</p>
 <p>Mas nós viemos então aqui falar o quê? Nós resolvemos falar de algo que quase todo mundo que está aqui veio buscar. Talvez não da forma consciente, mas da forma inconsciente, eu tenho certeza que todo mundo aqui veio atrás da prosperidade. E o que é prosperidade? Fala pra mim. Eu quero que vocês anotem aí. O que é prosperidade pra vocês? Se a gente for pensar nessa palavra e for perguntar, mais de 90% vão falar que prosperar é sobre dinheiro. Prosperar é ganhar dinheiro, fazer dinheiro. Mas será mesmo que prosperar é só isso?</p>
@@ -1844,24 +1738,18 @@
 <p>Não, não é o que a gente leva, também não. O importante, de verdade, é o que a gente deixa na cabeça das pessoas que passaram em nossas vidas. É isso que eu quero que vocês saiam daqui em mente. Qual decisão que vocês têm que tomar pra mudar a vida de vocês hoje? Que o melhor dia pra mudar a vida é hoje. E uma decisão muda tudo, gente. E aí a gente entende que não é mais sobre construir, sobre crescer empresas, e sim, sobre legado, sobre deixar uma marca no mundo, sobre contribuir com outras pessoas, com aquilo que a gente vem fazendo que está dando certo, ver a transformação de outras pessoas, deixar a nossa marca, não só nos nossos pacientes, mas nos nossos colegas de profissão.</p>
 <p>E por isso a gente veio, está vindo pra Alphaville, pra potencializar, pra sair do nosso vaso, crescer. E tudo, gente, tudo. Todos nós fomos criados com um propósito. Esse é o nosso maior propósito. Esse é o nosso porquê. Por eles nós saímos todos os dias pra dar o nosso melhor, onde quer que nós estejamos. Nós dois construímos uma fortaleza. Dois que se tornaram um e uma família forte, uma família que não é perfeita, não é de margarina, mas que se ama, se respeita, que é pautada em princípios e que vive o que Deus determinou pra viver.</p>
 <p>Esses dias me fizeram uma pergunta, que não sei porque veio agora na minha cabeça, mas eu resolvi responder aqui. Me perguntaram: "O que é sucesso pra você?" Sucesso pra mim é algo simples. É eu chegar em casa, encontrar minha esposa, dar um beijo nela, receber um abraço dos meus filhos, falar: "Pai, estou com saudade, vamos brincar, vamos conversar". Isso pra mim é sucesso. Isso que me motiva todos os dias a sair de casa e a entender que eu não posso perder um minuto, senão dando o meu melhor, senão estando em integridade.</p>
-<p>E ser íntegro, gente, é estar 100% presente onde você quer que você esteja. Onde você está vivendo, você tem que estar 100% presente. Isso é ser íntegro. E vou falar uma coisa pra vocês: prosperidade não é sorte. Prosperidade é decisão, é ousadia e fé! Irmão. Massa.</p>
-  </div>
+<p>E ser íntegro, gente, é estar 100% presente onde você quer que você esteja. Onde você está vivendo, você tem que estar 100% presente. Isso é ser íntegro. E vou falar uma coisa pra vocês: prosperidade não é sorte. Prosperidade é decisão, é ousadia e fé! Irmão. Massa.</p></div>
 </section>
-
 <section class="chapter" id="cap20">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/JOÃO.png" alt="João Kepler" class="speaker-photo">
-    </div>
+    <img src="Fotos/JOÃO.png" alt="João Kepler" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 20</div>
-      <h2 class="chapter-title">João Kepler</h2>
-      <div class="chapter-role">Investidor · Empreendedor Serial</div>
+      <span class="cap-label">Capítulo 20</span>
+      <h2>João Kepler</h2>
+      <p class="role">Investidor · Empreendedor Serial</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Senhoras e senhores, com vocês, João Keppler! Rebenva, irmão. Bora fazer acontecer. Bora. Obrigado por estar aqui. Que bom. Mais um SDA. E mais um SDA. E o último. Estou aqui para servir. Estamos juntos. Obrigado, irmão. Estou aqui para ajudar. Boa. Que bom! Beleza, obrigado, Samuel. Vamos lá, você me deu três horas. Dessa vez foram três horas que Samuel me deu. Só para saber, quem me conhece aqui, por favor, levanta a mão. Então vou embora, não adianta. Já sabe o que eu vou falar. Mas olha, hoje eu vim validar com vocês.</p>
+  <div class="chapter-body"><p>Senhoras e senhores, com vocês, João Keppler! Rebenva, irmão. Bora fazer acontecer. Bora. Obrigado por estar aqui. Que bom. Mais um SDA. E mais um SDA. E o último. Estou aqui para servir. Estamos juntos. Obrigado, irmão. Estou aqui para ajudar. Boa. Que bom! Beleza, obrigado, Samuel. Vamos lá, você me deu três horas. Dessa vez foram três horas que Samuel me deu. Só para saber, quem me conhece aqui, por favor, levanta a mão. Então vou embora, não adianta. Já sabe o que eu vou falar. Mas olha, hoje eu vim validar com vocês.</p>
 <p>Topam uma validação? Sim. E o que é validação? Vocês estão aqui por quê? Todos vocês têm um interesse. Quem aqui está por algum interesse? Levanta a mão. Todos vocês. Quando a gente declara esse interesse, tudo muda. E eu vim validar com vocês exatamente isso. Eu vim validar com vocês uma tese chamada Marketing de Interesse. Depois de investir em 1800 empresas como venture capital, a Bossa, e mais de 70 empresas em uma private equity chamada Equity Group, eu sou um cara que sou empresário e investidor. E muitas dessas empresas que a gente investe, elas têm dores, têm interesses, têm necessidades, têm dificuldades.</p>
 <p>E aí, o que acontece? Isso chega para mim. Por exemplo, isso chega às dores de marketing, chega às dores das empresas que precisam vender mais, às empresas que precisam fazer o marketing melhor. E o custo de tráfego aumentou absurdamente, sim ou não? Sim. Pois é, e a conversão? Muitas vezes ela diminuiu também, na proporção, às vezes mais, às vezes menos. Por isso vocês estão aqui, porque vocês têm o interesse de melhorar o negócio de vocês, não é verdade? Então quem aqui é da área de agência, só para saber, levanta a mão.</p>
 <p>Quem aqui é empresário, dono do seu próprio negócio? Quase todo mundo. Então é para vocês que eu venho falar. Eu sabia que a grande maioria aqui era empresário, que tem essa dor, porque as empresas que eu invisto têm essa dor. Quem aqui sabe, por exemplo, quanto é o valor da sua empresa, o seu valuation? Quem sabe? Poucos. Deixa eu falar, todos vocês deveriam saber quanto vale o negócio de vocês. "Mas João, eu não quero vender minha empresa". Mas você deveria saber quanto vale, porque quando você sabe o seu valor, você começa a estruturar e a pensar.</p>
@@ -1928,24 +1816,18 @@
 <p>Por que você indica? Você indica alguma coisa que não presta pra alguém? Sim ou não? Nosso feedback aqui é de 98% no nosso NPS. Ou seja, muito alto. Por quê? Porque as pessoas indicam um pro outro, porque de verdade resolve uma dor de alguém. E assim como vai resolver qualquer diagnóstico, seja ele de consciência empresarial, seja ele de coração ensinado, todos os que a gente vai fazer, o que a gente faz e todos que vocês nessa sala vão fazer. E não tinha outro lugar melhor pra lançar esse produto, que não aqui, esse serviço, que não aqui.</p>
 <p>Porque são vocês que vão determinar o padrão e o que vai acontecer no mercado daqui pra frente. Tudo bem, turma? Estão comigo? Sim! Não? Sim! Boa, quem disse não? Se disse não, chama aqui na frente pra me explicar, pra dizer por que não vai funcionar. Se já funciona, não é não? Turma, é isso, muito obrigado, voltarei. Ano que vem não tem mais SDA, é verdade? Ano que vem não tem mais SDA, é verdade? Será? Deixa eu te contar uma coisa, Samuel, vem cá. Será? Deixa eu te contar uma coisa. Tinha que fazer esse meme. Oi.</p>
 <p>Samuel, vou te contar uma coisa importante. Uma vez, um fazendeiro estava muito triste, porque o curral dele cheio de cavalo, os cavalos fugiram. E aí o vizinho, vindo aquilo, chegou lá pra ele e disse assim: "Que azar, meu amigo, os cavalos fugiram". Aí o fazendeiro virou pra ele assim: "Será?" No outro dia, os cavalos dele voltaram pro curral, trazendo cavalos selvagens. Voltaram pro curral. O vizinho chegou e disse: "Que sorte, hein". Aí o fazendeiro: "Será?" No outro dia, o filho do fazendeiro montou num desses cavalos selvagens, caiu e quebrou a perna.</p>
-<p>O vizinho chegou ali e disse: "Que azar, hein". Aí ele disse: "Será?" No outro dia, o exército foi lá pra alistar os jovens pra ir pra guerra. Não alistou o moleque, porque o moleque estava com o pé quebrado. E aí o vizinho chegou: "Que sorte, meu amigo". Aí o fazendeiro disse: "Será?"</p>
-  </div>
+<p>O vizinho chegou ali e disse: "Que azar, hein". Aí ele disse: "Será?" No outro dia, o exército foi lá pra alistar os jovens pra ir pra guerra. Não alistou o moleque, porque o moleque estava com o pé quebrado. E aí o vizinho chegou: "Que sorte, meu amigo". Aí o fazendeiro disse: "Será?"</p></div>
 </section>
-
 <section class="chapter" id="cap21">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/ROBERTO.png" alt="Roberto Shinyashiki" class="speaker-photo">
-    </div>
+    <img src="Fotos/ROBERTO.png" alt="Roberto Shinyashiki" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 21</div>
-      <h2 class="chapter-title">Roberto Shinyashiki</h2>
-      <div class="chapter-role">Escritor · Médico · Palestrante Motivacional</div>
+      <span class="cap-label">Capítulo 21</span>
+      <h2>Roberto Shinyashiki</h2>
+      <p class="role">Escritor · Médico · Palestrante Motivacional</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>O China Chic! Essa música. Valeu, irmão. Obrigado. Tamo junto. Rapaz. Maravilhoso. Um dos momentos mais marcantes pra mim, foi o dia que a gente tocou guitarra aqui, "Guns N' Roses", nesse palco, a gente pulou, o China Chic falou: "Vem comigo". Pum, ele pulou, a galera segurou ele. Quem estava aqui, que me segurou. Foi muito louco esse dia. É o seguinte, Samuel, você sabe. Arrasa aí. Segura aí. Tá. Aqui tem nego, que mata o pai pra ir no baile dos órfãos. Eu falei: "Samuel". Aí depois: "Roberto, vamos fazer a palestra do rock".</p>
+  <div class="chapter-body"><p>O China Chic! Essa música. Valeu, irmão. Obrigado. Tamo junto. Rapaz. Maravilhoso. Um dos momentos mais marcantes pra mim, foi o dia que a gente tocou guitarra aqui, "Guns N' Roses", nesse palco, a gente pulou, o China Chic falou: "Vem comigo". Pum, ele pulou, a galera segurou ele. Quem estava aqui, que me segurou. Foi muito louco esse dia. É o seguinte, Samuel, você sabe. Arrasa aí. Segura aí. Tá. Aqui tem nego, que mata o pai pra ir no baile dos órfãos. Eu falei: "Samuel". Aí depois: "Roberto, vamos fazer a palestra do rock".</p>
 <p>Eu falei: "Samuel, só vamos fazer se você tocar no show". E esse cara é ousado. Ele falou assim: "Você me ensina?" "Ensino". E ele estava aqui com a gente. Chegou aqui um pessoal: "Se joga, se joga". E aí a gente se jogou. Foi absurdo. Foi louco demais. Obrigado, mestre, arrasa aí. Pessoal, deixa eu falar pra vocês. Você contou a história, né? Qual? De eu entrar, que você mandou recado ontem à meia-noite. Sim. Puxa, eu tenho viajado muito, quem acompanha, sabe. Mas quando o Samuel falou assim: "Roberto, preciso de você".</p>
 <p>Eu falei: "Não sei pra que é, mas saiba que eu faço". Mas agora que ele já virou esse gigante, já virou essa fera, é fácil você falar: "Você viu um amigo". Mas você tinha aquela chama do cara que vai arrebentar a boca do balão, em 2015, acreditar em você. "Ô China Chic", puts, já era famoso, nove milhões. Aí eu olhei pro sujeito e falei: "Esse cara vai longe". E acertei. Muito obrigado, mestre. Tamo junto, obrigado. Senhoras e senhores, aproveitem do mestre Roberto Chinasky. Pessoal, boa tarde. Antes de mais nada, eu quero dar parabéns a vocês.</p>
 <p>Seis e 20, vocês aqui. A maior parte das pessoas, provavelmente, foram embora. Falaram: "Já sei". E se vocês falarem assim: "China Chic, conta um segredo do sucesso das pessoas que você orientou e do seu sucesso". Eu prometo que eu conto. Quero escutar. Está muito fraco, só vou contar pra essa turma daqui. Legal. Pessoal, 74 anos, já estou com a vida ganha, não precisaria estar fazendo palestra, não precisaria fazer negócio. Eu faço. E uma das coisas mais tristes da minha vida, é ver gente com talento, que não vai vingar.</p>
@@ -1997,24 +1879,18 @@
 <p>Eu sempre tenho gente que acredita em mim, por isso que é importante casar com uma pessoa legal. Ela te olha com uma cara assim: "P***a, será?" "Não, meu amor, vai lá". Pessoal, o maior milagre da minha vida: meu filho mais velho, o Leandro, nasceu com paralisia cerebral e todo mundo dizia que não ia dar certo e a gente decidiu que ia dar certo. Essa é a foto mais linda da minha vida, aniversário de 46 anos do Leandro. Então, pras pessoas que convivem comigo, que conhecem o Leandro, às vezes ela fala assim: "Puxa, Roberto, eu não vou conseguir".</p>
 <p>Eu falo assim: "Cara, o Leandro fez 46 anos. Você acha que eu vou ter a mínima pena de você? Nenhuma". Porque todo mundo dizia: "Vai morrer, não vai durar dois anos, não vai durar três anos". Ele foi durando. A minha turma lá da mentoria sabe. Eles chamam de "Shinyasheikelada". Gente, eu não tenho pena, porque se eu tivesse pena, eu tinha aceitado que o Leandro ia morrer. Não tenha pena. Ninguém merece sua pena. Todo mundo merece sua confiança, todo mundo merece fé. Por isso que tem que rezar. Juro, vai ser a primeira vez que eu falo isso e a turma lá da direita sabe o que eu estou falando.</p>
 <p>Gente, quem não reza é burro. Fala pra pessoa do lado: quem não reza é burro. Quem não reza é burro. Gente, você tem um instrumento que ao você rezar, você desenvolve fé, você desenvolve relaxamento, e você não usa. Gente, tem que rezar. "Puxa, meu Deus, isso aqui não vai rezar". Pai nosso que estás no céu. Gente, não rezar é burrice. Falou isso pro teu companheiro do lado? Fala. Gente, eu não estou querendo que você reze pra Cristo, eu estou só querendo que você faça. E pra terminar, seja feliz sempre. Seja feliz sempre.</p>
-<p>Samuel, obrigado. Beijo pra você. Valeu, mestre.</p>
-  </div>
+<p>Samuel, obrigado. Beijo pra você. Valeu, mestre.</p></div>
 </section>
-
 <section class="chapter" id="cap22">
   <div class="chapter-header">
-    
-    <div class="speaker-photo-wrap">
-      <img src="Fotos/JANGUIÊ.png" alt="Janguiê Diniz" class="speaker-photo">
-    </div>
+    <img src="Fotos/JANGUIÊ.png" alt="Janguiê Diniz" class="speaker-photo">
     <div class="chapter-header-text">
-      <div class="chapter-number">Capítulo 22</div>
-      <h2 class="chapter-title">Janguiê Diniz</h2>
-      <div class="chapter-role">Empresário · Fundador do Grupo Ser Educacional</div>
+      <span class="cap-label">Capítulo 22</span>
+      <h2>Janguiê Diniz</h2>
+      <p class="role">Empresário · Fundador do Grupo Ser Educacional</p>
     </div>
   </div>
-  <div class="chapter-content">
-    <p>Com vocês, Janguiê Diniz! Obstinado, amor. E aí, seja bem-vindo, obstinado. Obrigado. Tudo bem? Boa noite, obstinados e obstinadas. Boa noite! Quem é obstinado levanta a mão aí e diga: "Eu!" Ou você é obstinado ou torna-se outra fora do jogo. Do jogo do sucesso, da prosperidade, da riqueza financeira. Vamos sentar? Vamos sentar. Sabe o que é ser obstinado, pessoal? Um f****o obstinado, jamais um f****o vitimizado. F****o com O e não com U. F****o obstado com O é um guerreiro, aquela pessoa que se pauta pelos princípios dos guerreiros e um deles diz o seguinte: se você estiver disposto a realizar o que é difícil, sua vida será fácil, de sucesso, de prosperidade e de riqueza financeira.</p>
+  <div class="chapter-body"><p>Com vocês, Janguiê Diniz! Obstinado, amor. E aí, seja bem-vindo, obstinado. Obrigado. Tudo bem? Boa noite, obstinados e obstinadas. Boa noite! Quem é obstinado levanta a mão aí e diga: "Eu!" Ou você é obstinado ou torna-se outra fora do jogo. Do jogo do sucesso, da prosperidade, da riqueza financeira. Vamos sentar? Vamos sentar. Sabe o que é ser obstinado, pessoal? Um f****o obstinado, jamais um f****o vitimizado. F****o com O e não com U. F****o obstado com O é um guerreiro, aquela pessoa que se pauta pelos princípios dos guerreiros e um deles diz o seguinte: se você estiver disposto a realizar o que é difícil, sua vida será fácil, de sucesso, de prosperidade e de riqueza financeira.</p>
 <p>Você pode até entrar na lista da Forbes. Eu entrei, eu não quero sair, não. Agora, se você só estiver disposto a realizar o que é fácil, sua vida será difícil, de insucesso, de improsperidade e de pobreza financeira. Tudo que hoje é fácil, um dia foi difícil, não é mesmo? Queridos amigos, pra que um bate-papo, uma palestra, uma aula seja producente, a gente tem que estar energizado, não é isso? Energizar é quebrar a monotonia, o cansaço, a sonolência, que eu sei que vocês passaram o dia inteiro aqui. Então vamos dar uma energizada aqui.</p>
 <p>Esfregar as mãos para atrair sucesso, prosperidade, grana, money, bufunfa, dólar, largem francês, largem euro, libra, la plata. Fala assim: "La plata. La plata!". Quando estiver bem quente, avante, obstinado. Quero ver. Vamos lá. Quando estiver bem quente, no três. Um, dois, três. Avante, obstinado. Mais uma, está muito devagar, mais uma, no três. Um, dois, três. Avante, obstinado. Aí, sim, eu gostei. Mas uma forma de energizar, sabe o que é? Uma piadinha de vez em quando, não é isso? Tem algum pastor aqui pra autorizar, algum padre?</p>
 <p>Não. Então vou contar uma piadinha aqui pra energizar. Sabe pra quê? Pra gente ficar alegre, sorrir. Pra poder entrar no astral desse bate-papo. Eu tinha dito pro Samuel que eu ia fazer uma palestra de uma hora, na sexta-feira. Ele colocou no domingo, que eu ia viajar, e disse: "Você só tem 40 minutos". Eu falei: "Então vamos fazer um bate-papo, nada de palestra". Fazer um bate-papo, que a gente vai poder passar algumas histórias, algumas experiências. Mas vamos lá então, pra gente dar uma energizada aqui, pra sorrir, ficar alegre.</p>
@@ -2069,17 +1945,10 @@
 <p>De não se precipitar? Esqueceu essa. Essa é a piada da paciência. Da paciência. Porque toda chave tem que ter uma piada. Eu vou contar as três, então. Uma só dá tempo. Essa é o seguinte, essa é da paciência. Você tem que ter paciência. E por falar em paciência, conta-se que um menino nasceu e ele nasceu falando. Hoje acontece isso. Nasceu falando e disse: "Eu vou morrer daqui a 15 dias, minha mãe daqui a um mês e meu pai vai morrer daqui a seis meses". Quinze dias o menino morreu. Um mês, a mãe morreu. E o pai ficou desesperado, aí começou a vender tudo que tinha, torrar com mulheres, com cachaça.</p>
 <p>Seis meses depois morre o vizinho. Mas vou contar mais uma. Do trabalho, do trabalho com propósito, a piada do trabalho com propósito. Por isso que ele diz: "Não se precipite, meu amigo. Tenha paciência". Se você não tiver paciência, pode ir para o precipício. Deixa eu contar a do trabalho com propósito? Quando eu falo sobre trabalho com propósito, é porque tudo tem que ter propósito. Por falar em trabalho, trabalho com propósito, o sujeito estava no aeroporto assim, e aí chegou uma moça bonita, alta, loira, pernas longas e sentou perto dele, três cadeiras depois.</p>
 <p>Ele pulou assim, quis puxar conversa e perguntou: "Como é seu nome?" A mulher olhou assim: "Fulana". E ficou na dela. E ele querendo puxar conversa, disse: "Qual a sua profissão?" Ela disse: "Eu sou sexóloga". E ficou na dela, não queria papo. E ele querendo puxar conversa, disse: "Qual foi a sua maior experiência?" Ela disse: "A minha maior experiência foi o seguinte: eu trabalhando, estudando, eu descobri que o árabe tem o maior órgão sexual entre os homens no mundo. E que o índio brasileiro tem o orgasmo mais intenso e mais profundo".</p>
-<p>Aí ela olhou para ele e disse: "Meu senhor, você está aqui há meia hora me perguntando coisa e não me disse nem seu nome". Aí ele pensou, pensou, pensou e disse: "Meu nome é Mohamed Pataxó". Beijo no coração, pessoal. Senhoras e senhores, Janguiê Diniz. Valeu, irmão. Tamo junto, obrigado. Tamo junto, irmão. Tamo junto, seu celular aí. Valeu</p>
-  </div>
+<p>Aí ela olhou para ele e disse: "Meu senhor, você está aqui há meia hora me perguntando coisa e não me disse nem seu nome". Aí ele pensou, pensou, pensou e disse: "Meu nome é Mohamed Pataxó". Beijo no coração, pessoal. Senhoras e senhores, Janguiê Diniz. Valeu, irmão. Tamo junto, obrigado. Tamo junto, irmão. Tamo junto, seu celular aí. Valeu</p></div>
 </section>
 
 </main>
-
-<footer class="footer">
-  <div class="footer-logo">SDA ao Vivo 2026</div>
-  <p>Segredos da Audiência · Transcrição das Palestras</p>
-  <p style="margin-top:8px;font-size:11px">© 2026 · Todos os direitos reservados</p>
-</footer>
 
 <a href="#top" class="scroll-top" id="scrollTop">↑</a>
 
