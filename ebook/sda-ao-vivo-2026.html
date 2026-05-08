@@ -63,21 +63,13 @@ body { background: var(--black); color: var(--text); font-family: var(--sans); f
 
 /* ── COVER ── */
 .cover {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  padding: 80px 40px;
-  background: radial-gradient(ellipse at 50% 30%, #1c1600 0%, #0A0A0A 70%);
+  min-height: 100vh; display: flex; align-items: stretch;
+  background: #0a0a0a;
 }
-.cover-logo { width: 220px; max-width: 60vw; margin-bottom: 48px; filter: drop-shadow(0 0 30px rgba(201,162,39,.3)); }
-.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-.cover-title { font-family: var(--serif); font-size: clamp(40px,9vw,80px); font-weight: 700; color: #fff; line-height: 1.05; margin-bottom: 16px; }
-.cover-title span { color: var(--gold); }
-.cover-sub { font-size: clamp(13px,2vw,17px); color: var(--text-muted); margin-bottom: 48px; max-width: 500px; }
-.cover-rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 0 auto 48px; }
-.cover-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
-.stat { text-align: center; }
-.stat-n { display: block; font-size: 36px; font-weight: 700; color: var(--gold); font-family: var(--serif); }
-.stat-l { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.cover-img {
+  width: 100%; height: 100vh; object-fit: cover; object-position: center;
+  display: block;
+}
 
 /* ── MAIN ── */
 .main { max-width: 800px; margin: 0 auto; padding: 80px 40px; }
@@ -149,21 +141,22 @@ h2 { font-family: var(--serif); font-size: clamp(20px,3.5vw,30px); font-weight: 
     line-height: 1.72 !important;
   }
 
-  /* Capa ocupa a primeira página inteira */
+  /* Capa = imagem PNG em página inteira sem margens */
+  @page :first { margin: 0; }
   .cover {
     page-break-after: always;
-    min-height: 0;
+    width: 100vw;
     height: 100vh;
+    display: block;
     background: #0a0a0a !important;
-    padding: 60pt 40pt;
+    padding: 0 !important;
   }
-  .cover-title { font-size: 46pt !important; color: white !important; }
-  .cover-title span { color: #C9A227 !important; }
-  .cover-sub { color: #9a8f7e !important; font-size: 10pt !important; }
-  .cover-tag { color: #C9A227 !important; font-size: 7.5pt !important; }
-  .cover-rule { background: #C9A227 !important; }
-  .stat-n { color: #C9A227 !important; font-size: 28pt !important; }
-  .stat-l { color: #666 !important; font-size: 7pt !important; }
+  .cover-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
 
   /* Main sem padding excessivo */
   .main { padding: 0 !important; max-width: 100% !important; }
@@ -272,16 +265,7 @@ h2 { font-family: var(--serif); font-size: clamp(20px,3.5vw,30px); font-weight: 
 </aside>
 
 <div class="cover" id="top">
-  <img src="Fotos/LOGO-sda-ultima-edição-com-dourado.png" alt="SDA Logo" class="cover-logo">
-  <div class="cover-tag">Transcrição Oficial · Segredos da Audiência</div>
-  <h1 class="cover-title"><span>SDA</span> ao Vivo<br>2026</h1>
-  <p class="cover-sub">As melhores palestras do maior evento de marketing digital do Brasil, transcritas na íntegra</p>
-  <div class="cover-rule"></div>
-  <div class="cover-stats">
-    <div class="stat"><span class="stat-n">22</span><span class="stat-l">Palestrantes</span></div>
-    <div class="stat"><span class="stat-n">2</span><span class="stat-l">Dias</span></div>
-    <div class="stat"><span class="stat-n">2026</span><span class="stat-l">Edição</span></div>
-  </div>
+  <img src="A4 - capa livro digital.png" alt="Capa SDA ao Vivo 2026" class="cover-img">
 </div>
 
 <main class="main">
